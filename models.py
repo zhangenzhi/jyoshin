@@ -1,3 +1,4 @@
+from os import name
 import tensorflow as tf
 from tensorflow import keras
 
@@ -11,15 +12,16 @@ class Linear(keras.layers.Layer):
 
     def build(self, input_shape):
 
-        w_init = tf.random_normal_initializer(seed=9527)
+        w_init = tf.random_normal_initializer()
         self.w = tf.Variable(
             initial_value=w_init(
                 shape=(input_shape[-1], self.units), dtype="float32"),
-            trainable=True
+            trainable=True, name="w"
         )
         b_init = tf.zeros_initializer()
         self.b = tf.Variable(
             initial_value=b_init(shape=(self.units,), dtype="float32"), trainable=True,
+            name="b"
         )
 
     def call(self, inputs):

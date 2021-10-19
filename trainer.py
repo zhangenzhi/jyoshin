@@ -1,4 +1,6 @@
+import os
 import tensorflow as tf
+from tensorflow.python.module.module import valid_identifier
 
 from models import DNN
 from data_generator import read_data_from_csv
@@ -17,10 +19,10 @@ class Trainer:
     def _build_dataset(self, dataset_args):
 
         if dataset_args['name'] == 'uniform':
-            dataset = read_data_from_csv(filename='labeled.csv', 
+            dataset = read_data_from_csv(filename='labeled.csv',
                                          filepath='./',
                                          batch_size=dataset_args['batch_size'],
-                                         CSV_COLUMNS = ['x','y'],
+                                         CSV_COLUMNS=['x', 'y'],
                                          num_epochs=dataset_args['epoch'])
         else:
             dataset = None
@@ -33,7 +35,6 @@ class Trainer:
                         activations=model_args['activations'])
         else:
             model = None
-
         return model
 
     def _build_metric(self, metric_args):
@@ -59,18 +60,25 @@ class Trainer:
         # L(x;theta) = |f(x;theta)-y| -> dL_dtheta
         with tf.GradientTape() as tape:
             prediction = self.model(inputs)
-            loss = self.loss(prediction,labels)
+            loss = self.loss(prediction, labels)
             grad = tape.gradient(loss, self.model.trainable_variables)
-        
+
         # theta = theta - alpha * grad // optimizer
-        self.optimizer.apply_gradients(zip(grad, self.model.trainable_variables))
+        self.optimizer.apply_gradients(
+            zip(grad, self.model.trainable_variables))
 
         # metric update
         self.metric.update_state(loss)
 
+    def valid_step(self, x):
+        inputs = x['x']
+        prediction = self.model(inputs)
 
-    def valid_step(self):
-        pass
+    def just_build(self):
+        iter_ds = iter(self.dataset)
+        x = iter_ds.get_next()
+        x['x'] = tf.reshape(x['x'], (-1, 1))
+        self.model(x['x'])
 
     def run(self):
         iter_ds = iter(self.dataset)
@@ -83,6 +91,32 @@ class Trainer:
             print("loss:", self.metric.result().numpy())
             self.metric.reset_states()
 
+    def save_model_weights(self, filepath='./saved_models', name='model.h5', save_format="h5"):
+        num = len(os.listdir(filepath))
+        save_path = os.path.join(filepath, str(num)+'/')
+        if os.path.exists(save_path):
+            self.model.save_weights(save_path, save_format=save_format)
+        else:
+            os.mkdir(save_path)
+            self.model.save_weights(save_path+name, save_format=save_format)
+        print("model saved in  {}".format(save_path+name))
+
+    def load_model_weights(self, filepath='./saved_models', num=-1, name='model.h5'):
+
+        if num == -1:
+            # -1 means latest model
+            num = len(os.listdir(filepath)) - 1
+        filepath = os.path.join(filepath, str(num)+'/')
+
+        if os.path.exists(filepath):
+            import pdb
+            pdb.set_trace()
+            self.just_build()
+            self.model.load_weights(filepath+name)
+            print("model load from {}".format(filepath+name))
+        else:
+            print("path doesn't exits.")
+
 
 if __name__ == "__main__":
     trainer_args = {'loss': {'name': 'mse'},
@@ -93,4 +127,7 @@ if __name__ == "__main__":
                               'activations': ['tanh', 'tanh', 'tanh']}, }
 
     trainer = Trainer(trainer_args)
-    trainer.run()
+
+    # trainer.save_model_weights()
+    trainer.load_model_weights()
+
