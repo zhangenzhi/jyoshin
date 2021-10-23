@@ -113,7 +113,7 @@ if __name__ == '__main__':
     plotter = Plotter(trainer.model)
     normalized_random_direction = plotter.create_random_direction(norm='layer')
 
-    N = 100
+    N = 1000
     step = 1/100
     # set init state
     plotter.set_weights([normalized_random_direction], step=-step*N/2)
