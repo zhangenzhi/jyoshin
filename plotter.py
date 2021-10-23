@@ -101,7 +101,7 @@ if __name__ == '__main__':
     trainer_args = {'loss': {'name': 'mse'},
                     'metric': {'name': 'Mean'},
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
-                    'dataset': {'name': 'uniform', 'batch_size': 12, 'epoch': 3},
+                    'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
                               'activations': ['tanh', 'tanh', 'tanh']}, }
 
@@ -109,7 +109,12 @@ if __name__ == '__main__':
     trainer.just_build()
     trainer.model.summary()
 
+    avg_loss = trainer.self_evaluate()
+    print(avg_loss)
+
     plotter = Plotter(trainer.model)
     normalized_random_direction = plotter.create_random_direction(norm='layer')
 
     plotter.set_weights([normalized_random_direction], step=0.5)
+    avg_loss = trainer.self_evaluate()
+    print(avg_loss)

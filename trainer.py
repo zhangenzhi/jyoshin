@@ -117,6 +117,26 @@ class Trainer:
         else:
             print("path doesn't exits.")
 
+    def self_evaluate(self):
+        iter_test = iter(self.dataset) 
+        self.metric.reset_states()
+
+        while True:
+            try:
+                x = iter_test.get_next()
+            except:
+                print("run out of data. ")
+                break
+            x['x'] = tf.reshape(x['x'], (-1, 1))
+            prediction = self.model(x['x'])
+            loss = self.loss(prediction, x['y'])
+            self.metric.update_state(loss)
+
+        avg_loss = self.metric.result().numpy()
+        print("Avg loss:", avg_loss)
+        return avg_loss
+        
+
 
 if __name__ == "__main__":
     trainer_args = {'loss': {'name': 'mse'},
