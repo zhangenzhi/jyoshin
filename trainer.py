@@ -128,6 +128,8 @@ class Trainer:
                 break
             x['x'] = tf.reshape(x['x'], (-1, 1))
             prediction = self.model(x['x'])
+            import pdb
+            pdb.set_trace()
             loss = self.loss(prediction, x['y'])
             self.metric.update_state(loss)
 
