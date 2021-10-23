@@ -119,8 +119,8 @@ if __name__ == '__main__':
     plotter.set_weights([normalized_random_direction], step=-step*N/2)
 
     # plot N points in lossland
-    with open("result.csv", "ab") as f:
+    with open("result_1000.csv", "ab") as f:
         for i in range(N):
             plotter.set_weights([normalized_random_direction], step=step)
             avg_loss = trainer.self_evaluate()
-            np.savetxt(f, [avg_loss], header='x', comments="")
+            np.savetxt(f, [avg_loss], comments="")
