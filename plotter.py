@@ -112,9 +112,9 @@ if __name__ == '__main__':
     avg_loss = trainer.self_evaluate()
     print(avg_loss)
 
-    plotter = Plotter(trainer.model)
-    normalized_random_direction = plotter.create_random_direction(norm='layer')
+    # plotter = Plotter(trainer.model)
+    # normalized_random_direction = plotter.create_random_direction(norm='layer')
 
-    plotter.set_weights([normalized_random_direction], step=0.5)
+    # plotter.set_weights([normalized_random_direction], step=0.5)
     avg_loss = trainer.self_evaluate()
     print(avg_loss)
