@@ -1,6 +1,5 @@
 import os
 import tensorflow as tf
-from tensorflow.python.module.module import valid_identifier
 
 from models import DNN
 from data_generator import read_data_from_csv

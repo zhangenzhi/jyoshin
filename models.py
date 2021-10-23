@@ -12,7 +12,7 @@ class Linear(keras.layers.Layer):
 
     def build(self, input_shape):
 
-        w_init = tf.random_normal_initializer(seed=9527)
+        w_init = tf.random_normal_initializer(seed=100000)
         self.w = tf.Variable(
             initial_value=w_init(
                 shape=(input_shape[-1], self.units), dtype="float32"),
