@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
-from trainer import Trainer
+from models import DNN
 from data_generator import read_data_from_csv
 
 
@@ -29,13 +29,7 @@ def generate_label_for_data(model, dataset, filename='./labeled.csv'):
 
 if __name__ == "__main__":
 
-    trainer_args = {'loss': {'name': 'mse'},
-                'metric': {'name': 'Mean'},
-                'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
-                'dataset': {'name': 'uniform', 'batch_size': 12, 'epoch': 3},
-                'model': {'name': 'DNN', 'units': [64, 16, 1],
-                            'activations': ['tanh', 'tanh', 'tanh']}, }
-    trainer = Trainer(args=trainer_args)
-    dataset = read_data_from_csv()
+    dnn = DNN(units=[64, 16, 1],activations=['tanh', 'tanh', 'tanh'])
+    dataset = read_data_from_csv(filename="uniform.csv",filepath="./")
     dataset = iter(dataset)
-    generate_label_for_data(trainer.model, dataset)
+    generate_label_for_data(dnn, dataset)
