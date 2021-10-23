@@ -85,6 +85,7 @@ class Trainer:
         while True:
             x = iter_ds.get_next()
             x['x'] = tf.reshape(x['x'], (-1, 1))
+            x['y'] = tf.reshape(x['x'], (-1, 1))
 
             self.train_step(x)
             print("loss:", self.metric.result().numpy())
@@ -127,9 +128,9 @@ class Trainer:
                 print("run out of data. ")
                 break
             x['x'] = tf.reshape(x['x'], (-1, 1))
+            x['y'] = tf.reshape(x['y'], (-1, 1))
             prediction = self.model(x['x'])
-            import pdb
-            pdb.set_trace()
+
             loss = self.loss(prediction, x['y'])
             self.metric.update_state(loss)
 
