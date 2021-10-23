@@ -19,6 +19,8 @@ def generate_label_for_data(model, dataset, filename='./labeled.csv'):
         x['x'] = tf.reshape(x['x'], (-1, 1))
         y = model(x['x'])
         z = tf.concat([x['x'], y], axis=1).numpy()
+        import pdb
+        pdb.set_trace()
         if isinstance(labeled_data, type(None)):
             labeled_data = z
         else:
@@ -29,7 +31,7 @@ def generate_label_for_data(model, dataset, filename='./labeled.csv'):
 
 if __name__ == "__main__":
 
-    dnn = DNN(units=[64, 16, 1],activations=['tanh', 'tanh', 'tanh'])
-    dataset = read_data_from_csv(filename="uniform.csv",filepath="./")
+    dnn = DNN(units=[64, 16, 1], activations=['tanh', 'tanh', 'tanh'])
+    dataset = read_data_from_csv(filename="uniform.csv", filepath="./")
     dataset = iter(dataset)
     generate_label_for_data(dnn, dataset)
