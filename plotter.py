@@ -1,5 +1,6 @@
 import os
 import h5py
+import numpy as np
 import tensorflow as tf
 
 from trainer import Trainer
@@ -109,28 +110,16 @@ if __name__ == '__main__':
     trainer.just_build()
     trainer.model.summary()
 
-    avg_loss = trainer.self_evaluate()
-    print(avg_loss)
-    
-
     plotter = Plotter(trainer.model)
     normalized_random_direction = plotter.create_random_direction(norm='layer')
-    plotter.set_weights([normalized_random_direction], step=0.5)
 
-    avg_loss = trainer.self_evaluate()
-    print(avg_loss)
+    N = 100
+    step = 1/100
+    # set init state
+    plotter.set_weights([normalized_random_direction], step=-step*N/2)
 
-    plotter.set_weights([normalized_random_direction], step=0.5)
-
-    avg_loss = trainer.self_evaluate()
-    print(avg_loss)
-
-    plotter.set_weights([normalized_random_direction], step=0.5)
-
-    avg_loss = trainer.self_evaluate()
-    print(avg_loss)
-
-    plotter.set_weights([normalized_random_direction], step=0.5)
-
-    avg_loss = trainer.self_evaluate()
-    print(avg_loss)
+    # plot N points in lossland
+    for i in range(N):
+        plotter.set_weights([normalized_random_direction], step=step)
+        avg_loss = trainer.self_evaluate()
+        np.savetxt('result.csv', avg_loss.numpy(), header='x,y', comments="")
