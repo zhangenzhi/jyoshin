@@ -109,8 +109,6 @@ class Trainer:
         filepath = os.path.join(filepath, str(num)+'/')
 
         if os.path.exists(filepath):
-            import pdb
-            pdb.set_trace()
             self.just_build()
             self.model.load_weights(filepath+name)
             print("model load from {}".format(filepath+name))

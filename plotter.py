@@ -109,6 +109,7 @@ if __name__ == '__main__':
     trainer = Trainer(trainer_args)
     trainer.just_build()
     trainer.model.summary()
+    # trainer.self_evaluate()
 
     plotter = Plotter(trainer.model)
     normalized_random_direction = plotter.create_random_direction(norm='layer')
@@ -119,8 +120,9 @@ if __name__ == '__main__':
     plotter.set_weights([normalized_random_direction], step=-step*N/2)
 
     # plot N points in lossland
-    with open("result_1000.csv", "ab") as f:
-        for i in range(N):
-            plotter.set_weights([normalized_random_direction], step=step)
-            avg_loss = trainer.self_evaluate()
+
+    for i in range(N):
+        plotter.set_weights([normalized_random_direction], step=step)
+        avg_loss = trainer.self_evaluate()
+        with open("result_1000.csv", "ab") as f:
             np.savetxt(f, [avg_loss], comments="")
