@@ -27,19 +27,28 @@ class Linear(keras.layers.Layer):
             )
         else:
             w_init = tf.random_normal_initializer(seed=100000)
+            b_init = tf.zeros_initializer()
             fuse_w = []
+            fuse_b = []
             for i in range(self.fuse_layers):
                 w = tf.Variable(
                     initial_value=w_init(
                         shape=(input_shape[-1], self.units), dtype="float32"),
                     trainable=True, name="w_{}".format(i))
+                b = tf.Variable(
+                    initial_value=b_init(shape=(self.units,), dtype="float32"), trainable=True,
+                    name="b_{}".format(i)
+                )
                 fuse_w.append(w)
+                fuse_b.append(b)
+            self.fuse_w = tf.stack(fuse_w)
+            self.fuse_b = tf.stack(fuse_b)
 
     def call(self, inputs):
         if self.fuse_layers == None:
             output = tf.matmul(inputs, self.w) + self.b
         else:
-            pass
+            output = tf.tensordot(inputs, self.fuse_w, axe=1) + self.fuse_b
         return output
 
 
