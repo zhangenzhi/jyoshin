@@ -13,7 +13,8 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh']}, }
+                              'activations': ['tanh', 'tanh', 'tanh']},
+                              'fuse_models':10}
 
     trainer = Trainer(trainer_args)
     trainer.just_build()
