@@ -24,6 +24,8 @@ class Trainer:
     def _build_dataset(self, dataset_args):
 
         if dataset_args['name'] == 'uniform':
+            self.x_v = None
+            self.y_v = None
             dataset = read_data_from_csv(filename='labeled.csv',
                                          filepath='./',
                                          batch_size=dataset_args['batch_size'],
@@ -125,22 +127,30 @@ class Trainer:
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
         self.metric.reset_states()
+
         all_x = []
         all_y = []
-        while True:
-            try:
-                x = iter_test.get_next()
-                x['x'] = tf.reshape(x['x'], (-1, 1))
-                x['y'] = tf.reshape(x['y'], (-1, 1))
-                all_x.append(x['x'])
-                all_y.append(x['y'])
-            except:
-                print("run out of data. ")
-                break
-        import pdb
-        pdb.set_trace()
-        x_v = tf.concat(all_x, axis=0)
-        y_v = tf.concat(all_y, axis=0)
+        if self.x_v == None or self.y_v == None:
+            while True:
+                try:
+                    x = iter_test.get_next()
+                    x['x'] = tf.reshape(x['x'], (-1, 1))
+                    x['y'] = tf.reshape(x['y'], (-1, 1))
+                    all_x.append(x['x'])
+                    all_y.append(x['y'])
+                except:
+                    print("run out of data. ")
+                    break
+            self.x_v = tf.concat(all_x, axis=0)
+            self.y_v = tf.concat(all_y, axis=0)
+
+        prediction = self.model(self.x_v)
+        loss = self.loss(prediction, self.y_v)
+        self.metric.update_state(loss)
+        
+        avg_loss = self.metric.result().numpy()
+        print("Avg loss:", avg_loss)
+        return avg_loss
 
     def self_evaluate(self):
         iter_test = iter(self.dataset)
