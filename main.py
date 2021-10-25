@@ -21,7 +21,7 @@ if __name__ == '__main__':
     trainer.model.summary()
     import pdb
     pdb.set_trace()
-    trainer.self_evaluate()
+    trainer.uniform_self_evaluate()
 
     # plotter = Plotter(trainer.model)
     # normalized_random_direction = plotter.create_random_direction(norm='layer')
