@@ -31,6 +31,6 @@ if __name__ == '__main__':
 
     for i in range(N):
         plotter.set_weights([normalized_random_direction], step=step)
-        avg_loss = trainer.self_evaluate()
+        avg_loss = trainer.uniform_self_evaluate()
         with open("result_1000.csv", "ab") as f:
             np.savetxt(f, [avg_loss], comments="")
