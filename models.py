@@ -39,8 +39,8 @@ class Linear(keras.layers.Layer):
                     initial_value=b_init(shape=(self.units,), dtype="float32"), trainable=True,
                     name="b_{}".format(i)
                 )
-                fuse_w.append(w)
-                fuse_b.append(b)
+                self.fuse_w.append(w)
+                self.fuse_b.append(b)
 
     def call(self, inputs):
         if self.fuse_layers == None:
