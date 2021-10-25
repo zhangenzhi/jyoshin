@@ -1,11 +1,11 @@
+from plotter import Plotter
+from trainer import Trainer
+import tensorflow as tf
+import numpy as np
+import time
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import time
-import numpy as np
-import tensorflow as tf
 
-from trainer import Trainer
-from plotter import Plotter
 
 if __name__ == '__main__':
     trainer_args = {'loss': {'name': 'mse'},
@@ -13,8 +13,8 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh']},
-                              'fuse_models':10}
+                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 10},
+                    }
 
     trainer = Trainer(trainer_args)
     trainer.just_build()
