@@ -1,13 +1,14 @@
 import h5py
 import tensorflow as tf
-
+import pdb
 
 
 x1 = tf.zeros(shape=(100,10))
 x2 = tf.zeros(shape=(100,10))
 x3 = tf.zeros(shape=(100,10))
+pdb.set_trace()
 z = tf.stack([x1,x2,x3])
-print(z)
+
 
 # f1 = h5py.File("./saved_models/1/model.h5")
 # f2 = h5py.File("./saved_models/2/model.h5")
