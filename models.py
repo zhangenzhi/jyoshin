@@ -50,7 +50,8 @@ class Linear(keras.layers.Layer):
         else:
             import pdb
             pdb.set_trace()
-            output = tf.matmul(inputs, self.fuse_w) + self.fuse_b
+            output = tf.matmul(inputs, self.fuse_w)
+            output = output + self.fuse_b
         return output
 
 
