@@ -123,6 +123,7 @@ class Trainer:
         else:
             print("path doesn't exits.")
 
+    @tf.function(experimental_relax_shapes=True)
     def uniform_self_evaluate(self):
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
@@ -147,7 +148,7 @@ class Trainer:
         prediction = self.model(self.x_v)
         loss = self.loss(prediction, self.y_v)
         self.metric.update_state(loss)
-        
+
         avg_loss = self.metric.result().numpy()
         print("Avg loss:", avg_loss)
         return avg_loss
