@@ -31,11 +31,11 @@ class Linear(keras.layers.Layer):
             self.fuse_w = []
             self.fuse_b = []
             for i in range(self.fuse_layers):
-                w = tf.Variable(
+                w = tf.self.add_weight(
                     initial_value=w_init(
                         shape=(input_shape[-1], self.units), dtype="float32"),
                     trainable=True, name="w_{}".format(i))
-                b = tf.Variable(
+                b = tf.self.add_weight(
                     initial_value=b_init(shape=(self.units,), dtype="float32"), trainable=True,
                     name="b_{}".format(i)
                 )
