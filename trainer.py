@@ -121,8 +121,29 @@ class Trainer:
         else:
             print("path doesn't exits.")
 
+    def uniform_self_evaluate(self):
+        # causue uniform dataset is small, so we load them directly to gpu mem.
+        iter_test = iter(self.dataset)
+        self.metric.reset_states()
+        all_x = []
+        all_y = []
+        while True:
+            try:
+                x = iter_test.get_next()
+                x['x'] = tf.reshape(x['x'], (-1, 1))
+                x['y'] = tf.reshape(x['y'], (-1, 1))
+                all_x.append(x['x'])
+                all_y.append(x['y'])
+            except:
+                print("run out of data. ")
+                break
+        import pdb
+        pdb.set_trace()
+        x_v = tf.concat(all_x, axis=0)
+        y_v = tf.concat(all_y, axis=0)
+
     def self_evaluate(self):
-        iter_test = iter(self.dataset) 
+        iter_test = iter(self.dataset)
         self.metric.reset_states()
 
         while True:
@@ -141,7 +162,6 @@ class Trainer:
         avg_loss = self.metric.result().numpy()
         print("Avg loss:", avg_loss)
         return avg_loss
-        
 
 
 if __name__ == "__main__":
@@ -156,4 +176,3 @@ if __name__ == "__main__":
 
     # trainer.save_model_weights()
     trainer.load_model_weights()
-
