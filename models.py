@@ -36,21 +36,22 @@ class Linear(keras.layers.Layer):
                         shape=(input_shape[-1], self.units), dtype="float32"),
                     trainable=True, name="w_{}".format(i))
                 b = tf.Variable(
-                    initial_value=b_init(shape=(1,self.units), dtype="float32"), trainable=True,
+                    initial_value=b_init(shape=(self.units,), dtype="float32"), trainable=True,
                     name="b_{}".format(i)
                 )
                 fuse_w.append(w)
                 fuse_b.append(b)
-            self.fuse_w = tf.stack(fuse_w)
-            self.fuse_b = tf.stack(fuse_b)
 
     def call(self, inputs):
         if self.fuse_layers == None:
-            output = tf.matmul(inputs, self.w) + self.b
+            outputs = tf.matmul(inputs, self.w) + self.b
         else:
-            output = tf.matmul(inputs, self.fuse_w)
-            output = output + self.fuse_b
-        return output
+            if isinstance(inputs,type([])) != True:
+                inputs = [inputs] * self.fuse_layers
+            outputs = []
+            for i in range(self.fuse_layers):
+                outputs.append(tf.matmul(inputs[i], self.fuse_w[i]) + self.fuse_b[i])
+        return outputs
 
 
 class DNN(tf.keras.Model):
