@@ -9,11 +9,17 @@ class Trainer:
     def __init__(self, args):
         self.args = args
 
+        self._build_envs()
         self.dataset = self._build_dataset(self.args['dataset'])
         self.loss = self._build_loss(self.args['loss'])
         self.metric = self._build_metric(self.args['metric'])
         self.optimizer = self._build_optimizer(self.args['optimizer'])
         self.model = self._build_model(self.args['model'])
+
+    def _build_envs(self):
+        physical_devices = tf.config.list_physical_devices('GPU')
+        for item in physical_devices:
+            tf.config.experimental.set_memory_growth(item, True)
 
     def _build_dataset(self, dataset_args):
 
