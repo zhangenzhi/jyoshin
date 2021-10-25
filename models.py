@@ -28,8 +28,8 @@ class Linear(keras.layers.Layer):
         else:
             w_init = tf.random_normal_initializer(seed=100000)
             b_init = tf.zeros_initializer()
-            fuse_w = []
-            fuse_b = []
+            self.fuse_w = []
+            self.fuse_b = []
             for i in range(self.fuse_layers):
                 w = tf.Variable(
                     initial_value=w_init(
@@ -46,11 +46,12 @@ class Linear(keras.layers.Layer):
         if self.fuse_layers == None:
             outputs = tf.matmul(inputs, self.w) + self.b
         else:
-            if isinstance(inputs,type([])) != True:
+            if isinstance(inputs, type([])) != True:
                 inputs = [inputs] * self.fuse_layers
             outputs = []
             for i in range(self.fuse_layers):
-                outputs.append(tf.matmul(inputs[i], self.fuse_w[i]) + self.fuse_b[i])
+                outputs.append(
+                    tf.matmul(inputs[i], self.fuse_w[i]) + self.fuse_b[i])
         return outputs
 
 
