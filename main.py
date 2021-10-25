@@ -1,5 +1,6 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import time
 import numpy as np
 import tensorflow as tf
 
@@ -28,9 +29,11 @@ if __name__ == '__main__':
     plotter.set_weights([normalized_random_direction], step=-step*N/2)
 
     # plot N points in lossland
-
+    start_time = time.time()
     for i in range(N):
         plotter.set_weights([normalized_random_direction], step=step)
         avg_loss = trainer.uniform_self_evaluate()
         with open("result_1000.csv", "ab") as f:
             np.savetxt(f, [avg_loss], comments="")
+    end_time = time.time()
+    print("total time {}".format(end_time-start_time))
