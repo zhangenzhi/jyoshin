@@ -124,7 +124,7 @@ class Trainer:
         else:
             print("path doesn't exits.")
 
-    def uniform_self_evaluate(self):
+    def uniform_self_evaluate(self, percent=20):
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
         self.metric.reset_states()
@@ -132,13 +132,14 @@ class Trainer:
         all_x = []
         all_y = []
         if self.x_v == None or self.y_v == None:
-            while True:
+            while True and percent!=0:
                 try:
                     x = iter_test.get_next()
                     x['x'] = tf.reshape(x['x'], (-1, 1))
                     x['y'] = tf.reshape(x['y'], (-1, 1))
                     all_x.append(x['x'])
                     all_y.append(x['y'])
+                    percent -= 1
                 except:
                     print("run out of data. ")
                     break
