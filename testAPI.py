@@ -8,9 +8,10 @@ x2 = tf.zeros(shape=(1, 64))
 x3 = tf.zeros(shape=(1, 64))
 
 x = tf.zeros(shape=(3, 1000, 1))
+b = tf.zeros(shape=(1, 64))
 z = tf.stack([x1, x2, x3])
 pdb.set_trace()
-tf.tensordot(x, z, axe=2)
+tf.matmul(x, z)
 
 
 # f1 = h5py.File("./saved_models/1/model.h5")
