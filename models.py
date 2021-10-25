@@ -48,7 +48,8 @@ class Linear(keras.layers.Layer):
         if self.fuse_layers == None:
             output = tf.matmul(inputs, self.w) + self.b
         else:
-            output = tf.tensordot(inputs, self.fuse_w, axe=1) + self.fuse_b
+            
+            output = tf.matmul(inputs, self.fuse_w) + self.fuse_b
         return output
 
 

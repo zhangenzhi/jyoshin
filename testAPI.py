@@ -11,8 +11,8 @@ x = tf.zeros(shape=(3, 1000, 1))
 b = tf.zeros(shape=(1, 64))
 z = tf.stack([x1, x2, x3])
 pdb.set_trace()
-tf.matmul(x, z)
-
+t = tf.matmul(x, z)
+a = t+b
 
 # f1 = h5py.File("./saved_models/1/model.h5")
 # f2 = h5py.File("./saved_models/2/model.h5")
