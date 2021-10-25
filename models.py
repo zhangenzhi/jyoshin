@@ -36,7 +36,7 @@ class Linear(keras.layers.Layer):
                         shape=(input_shape[-1], self.units), dtype="float32"),
                     trainable=True, name="w_{}".format(i))
                 b = tf.Variable(
-                    initial_value=b_init(shape=(self.units,1), dtype="float32"), trainable=True,
+                    initial_value=b_init(shape=(1,self.units), dtype="float32"), trainable=True,
                     name="b_{}".format(i)
                 )
                 fuse_w.append(w)
