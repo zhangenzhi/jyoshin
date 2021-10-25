@@ -13,7 +13,7 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 10},
+                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': None},
                     }
 
     trainer = Trainer(trainer_args)
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # plotter = Plotter(trainer.model)
     # normalized_random_direction = plotter.create_random_direction(norm='layer')
 
-    N = 1000
+    N = 10000
     # step = 1/1000
     # # set init state
     # plotter.set_weights([normalized_random_direction], step=-step*N/2)
