@@ -32,6 +32,7 @@ class Plotter:
         # Each direction have same shape with trainable weights
         if directions == None:
             print("None of directions.")
+            return 
 
         if init_state == True:
             if len(directions) == 2:
@@ -39,20 +40,20 @@ class Plotter:
             else:
                 shift = -self.step*self.num_evaluate*self.fuse_models/2
                 changes = [d*shift for d in directions[0]]
-        
-        if self.fuse_models == None:
-            if len(directions) == 2:
-                dx = directions[0]
-                dy = directions[1]
-                changes = [self.step[0]*d0 + self.step[1] *
-                            d1 for (d0, d1) in zip(dx, dy)]
-            else:
-                changes = [d*self.step for d in directions[0]]
         else:
-            if len(directions) == 2:
-                pass
+            if self.fuse_models == None:
+                if len(directions) == 2:
+                    dx = directions[0]
+                    dy = directions[1]
+                    changes = [self.step[0]*d0 + self.step[1] *
+                                d1 for (d0, d1) in zip(dx, dy)]
+                else:
+                    changes = [d*self.step for d in directions[0]]
             else:
-                changes = [d*self.step*self.fuse_models for d in directions[0]]
+                if len(directions) == 2:
+                    pass
+                else:
+                    changes = [d*self.step*self.fuse_models for d in directions[0]]
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
