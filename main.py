@@ -14,7 +14,7 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': None},
+                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 100},
                     }
 
     trainer = Trainer(trainer_args)
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     trainer.model.summary()
     trainer.uniform_self_evaluate()
 
-    plotter_args = {'num_evaluate': 10000,
+    plotter_args = {'num_evaluate': 100,
                     'step': 1/10000,
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
