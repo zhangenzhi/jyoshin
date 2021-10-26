@@ -69,9 +69,6 @@ class DNN(tf.keras.Model):
         layers = []
         for units in self.units:
             layers.append(Linear(units=units, fuse_layers=self.fuse_models))
-            if self.fuse_models != None:
-                self.trainable_variables.append(
-                    layers[-1].fuse_w, layers[-1].fuse_b)
         return layers
 
     def _build_act(self):
@@ -85,6 +82,9 @@ class DNN(tf.keras.Model):
         for layer, act in zip(self.fc_layers, self.fc_act):
             x = layer(x)
             x = act(x)
+        if self.trainable_variables == []:
+            for layer in self.fc_layers:
+                self.trainable_variables.append(layer.fuse_w, layer.fuse_b)
         return x
 
 
