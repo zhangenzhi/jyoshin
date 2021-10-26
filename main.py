@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # trainer.uniform_self_evaluate()
 
     plotter_args = {'num_evaluate': 20000,
-                    'step': 1/100000,
+                    'step': 1/1000000,
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
     plotter = Plotter(plotter_args, trainer.model)
