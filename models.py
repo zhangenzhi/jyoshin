@@ -15,12 +15,13 @@ class Linear(keras.layers.Layer):
 
         if self.fuse_layers == None:
             w_init = tf.random_normal_initializer(seed=100000)
+            b_init = tf.zeros_initializer()
+
             self.w = tf.Variable(
                 initial_value=w_init(
                     shape=(input_shape[-1], self.units), dtype="float32"),
                 trainable=True, name="w"
             )
-            b_init = tf.zeros_initializer()
             self.b = tf.Variable(
                 initial_value=b_init(shape=(self.units,), dtype="float32"), trainable=True,
                 name="b"

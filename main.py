@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     # set init state
     normalized_random_direction = plotter.create_random_direction(norm='layer')
-    plotter.set_weights([normalized_random_direction])
+    plotter.set_weights([normalized_random_direction],init_state=True)
 
     # plot num_evaluate*fuse_models points in lossland
     start_time = time.time()

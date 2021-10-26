@@ -17,6 +17,15 @@ class Plotter:
     def get_weights(self):
         return self.model.trainable_weights
 
+    def fuse_directions(self, normalized_directions):
+        random_directions = []
+        for d in normalized_directions:
+            fuse_random_direction = []
+            for i in range(self.fuse_models):
+                fuse_random_direction.append(d * (i+1))
+            random_directions.append(tf.stack(fuse_random_direction))
+        return random_directions
+
     def set_weights(self, directions=None, init_state=False):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
@@ -52,20 +61,12 @@ class Plotter:
         if self.fuse_models == None:
             return [tf.random.normal(w.shape) for w in weights]
         else:
-            random_direction = []
             single_random_direction = []
             for w in weights:
                 dims = list(w.shape)
                 single_random_direction.append(
                     tf.random.normal(shape=dims[1:]))
-
-            for d in single_random_direction:
-                fuse_random_direction = []
-                for i in range(self.fuse_models):
-                    fuse_random_direction.append(d * (i+1))
-                random_direction.append(tf.stack(fuse_random_direction))
-
-            return random_direction
+            return single_random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
         return [w2 - w1 for (w1, w2) in zip(weights_1, weights_2)]
@@ -80,8 +81,7 @@ class Plotter:
                     d / (tf.norm(d) + 1e-10) * tf.norm(w))
         elif norm == 'layer':
             # filter normalize: normalzied_d = direction / norm(direction) * norm(weight)
-            normalized_direction = direction * \
-                tf.norm(weights) / tf.norm(direction)
+            normalized_direction = direction * tf.norm(weights) / tf.norm(direction)
         elif norm == 'weight':
             normalized_direction = direction * weights
         elif norm == 'd_filter':
@@ -91,6 +91,8 @@ class Plotter:
         elif norm == 'd_layer':
             normalized_direction = direction / tf.norm(direction)
 
+        if self.fuse_models != None:
+            normalized_direction = self.fuse_directions(normalized_direction)
         return normalized_direction
 
     def normalize_directions_for_weights(self, direction, weights, norm="filter", ignore="bias_bn"):
