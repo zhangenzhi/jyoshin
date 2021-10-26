@@ -132,7 +132,7 @@ class Trainer:
         all_x = []
         all_y = []
         if self.x_v == None or self.y_v == None:
-            while True and percent!=0:
+            while True and percent != 0:
                 try:
                     x = iter_test.get_next()
                     x['x'] = tf.reshape(x['x'], (-1, 1))
@@ -155,11 +155,13 @@ class Trainer:
     # @tf.function(experimental_relax_shapes=True)
     def evaluate_in_all(self, inputs, labels):
         prediction = self.model(inputs)
-        import pdb
-        pdb.set_trace()
         loss = self.loss(prediction, labels)
-        self.metric.update_state(loss)
-        avg_loss = self.metric.result()
+        if self.args['model']['fuse_models'] == None:
+            self.metric.update_state(loss)
+            avg_loss = self.metric.result()
+        else:
+            avg_loss = tf.reduce_mean(loss, axis=-1)
+
         return avg_loss
 
     def self_evaluate(self):
