@@ -23,7 +23,7 @@ class Plotter:
             fuse_random_direction = []
             for i in range(self.fuse_models):
                 if init_fuse == True:
-                    fuse_random_direction.append(d * (i+1))
+                    fuse_random_direction.append(d * (self.fuse_models-i))
                 else:
                     fuse_random_direction.append(d)
             random_directions.append(tf.stack(fuse_random_direction))
