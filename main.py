@@ -21,7 +21,7 @@ if __name__ == '__main__':
     trainer.model.summary()
     # trainer.uniform_self_evaluate()
 
-    plotter_args = {'num_evaluate': 20000,
+    plotter_args = {'num_evaluate': 2000,
                     'step': 1/10000000,
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
