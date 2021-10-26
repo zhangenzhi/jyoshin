@@ -2,25 +2,27 @@ import os
 import h5py
 import numpy as np
 import tensorflow as tf
+from tensorflow._api.v2 import random
 
 from trainer import Trainer
 
 
 class Plotter:
-    def __init__(self, model):
+    def __init__(self, model, fuse_models = None):
         self.model = model
+        self.fuse_model = fuse_models
 
     def get_weights(self):
         return self.model.trainable_weights
 
-    def set_weights(self, directions=None, step=None, fuse_models = None):
+    def set_weights(self, directions=None, step=None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
         if directions == None:
             print("None of directions.")
         else:
-            if fuse_models == None:
+            if self.fuse_model == None:
                 if len(directions) == 2:
                     dx = directions[0]
                     dy = directions[1]
@@ -35,7 +37,7 @@ class Plotter:
                     fuse_step = step
                     import pdb
                     pdb.set_trace()
-                    for i in range(fuse_models):
+                    for i in range(self.fuse_model):
                         fuse_changes.append([d*fuse_step for d in directions[0]])
                         fuse_step += step
                 changes = tf.stack(fuse_changes)
@@ -46,7 +48,13 @@ class Plotter:
 
     def get_random_weights(self, weights):
         # random w have save shape with w
-        return [tf.random.normal(w.shape) for w in weights]
+        if self.fuse_model == None:
+            return [tf.random.normal(w.shape) for w in weights]
+        else:
+            import pdb
+            pdb.set_trace
+            random_direction = [tf.random.normal(w.shape) for w in weights[0]]
+            return random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
         return [w2 - w1 for (w1, w2) in zip(weights_1, weights_2)]

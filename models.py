@@ -82,12 +82,6 @@ class DNN(tf.keras.Model):
         for layer, act in zip(self.fc_layers, self.fc_act):
             x = layer(x)
             x = act(x)
-        # import pdb
-        # pdb.set_trace()
-        # if self.trainable_variables == []:
-        #     for layer in self.fc_layers:
-        #         self.trainable_variables.append(layer.fuse_w)
-        #         self.trainable_variables.append(layer.fuse_b)
         return x
 
 
