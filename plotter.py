@@ -13,19 +13,7 @@ class Plotter:
         self.fuse_model = fuse_models
 
     def get_weights(self):
-        if self.fuse_model == None:
-            return self.model.trainable_weights
-        else:
-            weights = []
-            flag = 0
-            while True:
-                try:
-                    weights.append(
-                        self.model.trainable_weights[flag*self.fuse_model])
-                    flag += 1
-                except:
-                    break
-            return weights
+        return self.model.trainable_weights
 
     def set_weights(self, directions=None, step=None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
@@ -47,14 +35,12 @@ class Plotter:
                     pass
                 else:
                     fuse_changes = []
-                    fuse_step = step
-                    import pdb
-                    pdb.set_trace()
-                    for i in range(self.fuse_model):
-                        fuse_changes.append(
-                            [d*fuse_step for d in directions[0]])
-                        fuse_step += step
-                changes = tf.stack(fuse_changes)
+                    for i in range(len(directions[0])):
+                        fuse_step = step
+                        for j in range(self.fuse_model):
+                            fuse_changes.append(fuse_step*directions[0][i])
+                            fuse_step += step
+                changes = fuse_changes
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
@@ -65,7 +51,16 @@ class Plotter:
         if self.fuse_model == None:
             return [tf.random.normal(w.shape) for w in weights]
         else:
-            random_direction = [tf.random.normal(w.shape) for w in weights]
+            flag = 0
+            single_model_weights = []
+            while True:
+                try:
+                    single_model_weights.append(weights[flag*self.fuse_model])
+                    flag += 1
+                except:
+                    break
+            random_direction = [tf.random.normal(
+                w.shape) for w in single_model_weights]
             return random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
