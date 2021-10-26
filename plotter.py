@@ -26,35 +26,46 @@ class Plotter:
             random_directions.append(tf.stack(fuse_random_direction))
         return random_directions
 
-    def set_weights(self, directions=None, init_state=False):
+    def fuse_init_directions(self, normalized_directions):
+        random_directions = []
+        for d in normalized_directions:
+            fuse_random_direction = []
+            for i in range(self.fuse_models):
+                fuse_random_direction.append(d)
+            random_directions.append(tf.stack(fuse_random_direction))
+        return random_directions
+
+    def set_weights(self, directions=None, init_state=False, init_direction=None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
         if directions == None:
             print("None of directions.")
-            return 
+            return
 
         if init_state == True:
             if len(directions) == 2:
                 pass
             else:
-                shift = -self.step*self.num_evaluate /2
+                shift = -self.step*self.num_evaluate / 2
                 shift = shift*self.fuse_models if self.fuse_models != None else shift
-                changes = [d*shift for d in directions[0]]
+                fused_init_direction = self.fuse_init_directions(init_direction)
+                changes = [d*shift for d in fused_init_direction]
         else:
             if self.fuse_models == None:
                 if len(directions) == 2:
                     dx = directions[0]
                     dy = directions[1]
                     changes = [self.step[0]*d0 + self.step[1] *
-                                d1 for (d0, d1) in zip(dx, dy)]
+                               d1 for (d0, d1) in zip(dx, dy)]
                 else:
                     changes = [d*self.step for d in directions[0]]
             else:
                 if len(directions) == 2:
                     pass
                 else:
-                    changes = [d*self.step*self.fuse_models for d in directions[0]]
+                    changes = [d*self.step *
+                               self.fuse_models for d in directions[0]]
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
@@ -85,7 +96,8 @@ class Plotter:
                     d / (tf.norm(d) + 1e-10) * tf.norm(w))
         elif norm == 'layer':
             # filter normalize: normalzied_d = direction / norm(direction) * norm(weight)
-            normalized_direction = direction * tf.norm(weights) / tf.norm(direction)
+            normalized_direction = direction * \
+                tf.norm(weights) / tf.norm(direction)
         elif norm == 'weight':
             normalized_direction = direction * weights
         elif norm == 'd_filter':
@@ -109,8 +121,9 @@ class Plotter:
                 normalized_direction.append(
                     self.normalize_direction(d, w, norm))
         if self.fuse_models != None:
-            normalized_direction = self.fuse_directions(normalized_direction)
-        return normalized_direction
+            fused_normalized_direction = self.fuse_directions(
+                normalized_direction)
+        return fused_normalized_direction, normalized_direction
 
     def create_target_direction(self):
         pass
