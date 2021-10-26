@@ -11,7 +11,7 @@ class Plotter:
     def __init__(self, plotter_args, model):
         self.step = plotter_args['step']
         self.num_evaluate = plotter_args['num_evaluate']
-        self.fuse_model = plotter_args['fuse_models']
+        self.fuse_models = plotter_args['fuse_models']
         self.model = model
 
     def get_weights(self):
@@ -24,7 +24,7 @@ class Plotter:
         if directions == None:
             print("None of directions.")
         else:
-            if self.fuse_model == None:
+            if self.fuse_models == None:
                 if len(directions) == 2:
                     dx = directions[0]
                     dy = directions[1]
@@ -50,20 +50,24 @@ class Plotter:
 
     def get_random_weights(self, weights):
         # random w have save shape with w
-        if self.fuse_model == None:
+        if self.fuse_models == None:
             return [tf.random.normal(w.shape) for w in weights]
         else:
             flag = 0
-            single_model_weights = []
+            single_random_weights = []
+            fuse_random_direction = []
             while True:
                 try:
-                    single_model_weights.append(weights[flag*self.fuse_model])
+                    single_random_weights.append(weights[flag*self.fuse_model])
                     flag += 1
                 except:
                     break
-            random_direction = [tf.random.normal(
-                w.shape) for w in single_model_weights]
-            return random_direction
+
+            single_random_direction = [tf.random.normal(
+                w.shape) for w in single_random_weights]
+            for i in self.fuse_model:
+                fuse_random_direction.append(single_random_direction * (i+1) * self.step)
+            return fuse_random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
         return [w2 - w1 for (w1, w2) in zip(weights_1, weights_2)]
