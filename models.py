@@ -30,12 +30,14 @@ class Linear(keras.layers.Layer):
             w_init = tf.random_normal_initializer(seed=100000)
             b_init = tf.zeros_initializer()
 
+            init_w = tf.stack(
+                [w_init(shape=(input_shape[-1], self.units), dtype="float32")] * self.fuse_layers)
+            init_b = tf.stack([b_init(
+                shape=(self.fuse_layers, 1, self.units), dtype="float32")] * self.fuse_layers)
             self.fuse_w = tf.Variable(
-                initial_value=w_init(
-                    shape=(self.fuse_layers, input_shape[-1], self.units), dtype="float32"),
-                trainable=True, name="w")
+                initial_value=init_w, trainable=True, name="w")
             self.fuse_b = tf.Variable(
-                initial_value=b_init(shape=(self.fuse_layers, 1, self.units), dtype="float32"), trainable=True,
+                initial_value=init_b, trainable=True,
                 name="b"
             )
 
