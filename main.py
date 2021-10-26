@@ -24,11 +24,12 @@ if __name__ == '__main__':
     # pdb.set_trace()
     trainer.uniform_self_evaluate()
 
-    plotter = Plotter(trainer.model)
 
     N = 600
     fuse_models = trainer_args['model']['fuse_models']
     step = 1/(1000*fuse_models)
+    plotter = Plotter(trainer.model,fuse_models=fuse_models)
+
     # # set init state
     normalized_random_direction = plotter.create_random_direction(norm='layer')
     plotter.set_weights([normalized_random_direction],
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     start_time = time.time()
     for i in range(N):
         plotter.set_weights([normalized_random_direction],
-                            step=step, fuse_models=fuse_models)
+                            step=step)
         avg_loss = trainer.uniform_self_evaluate()
     #     with open("result_10000.csv", "ab") as f:
     #         np.savetxt(f, [avg_loss], comments="")
