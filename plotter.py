@@ -59,7 +59,7 @@ class Plotter:
                 dims = list(w.shape)
                 single_random_direction.append(tf.random.normal(shape=dims[1:]))
             
-            for i in self.fuse_model:
+            for i in self.fuse_models:
                 fuse_random_direction = []
                 for d in single_random_direction:
                     fuse_random_direction.append(d * (i+1))
