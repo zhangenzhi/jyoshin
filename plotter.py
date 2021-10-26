@@ -53,6 +53,9 @@ class Plotter:
                 else:
                     changes = [d*self.step*self.fuse_models for d in directions[0]]
 
+        import pdb
+        pdb.set_trace()
+        
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
             weight.assign_add(change)
