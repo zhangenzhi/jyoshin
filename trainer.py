@@ -124,7 +124,7 @@ class Trainer:
         else:
             print("path doesn't exits.")
 
-    def uniform_self_evaluate(self, percent=100):
+    def uniform_self_evaluate(self, percent=20):
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
         self.metric.reset_states()
