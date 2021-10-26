@@ -21,7 +21,7 @@ if __name__ == '__main__':
     trainer.model.summary()
     trainer.uniform_self_evaluate()
 
-    plotter_args = {'num_evaluate': 4,
+    plotter_args = {'num_evaluate': 100,
                     'step': 1/1000,
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     for i in range(plotter.num_evaluate):
         plotter.set_weights([normalized_random_direction])
         avg_loss = trainer.uniform_self_evaluate()
-    #     with open("result_10000.csv", "ab") as f:
-    #         np.savetxt(f, [avg_loss], comments="")
+        with open("sp_result_10000.csv", "ab") as f:
+            np.savetxt(f, [avg_loss], comments="")
     end_time = time.time()
     print("total time {}".format(end_time-start_time))
