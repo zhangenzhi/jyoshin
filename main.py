@@ -19,7 +19,7 @@ if __name__ == '__main__':
     trainer = Trainer(trainer_args)
     trainer.just_build()
     trainer.model.summary()
-    trainer.uniform_self_evaluate()
+    # trainer.uniform_self_evaluate()
 
     plotter_args = {'num_evaluate': 100,
                     'step': 1/10000,
@@ -31,8 +31,9 @@ if __name__ == '__main__':
     fused_direction, normalized_direction = plotter.create_random_direction(
         norm='layer')
     plotter.set_weights(init_state=True, init_directions=normalized_direction)
+    trainer.uniform_self_evaluate()
 
-    # plot num_evaluate*fuse_models points in lossland
+    # plot num_evaluate * fuse_models points in lossland
     start_time = time.time()
     for i in range(plotter.num_evaluate):
         plotter.set_weights(directions=[fused_direction])
