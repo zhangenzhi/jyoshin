@@ -19,6 +19,8 @@ class Plotter:
 
     def fuse_directions(self, normalized_directions):
         random_directions = []
+        import pdb
+        pdb.set_trace()
         for d in normalized_directions:
             fuse_random_direction = []
             for i in range(self.fuse_models):
@@ -37,8 +39,6 @@ class Plotter:
                 pass
             else:
                 shift = -self.step*self.fuse_models/2
-                import pdb
-                pdb.set_trace()
                 changes = [d*shift for d in directions[0]]
         else:
             if self.fuse_models == None:
