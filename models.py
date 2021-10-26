@@ -41,14 +41,14 @@ class Linear(keras.layers.Layer):
                 )
                 fuse_w.append(w)
                 fuse_b.append(b)
-            self.fuse_w = tf.stack(fuse_w)
-            self.fuse_b = tf.stack(fuse_b)
+            self.fuse_w = fuse_w
+            self.fuse_b = fuse_b
 
     def call(self, inputs):
         if self.fuse_layers == None:
             outputs = tf.matmul(inputs, self.w) + self.b
         else:
-            outputs = tf.matmul(inputs, self.fuse_w) + self.fuse_b
+            outputs = tf.matmul(inputs, tf.stack(self.fuse_w)) + tf.stack(self.fuse_b)
         return outputs
 
 
