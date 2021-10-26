@@ -58,10 +58,10 @@ class Plotter:
             for w in weights:
                 dims = list(w.shape)
                 single_random_direction.append(tf.random.normal(shape=dims[1:]))
-            
-            for i in range(self.fuse_models):
+                
+            for d in single_random_direction:
                 fuse_random_direction = []
-                for d in single_random_direction:
+                for i in range(self.fuse_models):
                     fuse_random_direction.append(d * (i+1))
                 random_direction.append(tf.stack(fuse_random_direction))
 
