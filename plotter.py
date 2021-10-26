@@ -52,7 +52,7 @@ class Plotter:
             return [tf.random.normal(w.shape) for w in weights]
         else:
             import pdb
-            pdb.set_trace
+            pdb.set_trace()
             random_direction = [tf.random.normal(w.shape) for w in weights[0]]
             return random_direction
 
