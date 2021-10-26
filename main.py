@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # plot num_evaluate*fuse_models points in lossland
     start_time = time.time()
     for i in range(plotter.num_evaluate):
-        plotter.set_weights(directions=[normalized_direction])
+        plotter.set_weights(directions=[fused_direction])
         avg_loss = trainer.uniform_self_evaluate()
         with open("result.csv", "ab") as f:
             np.savetxt(f, avg_loss, comments="")
