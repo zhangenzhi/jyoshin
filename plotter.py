@@ -23,12 +23,11 @@ class Plotter:
             fuse_random_direction = []
             for i in range(self.fuse_models):
                 if init_fuse == True:
-                    fuse_random_direction.append(d * (self.fuse_models-i) * self.step)
+                    fuse_random_direction.append(d * (self.fuse_models-i))
                 else:
                     fuse_random_direction.append(d)
             random_directions.append(tf.stack(fuse_random_direction))
         return random_directions
-
 
     def set_weights(self, directions=None, init_state=False, init_directions=None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
@@ -41,8 +40,14 @@ class Plotter:
             else:
                 shift = -self.step*self.num_evaluate / 2
                 shift = shift*self.fuse_models if self.fuse_models != None else shift
-                fused_init_direction = self.fuse_directions(init_directions, init_fuse=True)
-                changes = [d*shift for d in fused_init_direction]
+                init_base_direction = self.fuse_directions(init_directions)
+                init_shift_direction = self.fuse_directions(init_directions, init_fuse=True)
+                changes_base = [d*shift for d in init_base_direction]
+                changes_shift = [d*self.step for d in init_shift_direction]
+                changes = []
+                for (shift, base) in zip(changes_shift, changes_base):
+                    changes.append(shift+base)
+
         else:
             if self.fuse_models == None:
                 if len(directions) == 2:
@@ -56,7 +61,8 @@ class Plotter:
                 if len(directions) == 2:
                     pass
                 else:
-                    changes = [d * self.step * self.fuse_models for d in directions[0]]
+                    changes = [d * self.step *
+                               self.fuse_models for d in directions[0]]
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
