@@ -19,8 +19,6 @@ class Plotter:
 
     def fuse_directions(self, normalized_directions):
         random_directions = []
-        import pdb
-        pdb.set_trace()
         for d in normalized_directions:
             fuse_random_direction = []
             for i in range(self.fuse_models):
