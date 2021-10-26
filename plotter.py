@@ -93,9 +93,6 @@ class Plotter:
                 normalized_direction.append(d / (tf.norm(d)+1e-10))
         elif norm == 'd_layer':
             normalized_direction = direction / tf.norm(direction)
-
-        if self.fuse_models != None:
-            normalized_direction = self.fuse_directions(normalized_direction)
         return normalized_direction
 
     def normalize_directions_for_weights(self, direction, weights, norm="filter", ignore="bias_bn"):
@@ -110,6 +107,8 @@ class Plotter:
             else:
                 normalized_direction.append(
                     self.normalize_direction(d, w, norm))
+        if self.fuse_models != None:
+            normalized_direction = self.fuse_directions(normalized_direction)
         return normalized_direction
 
     def create_target_direction(self):
