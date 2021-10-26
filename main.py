@@ -33,7 +33,7 @@ if __name__ == '__main__':
     plotter.set_weights(init_state=True, init_directions=normalized_direction)
     trainer.uniform_self_evaluate()
     import pdb
-    pdb.set_trace
+    pdb.set_trace()
 
     # plot num_evaluate * fuse_models points in lossland
     start_time = time.time()
