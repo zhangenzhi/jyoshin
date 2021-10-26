@@ -31,9 +31,9 @@ if __name__ == '__main__':
     fused_direction, normalized_direction = plotter.create_random_direction(
         norm='layer')
     plotter.set_weights(init_state=True, init_directions=normalized_direction)
-    trainer.uniform_self_evaluate()
-    import pdb
-    pdb.set_trace()
+    # trainer.uniform_self_evaluate()
+    # import pdb
+    # pdb.set_trace()
 
     # plot num_evaluate * fuse_models points in lossland
     start_time = time.time()
