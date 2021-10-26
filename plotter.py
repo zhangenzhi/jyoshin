@@ -24,25 +24,20 @@ class Plotter:
         if directions == None:
             print("None of directions.")
         else:
-            # if self.fuse_models == None:
-            if len(directions) == 2:
-                dx = directions[0]
-                dy = directions[1]
-                changes = [self.step[0]*d0 + self.step[1] *
-                        d1 for (d0, d1) in zip(dx, dy)]
+            if self.fuse_models == None:
+                if len(directions) == 2:
+                    dx = directions[0]
+                    dy = directions[1]
+                    changes = [self.step[0]*d0 + self.step[1] *
+                               d1 for (d0, d1) in zip(dx, dy)]
+                else:
+                    changes = [d*self.step for d in directions[0]]
             else:
-                changes = [d*self.step for d in directions[0]]
-            # else:
-            #     if len(directions) == 2:
-            #         pass
-            #     else:
-            #         fuse_changes = []
-            #         for i in range(len(directions[0])):
-            #             fuse_step = self.step
-            #             for j in range(self.fuse_model):
-            #                 fuse_changes.append(fuse_step*directions[0][i])
-            #                 fuse_step += self.step
-            #     changes = fuse_changes
+                if len(directions) == 2:
+                    pass
+                else:
+                    changes = [d*self.step *
+                               self.fuse_models for d in directions[0]]
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
@@ -57,8 +52,9 @@ class Plotter:
             single_random_direction = []
             for w in weights:
                 dims = list(w.shape)
-                single_random_direction.append(tf.random.normal(shape=dims[1:]))
-                
+                single_random_direction.append(
+                    tf.random.normal(shape=dims[1:]))
+
             for d in single_random_direction:
                 fuse_random_direction = []
                 for i in range(self.fuse_models):
