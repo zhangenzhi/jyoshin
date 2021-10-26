@@ -37,6 +37,8 @@ class Plotter:
                 pass
             else:
                 shift = -self.step*self.fuse_models/2
+                import pdb
+                pdb.set_trace()
                 changes = [d*shift for d in directions[0]]
         else:
             if self.fuse_models == None:
