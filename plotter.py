@@ -17,25 +17,20 @@ class Plotter:
     def get_weights(self):
         return self.model.trainable_weights
 
-    def fuse_directions(self, normalized_directions):
+    def fuse_directions(self, normalized_directions, init_fuse=False):
         random_directions = []
         for d in normalized_directions:
             fuse_random_direction = []
             for i in range(self.fuse_models):
-                fuse_random_direction.append(d * (i+1))
+                if init_fuse == True:
+                    fuse_random_direction.append(d)
+                else:
+                    fuse_random_direction.append(d * (i+1))
             random_directions.append(tf.stack(fuse_random_direction))
         return random_directions
 
-    def fuse_init_directions(self, normalized_directions):
-        random_directions = []
-        for d in normalized_directions:
-            fuse_random_direction = []
-            for i in range(self.fuse_models):
-                fuse_random_direction.append(d)
-            random_directions.append(tf.stack(fuse_random_direction))
-        return random_directions
 
-    def set_weights(self, directions=None, init_state=False, init_direction=None):
+    def set_weights(self, directions=None, init_state=False, init_directions=None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
@@ -46,7 +41,7 @@ class Plotter:
             else:
                 shift = -self.step*self.num_evaluate / 2
                 shift = shift*self.fuse_models if self.fuse_models != None else shift
-                fused_init_direction = self.fuse_init_directions(init_direction)
+                fused_init_direction = self.fuse_directions(init_directions,init_fuse=True)
                 changes = [d*shift for d in fused_init_direction]
         else:
             if self.fuse_models == None:

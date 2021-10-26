@@ -28,14 +28,14 @@ if __name__ == '__main__':
     plotter = Plotter(plotter_args, trainer.model)
 
     # set init state
-    fused_direction, normalized_random_direction = plotter.create_random_direction(
+    fused_direction, normalized_direction = plotter.create_random_direction(
         norm='layer')
-    plotter.set_weights(init_state=True, init_direction=[normalized_random_direction])
+    plotter.set_weights(init_state=True, init_direction=normalized_direction)
 
     # plot num_evaluate*fuse_models points in lossland
     start_time = time.time()
     for i in range(plotter.num_evaluate):
-        plotter.set_weights([normalized_random_direction])
+        plotter.set_weights(directions=[normalized_direction])
         avg_loss = trainer.uniform_self_evaluate()
         with open("result.csv", "ab") as f:
             np.savetxt(f, avg_loss, comments="")
