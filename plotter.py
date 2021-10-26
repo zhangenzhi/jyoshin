@@ -24,25 +24,25 @@ class Plotter:
         if directions == None:
             print("None of directions.")
         else:
-            if self.fuse_models == None:
-                if len(directions) == 2:
-                    dx = directions[0]
-                    dy = directions[1]
-                    changes = [self.step[0]*d0 + self.step[1] *
-                               d1 for (d0, d1) in zip(dx, dy)]
-                else:
-                    changes = [d*self.step for d in directions[0]]
+            # if self.fuse_models == None:
+            if len(directions) == 2:
+                dx = directions[0]
+                dy = directions[1]
+                changes = [self.step[0]*d0 + self.step[1] *
+                        d1 for (d0, d1) in zip(dx, dy)]
             else:
-                if len(directions) == 2:
-                    pass
-                else:
-                    fuse_changes = []
-                    for i in range(len(directions[0])):
-                        fuse_step = self.step
-                        for j in range(self.fuse_model):
-                            fuse_changes.append(fuse_step*directions[0][i])
-                            fuse_step += self.step
-                changes = fuse_changes
+                changes = [d*self.step for d in directions[0]]
+            # else:
+            #     if len(directions) == 2:
+            #         pass
+            #     else:
+            #         fuse_changes = []
+            #         for i in range(len(directions[0])):
+            #             fuse_step = self.step
+            #             for j in range(self.fuse_model):
+            #                 fuse_changes.append(fuse_step*directions[0][i])
+            #                 fuse_step += self.step
+            #     changes = fuse_changes
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
@@ -53,21 +53,19 @@ class Plotter:
         if self.fuse_models == None:
             return [tf.random.normal(w.shape) for w in weights]
         else:
-            flag = 0
-            single_random_weights = []
-            fuse_random_direction = []
-            while True:
-                try:
-                    single_random_weights.append(weights[flag*self.fuse_model])
-                    flag += 1
-                except:
-                    break
-
-            single_random_direction = [tf.random.normal(
-                w.shape) for w in single_random_weights]
+            random_direction = []
+            single_random_direction = []
+            for w in weights:
+                dims = list(w.shape)
+                single_random_direction.append(tf.random.normal(shape=dims[1:]))
+            
             for i in self.fuse_model:
-                fuse_random_direction.append(single_random_direction * (i+1) * self.step)
-            return fuse_random_direction
+                fuse_random_direction = []
+                for d in single_random_direction:
+                    fuse_random_direction.append(d * (i+1))
+                random_direction.append(tf.stack(fuse_random_direction))
+
+            return random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
         return [w2 - w1 for (w1, w2) in zip(weights_1, weights_2)]
