@@ -13,19 +13,31 @@ class Plotter:
     def get_weights(self):
         return self.model.trainable_weights
 
-    def set_weights(self, directions=None, step=None):
+    def set_weights(self, directions=None, step=None, fuse_models = None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
         if directions == None:
             print("None of directions.")
         else:
-            if len(directions) == 2:
-                dx = directions[0]
-                dy = directions[1]
-                changes = [step[0]*d0 + step[1]*d1 for (d0, d1) in zip(dx, dy)]
+            if fuse_models == None:
+                if len(directions) == 2:
+                    dx = directions[0]
+                    dy = directions[1]
+                    changes = [step[0]*d0 + step[1]*d1 for (d0, d1) in zip(dx, dy)]
+                else:
+                    changes = [d*step for d in directions[0]]
             else:
-                changes = [d*step for d in directions[0]]
+                if len(directions) == 2:
+                    pass
+                else:
+                    fuse_changes = []
+                    fuse_step = step
+                    for i in range(fuse_models):
+                        fuse_changes.append([d*fuse_step for d in directions[0]])
+                        fuse_step += step
+                changes = tf.stack(fuse_changes)
+                        
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):

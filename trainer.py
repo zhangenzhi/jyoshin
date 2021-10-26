@@ -152,11 +152,11 @@ class Trainer:
         print("Avg loss:", np_avg_loss)
         return np_avg_loss
 
-    @tf.function(experimental_relax_shapes=True)
+    # @tf.function(experimental_relax_shapes=True)
     def evaluate_in_all(self, inputs, labels):
         prediction = self.model(inputs)
-        # import pdb
-        # pdb.set_trace()
+        import pdb
+        pdb.set_trace()
         loss = self.loss(prediction, labels)
         self.metric.update_state(loss)
         avg_loss = self.metric.result()

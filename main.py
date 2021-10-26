@@ -13,7 +13,7 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': None},
+                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 8000},
                     }
 
     trainer = Trainer(trainer_args)
@@ -23,18 +23,20 @@ if __name__ == '__main__':
     # pdb.set_trace()
     trainer.uniform_self_evaluate()
 
-    # plotter = Plotter(trainer.model)
-    # normalized_random_direction = plotter.create_random_direction(norm='layer')
+    plotter = Plotter(trainer.model)
 
-    N = 625*8000
-    # step = 1/1000
+    N = 625
+    fuse_models = trainer_args['model']['fuse_models']
+    step = 1/(1000*fuse_models)
     # # set init state
-    # plotter.set_weights([normalized_random_direction], step=-step*N/2)
+    normalized_random_direction = plotter.create_random_direction(norm='layer')
+    plotter.set_weights([normalized_random_direction], step=-step*N*fuse_models/2)
 
     # # plot N points in lossland
     start_time = time.time()
     for i in range(N):
-    #     plotter.set_weights([normalized_random_direction], step=step)
+        plotter.set_weights([normalized_random_direction],
+                            step=step, fuse_models=fuse_models)
         avg_loss = trainer.uniform_self_evaluate()
     #     with open("result_10000.csv", "ab") as f:
     #         np.savetxt(f, [avg_loss], comments="")
