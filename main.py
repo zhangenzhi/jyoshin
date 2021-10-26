@@ -1,10 +1,11 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from trainer import Trainer
-from plotter import Plotter
-import time
-import numpy as np
 import tensorflow as tf
+import numpy as np
+import time
+from plotter import Plotter
+from trainer import Trainer
+
 
 
 if __name__ == '__main__':
@@ -27,10 +28,11 @@ if __name__ == '__main__':
                     }
     plotter = Plotter(plotter_args, trainer.model)
 
-    # # # # set init state
+    # set init state
     normalized_random_direction = plotter.create_random_direction(norm='layer')
+    plotter.set_weights([normalized_random_direction])
 
-    # # # plot N points in lossland
+    # plot num_evaluate*fuse_models points in lossland
     start_time = time.time()
     for i in range(plotter.num_evaluate):
         plotter.set_weights([normalized_random_direction])

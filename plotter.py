@@ -17,12 +17,17 @@ class Plotter:
     def get_weights(self):
         return self.model.trainable_weights
 
-    def set_weights(self, directions=None):
+    def set_weights(self, directions=None, init_state=False):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
         if directions == None:
             print("None of directions.")
+        elif init_state == True:
+            if len(directions) == 2:
+                pass
+            else:
+                changes = [-d*self.step*self.fuse_models/2 for d in directions[0]]
         else:
             if self.fuse_models == None:
                 if len(directions) == 2:
@@ -36,8 +41,7 @@ class Plotter:
                 if len(directions) == 2:
                     pass
                 else:
-                    changes = [d*self.step *
-                               self.fuse_models for d in directions[0]]
+                    changes = [d*self.step for d in directions[0]]
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
