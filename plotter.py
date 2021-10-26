@@ -32,11 +32,11 @@ class Plotter:
         # Each direction have same shape with trainable weights
         if directions == None:
             print("None of directions.")
-        elif init_state == True:
+        if init_state == True:
             if len(directions) == 2:
                 pass
             else:
-                shift = -self.step*self.fuse_models/2
+                shift = -self.step*self.num_evaluate/2
                 changes = [d*shift for d in directions[0]]
         else:
             if self.fuse_models == None:
