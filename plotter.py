@@ -65,9 +65,7 @@ class Plotter:
         if self.fuse_model == None:
             return [tf.random.normal(w.shape) for w in weights]
         else:
-            import pdb
-            pdb.set_trace()
-            random_direction = [tf.random.normal(w.shape) for w in weights[0]]
+            random_direction = [tf.random.normal(w.shape) for w in weights]
             return random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
