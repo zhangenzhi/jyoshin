@@ -13,7 +13,7 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 100},
+                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 10},
                     }
 
     trainer = Trainer(trainer_args)
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # trainer.uniform_self_evaluate()
 
     plotter_args = {'num_evaluate': 100,
-                    'step': 1/10000,
+                    'step': 1/1000,
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
     plotter = Plotter(plotter_args, trainer.model)
@@ -31,9 +31,9 @@ if __name__ == '__main__':
     fused_direction, normalized_direction = plotter.create_random_direction(
         norm='layer')
     plotter.set_weights(init_state=True, init_directions=normalized_direction)
-    # trainer.uniform_self_evaluate()
-    # import pdb
-    # pdb.set_trace()
+    trainer.uniform_self_evaluate()
+    import pdb
+    pdb.set_trace()
 
     # plot num_evaluate * fuse_models points in lossland
     start_time = time.time()
