@@ -13,7 +13,7 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 6000},
+                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 5000},
                     }
 
     trainer = Trainer(trainer_args)
@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     plotter = Plotter(trainer.model)
 
-    N = 625
+    N = 600
     fuse_models = trainer_args['model']['fuse_models']
     step = 1/(1000*fuse_models)
     # # set init state
