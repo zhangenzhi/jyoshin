@@ -33,13 +33,13 @@ class Plotter:
                 else:
                     fuse_changes = []
                     fuse_step = step
+                    import pdb
+                    pdb.set_trace()
                     for i in range(fuse_models):
                         fuse_changes.append([d*fuse_step for d in directions[0]])
                         fuse_step += step
                 changes = tf.stack(fuse_changes)
                         
-        import pdb
-        pdb.set_trace()
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
             weight.assign_add(change)
