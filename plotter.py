@@ -8,12 +8,24 @@ from trainer import Trainer
 
 
 class Plotter:
-    def __init__(self, model, fuse_models = None):
+    def __init__(self, model, fuse_models=None):
         self.model = model
         self.fuse_model = fuse_models
 
     def get_weights(self):
-        return self.model.trainable_weights
+        if self.fuse_model == None:
+            return self.model.trainable_weights
+        else:
+            weights = []
+            flag = 0
+            while True:
+                try:
+                    weights.append(
+                        self.model.trainable_weights[flag*self.fuse_model])
+                    flag += 1
+                except:
+                    break
+            return weights
 
     def set_weights(self, directions=None, step=None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
@@ -26,7 +38,8 @@ class Plotter:
                 if len(directions) == 2:
                     dx = directions[0]
                     dy = directions[1]
-                    changes = [step[0]*d0 + step[1]*d1 for (d0, d1) in zip(dx, dy)]
+                    changes = [step[0]*d0 + step[1] *
+                               d1 for (d0, d1) in zip(dx, dy)]
                 else:
                     changes = [d*step for d in directions[0]]
             else:
@@ -38,10 +51,11 @@ class Plotter:
                     import pdb
                     pdb.set_trace()
                     for i in range(self.fuse_model):
-                        fuse_changes.append([d*fuse_step for d in directions[0]])
+                        fuse_changes.append(
+                            [d*fuse_step for d in directions[0]])
                         fuse_step += step
                 changes = tf.stack(fuse_changes)
-                        
+
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
             weight.assign_add(change)
