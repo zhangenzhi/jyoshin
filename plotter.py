@@ -41,8 +41,6 @@ class Plotter:
             else:
                 shift = -self.step*self.num_evaluate / 2
                 shift = shift*self.fuse_models if self.fuse_models != None else shift
-                import pdb
-                pdb.set_trace()
                 fused_init_direction = self.fuse_directions(init_directions, init_fuse=True)
                 changes = [d*shift for d in fused_init_direction]
         else:
