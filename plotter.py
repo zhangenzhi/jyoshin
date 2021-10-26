@@ -8,14 +8,16 @@ from trainer import Trainer
 
 
 class Plotter:
-    def __init__(self, model, fuse_models=None):
+    def __init__(self, plotter_args, model):
+        self.step = plotter_args['step']
+        self.num_evaluate = plotter_args['num_evaluate']
+        self.fuse_model = plotter_args['fuse_models']
         self.model = model
-        self.fuse_model = fuse_models
 
     def get_weights(self):
         return self.model.trainable_weights
 
-    def set_weights(self, directions=None, step=None):
+    def set_weights(self, directions=None):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
@@ -26,20 +28,20 @@ class Plotter:
                 if len(directions) == 2:
                     dx = directions[0]
                     dy = directions[1]
-                    changes = [step[0]*d0 + step[1] *
+                    changes = [self.step[0]*d0 + self.step[1] *
                                d1 for (d0, d1) in zip(dx, dy)]
                 else:
-                    changes = [d*step for d in directions[0]]
+                    changes = [d*self.step for d in directions[0]]
             else:
                 if len(directions) == 2:
                     pass
                 else:
                     fuse_changes = []
                     for i in range(len(directions[0])):
-                        fuse_step = step
+                        fuse_step = self.step
                         for j in range(self.fuse_model):
                             fuse_changes.append(fuse_step*directions[0][i])
-                            fuse_step += step
+                            fuse_step += self.step
                 changes = fuse_changes
 
         weights = self.get_weights()
