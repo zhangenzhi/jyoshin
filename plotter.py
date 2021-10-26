@@ -36,7 +36,8 @@ class Plotter:
             if len(directions) == 2:
                 pass
             else:
-                changes = [d*-self.step*self.fuse_models/2 for d in directions[0]]
+                shift = -self.step*self.fuse_models/2
+                changes = [d*shift for d in directions[0]]
         else:
             if self.fuse_models == None:
                 if len(directions) == 2:
