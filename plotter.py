@@ -39,9 +39,6 @@ class Plotter:
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
-        if directions == None:
-            print("None of directions.")
-            return
 
         if init_state == True:
             if len(directions) == 2:
