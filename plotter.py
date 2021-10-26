@@ -41,7 +41,7 @@ class Plotter:
         # Each direction have same shape with trainable weights
 
         if init_state == True:
-            if len(directions) == 2:
+            if len(init_direction) == 2:
                 pass
             else:
                 shift = -self.step*self.num_evaluate / 2
