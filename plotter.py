@@ -36,7 +36,7 @@ class Plotter:
             if len(directions) == 2:
                 pass
             else:
-                shift = -self.step*self.num_evaluate/2
+                shift = -self.step*self.num_evaluate*self.fuse_models/2
                 changes = [d*shift for d in directions[0]]
         else:
             if self.fuse_models == None:
@@ -51,7 +51,7 @@ class Plotter:
                 if len(directions) == 2:
                     pass
                 else:
-                    changes = [d*self.step for d in directions[0]]
+                    changes = [d*self.step*self.fuse_models for d in directions[0]]
 
         weights = self.get_weights()
         for (weight, change) in zip(weights, changes):
