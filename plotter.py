@@ -36,12 +36,12 @@ class Plotter:
         # Each direction have same shape with trainable weights
 
         if init_state == True:
-            if len(init_direction) == 2:
+            if len(init_directions) == 2:
                 pass
             else:
                 shift = -self.step*self.num_evaluate / 2
                 shift = shift*self.fuse_models if self.fuse_models != None else shift
-                fused_init_direction = self.fuse_directions(init_directions,init_fuse=True)
+                fused_init_direction = self.fuse_directions(init_directions, init_fuse=True)
                 changes = [d*shift for d in fused_init_direction]
         else:
             if self.fuse_models == None:
