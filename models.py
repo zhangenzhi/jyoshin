@@ -84,7 +84,8 @@ class DNN(tf.keras.Model):
             x = act(x)
         if self.trainable_variables == []:
             for layer in self.fc_layers:
-                self.trainable_variables.append(layer.fuse_w, layer.fuse_b)
+                self.trainable_variables.append(layer.fuse_w)
+                self.trainable_variables.append(layer.fuse_b)
         return x
 
 
