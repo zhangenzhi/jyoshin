@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # trainer.uniform_self_evaluate()
 
     plotter_args = {'num_evaluate': 2000,
-                    'step': 1/6000000,
+                    'step': 1/60000000,
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
     plotter = Plotter(plotter_args, trainer.model)
@@ -32,8 +32,6 @@ if __name__ == '__main__':
         norm='layer')
     plotter.set_weights(init_state=True, init_directions=normalized_direction)
     trainer.uniform_self_evaluate()
-    # import pdb
-    # pdb.set_trace()
 
     # plot num_evaluate * fuse_models points in lossland
     start_time = time.time()

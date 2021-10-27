@@ -40,14 +40,16 @@ class Plotter:
             else:
                 shift = -self.step*self.num_evaluate / 2
                 shift = shift*self.fuse_models if self.fuse_models != None else shift
-                init_base_direction = self.fuse_directions(init_directions)
-                init_shift_direction = self.fuse_directions(init_directions, init_fuse=True)
-                changes_base = [d*shift for d in init_base_direction]
-                changes_shift = [d*self.step for d in init_shift_direction]
-                changes = []
-                for (shift, base) in zip(changes_shift, changes_base):
-                    changes.append(shift+base)
-
+                if self.fuse_models != None:
+                    init_base_direction = self.fuse_directions(init_directions)
+                    init_shift_direction = self.fuse_directions(init_directions, init_fuse=True)
+                    changes_base = [d*shift for d in init_base_direction]
+                    changes_shift = [d*self.step for d in init_shift_direction]
+                    changes = []
+                    for (shift, base) in zip(changes_shift, changes_base):
+                        changes.append(shift+base)
+                else:
+                    changes = [d * shift  for d in init_directions]
         else:
             if self.fuse_models == None:
                 if len(directions) == 2:
@@ -117,6 +119,7 @@ class Plotter:
             else:
                 normalized_direction.append(
                     self.normalize_direction(d, w, norm))
+        fused_normalized_direction = []
         if self.fuse_models != None:
             fused_normalized_direction = self.fuse_directions(
                 normalized_direction)
