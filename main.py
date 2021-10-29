@@ -21,20 +21,20 @@ if __name__ == '__main__':
     trainer.model.summary()
     # trainer.uniform_self_evaluate()
 
-    plotter_args = {'num_evaluate': 10,
-                    'step': 1/10,
-                    'fuse_models': trainer_args['model']['fuse_models'],
-                    }
-    plotter = Plotter(plotter_args, trainer.model)
-
-    # 1d-loss
-    plotter.plot_1d_loss(trainer=trainer)
-
-    # plotter_args = {'num_evaluate': [1e3, 1e3],
-    #                 'step': [1e-3, 1e-3],
+    # plotter_args = {'num_evaluate': 10,
+    #                 'step': 1/10,
     #                 'fuse_models': trainer_args['model']['fuse_models'],
     #                 }
     # plotter = Plotter(plotter_args, trainer.model)
 
-    # # 2d-loss
-    # plotter.plot_2d_loss(trainer=trainer)
+    # # 1d-loss
+    # plotter.plot_1d_loss(trainer=trainer)
+
+    plotter_args = {'num_evaluate': [1000, 1000],
+                    'step': [1e-3, 1e-3],
+                    'fuse_models': trainer_args['model']['fuse_models'],
+                    }
+    plotter = Plotter(plotter_args, trainer.model)
+
+    # 2d-loss
+    plotter.plot_2d_loss(trainer=trainer)

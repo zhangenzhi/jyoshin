@@ -45,13 +45,16 @@ class Plotter:
             if len(directions) == 2:
                 dx = directions[0]
                 dy = directions[1]
-                changes = [step*d0 + step *
+                changes = [step[0] * d0 + step[1] *
                            d1 for (d0, d1) in zip(dx, dy)]
             else:
-                changes = [d*step for d in directions[0]]
+                changes = [d * step for d in directions[0]]
         else:
             if len(directions) == 2:
-                pass
+                dx = directions[0]
+                dy = directions[1]
+                changes = [
+                    self.fuse_models * (step[0] * d0 + step[1] * d1) for (d0, d1) in zip(dx, dy)]
             else:
                 changes = [d * step *
                            self.fuse_models for d in directions[0]]
