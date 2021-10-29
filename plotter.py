@@ -1,5 +1,6 @@
 import os
 import h5py
+import time
 import numpy as np
 import tensorflow as tf
 from tensorflow._api.v2 import random
@@ -144,5 +145,26 @@ class Plotter:
     def load_directions(self):
         pass
 
-    def cal_loss_surf(self, surf_file):
-        pass
+    def plot_1d_loss(self, trainer, save_csv = "./result.csv"):
+        # set init state
+        fused_direction, normalized_direction = self.create_random_direction(
+            norm='layer')
+        self.set_weights(init_state=True, init_directions=normalized_direction)
+        trainer.uniform_self_evaluate()
+
+        # plot num_evaluate * fuse_models points in lossland
+        start_time = time.time()
+        for i in range(self.num_evaluate):
+            self.set_weights(directions=[fused_direction])
+            avg_loss = trainer.uniform_self_evaluate()
+            with open(save_csv, "ab") as f:
+                np.savetxt(f, avg_loss, comments="")
+        end_time = time.time()
+        print("total time {}".format(end_time-start_time))
+
+    def plot_2d_loss(self, trainer, save_csv = "./result.csv"):
+        fuse_direction_x, normalized_direction_x = self.create_random_direction(
+            norm='layer')
+        fuse_direction_y, normalized_direction_y = self.create_random_direction(
+            norm='layer')
+        
