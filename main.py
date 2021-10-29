@@ -13,7 +13,7 @@ if __name__ == '__main__':
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
                     'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 1000},
+                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 1},
                     }
 
     trainer = Trainer(trainer_args)
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # # 1d-loss
     # plotter.plot_1d_loss(trainer=trainer)
 
-    plotter_args = {'num_evaluate': [1000, 1],
+    plotter_args = {'num_evaluate': [1000, 1000],
                     'step': [1e-3, 1e-3],
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
