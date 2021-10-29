@@ -19,8 +19,6 @@ def generate_label_for_data(model, dataset, filename='./labeled.csv'):
         x['x'] = tf.reshape(x['x'], (-1, 1))
         y = model(x['x'])
         z = tf.concat([x['x'], y], axis=1).numpy()
-        # import pdb
-        # pdb.set_trace()
         if isinstance(labeled_data, type(None)):
             labeled_data = z
         else:
