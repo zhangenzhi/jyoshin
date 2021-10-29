@@ -169,9 +169,9 @@ class Plotter:
 
         for i in range(self.num_evaluate[0]):
             for j in range(self.num_evaluate[1]):
-                x_shift = self.fuse_model * \
+                x_shift = self.fuse_models * \
                     self.step[0]*(i-self.num_evaluate[0]/2)
-                y_shift = self.fuse_model * \
+                y_shift = self.fuse_models * \
                     self.step[1]*(j-self.num_evaluate[1]/2)
                 step = [x_shift, y_shift]
                 self.set_weights(directions=directions, step=step)
