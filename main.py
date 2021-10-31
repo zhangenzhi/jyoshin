@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # # 1d-loss
     # plotter.plot_1d_loss(trainer=trainer)
 
-    plotter_args = {'num_evaluate': [10, 1],
+    plotter_args = {'num_evaluate': [1000, 1],
                     'step': [1e-3, 1e-3],
                     'fuse_models': trainer_args['model']['fuse_models'],
                     }
