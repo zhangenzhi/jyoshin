@@ -32,7 +32,7 @@ class Plotter:
             base_direction = []
             for i in range(self.fuse_models):
                 base_direction.append(d)
-                shift_direction.append(d * (i*1))
+                shift_direction.append(d * (i+1))
             shift_directions.append(tf.stack(shift_direction))
             base_directions.append(tf.stack(base_direction))
         return base_directions, shift_directions
@@ -46,8 +46,11 @@ class Plotter:
             # just fuse models in y direction.
             dx = directions[0]
             dy = directions[1]
-            changes = [step[0] * d0 + self.step[1] * d2 + step[1] * d1
-                       for (d0, d1, d2) in zip(dx[0], dy[0], dy[1])]
+            x_changes = [step[0] * d for d in dx[0]]
+            # y_changes = [self.step[1] * d2 + step[1] * (self.fuse_models-1)
+            #              * d1 for (d1, d2) in zip(dy[0], dy[1])]
+            y_changes = [self.step[1] * d2 + step[1] * d1 * self.fuse_models for (d1, d2) in zip(dy[0], dy[1])]
+            changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
             dx = directions[0]
             changes = [d * step *
@@ -134,7 +137,7 @@ class Plotter:
 
     def plot_1d_loss(self, trainer, save_csv="./result.csv"):
         # set init state
-        fused_direction, _ = self.create_random_direction(
+        fused_direction = self.create_random_direction(
             norm='layer')
         directions = fused_direction
 
@@ -164,7 +167,7 @@ class Plotter:
         for i in range(self.num_evaluate[0]):
             for j in range(self.num_evaluate[1]):
                 x_shift_step = self.step[0]*(i-self.num_evaluate[0]/2)
-                y_shift_step = self.step[1]*(j-self.num_evaluate[1]/2) * self.fuse_models
+                y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
                 step = [x_shift_step, y_shift_step]
                 self.set_weights(directions=directions, step=step)
                 avg_loss = trainer.uniform_self_evaluate()
