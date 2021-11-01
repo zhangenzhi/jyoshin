@@ -33,11 +33,11 @@ def read_data_from_csv(filename='uniform.csv',
 
 
 if __name__ == "__main__":
-    # data = uniform_generator(range=[-1.0, 1.0])
-    # print(data)
-    # save_data_to_csv(data=data)
+    data = uniform_generator(range=[-1.0, 1.0])
+    print(data)
+    save_data_to_csv(data=data)
 
-    dataset = read_data_from_csv()
-    ds = iter(dataset)
-    inputs = ds.get_next()
-    inputs['x']
+    # dataset = read_data_from_csv()
+    # ds = iter(dataset)
+    # inputs = ds.get_next()
+    # inputs['x']
