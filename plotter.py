@@ -169,8 +169,6 @@ class Plotter:
                 x_shift_step = self.step[0]*(i-self.num_evaluate[0]/2)
                 y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
                 step = [x_shift_step, y_shift_step]
-                import pdb
-                pdb.set_trace()
                 self.set_weights(directions=directions, step=step)
                 avg_loss = self.trainer.uniform_self_evaluate()
                 with open(save_csv, "ab") as f:
