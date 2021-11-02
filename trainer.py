@@ -3,6 +3,7 @@ import tensorflow as tf
 
 from models import DNN
 from data_generator import read_data_from_csv
+from utils import print_error
 
 
 class Trainer:
@@ -15,6 +16,8 @@ class Trainer:
         self.metric = self._build_metric(self.args['metric'])
         self.optimizer = self._build_optimizer(self.args['optimizer'])
         self.model = self._build_model(self.args['model'])
+        
+        self.just_build()
 
     def _build_envs(self):
         physical_devices = tf.config.list_physical_devices('GPU')
@@ -45,6 +48,15 @@ class Trainer:
         else:
             model = None
         return model
+        
+    def _just_build(self):
+        try:
+            iter_ds = iter(self.dataset)
+            x = iter_ds.get_next()
+            x['x'] = tf.reshape(x['x'], (-1, 1))
+            self.model(x['x'])
+        except:
+            print_error("build model with variables failed.")
 
     def _build_metric(self, metric_args):
         metric = tf.keras.metrics.get(metric_args['name'])
@@ -82,12 +94,6 @@ class Trainer:
     def valid_step(self, x):
         inputs = x['x']
         prediction = self.model(inputs)
-
-    def just_build(self):
-        iter_ds = iter(self.dataset)
-        x = iter_ds.get_next()
-        x['x'] = tf.reshape(x['x'], (-1, 1))
-        self.model(x['x'])
 
     def run(self):
         iter_ds = iter(self.dataset)
