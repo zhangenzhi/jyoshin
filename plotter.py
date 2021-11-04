@@ -190,4 +190,4 @@ class Plotter:
         except Exception as e:
             print_error("Task broken.")
             print(e)
-            exit(1)
+            # exit(1)
