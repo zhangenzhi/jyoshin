@@ -1,0 +1,1 @@
+python main.py --config="scripts/configs/1d_uniform_dnn.yaml"
