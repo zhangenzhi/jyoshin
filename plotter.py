@@ -187,6 +187,7 @@ class Plotter:
                 self.plot_2d_loss(save_csv=self.args['save_csv'])
             else:
                 print("No such task.")
-        except:
-            print("Task broken.")
+        except Exception as e:
+            print_error("Task broken.")
+            print(e)
             exit(1)
