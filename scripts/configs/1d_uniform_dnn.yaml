@@ -15,7 +15,7 @@ Trainer:
     name: 'DNN'
     units: [64,16,1]
     activations: [tanh,tanh,tanh]
-    fuse_models: 1000
+    fuse_models: 100
 
 Plotter:
   task: "1d"
