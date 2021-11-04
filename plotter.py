@@ -49,7 +49,8 @@ class Plotter:
             x_changes = [step[0] * d for d in dx[0]]
             # y_changes = [self.step[1] * d2 + step[1] * (self.fuse_models-1)
             #              * d1 for (d1, d2) in zip(dy[0], dy[1])]
-            y_changes = [self.step[1] * d2 + step[1] * d1 * self.fuse_models for (d1, d2) in zip(dy[0], dy[1])]
+            y_changes = [self.step[1] * d2 + step[1] * d1 *
+                         self.fuse_models for (d1, d2) in zip(dy[0], dy[1])]
             changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
             dx = directions[0]
@@ -176,7 +177,7 @@ class Plotter:
 
         end_time = time.time()
         print("total time {}".format(end_time-start_time))
-    
+
     def run(self):
 
         try:
@@ -184,8 +185,8 @@ class Plotter:
                 self.plot_1d_loss(save_csv=self.args['save_csv'])
             elif self.args["task"] == "2d":
                 self.plot_2d_loss(save_csv=self.args['save_csv'])
+            else:
+                print("No such task.")
         except:
-            print("No such task.")
+            print("Task broken.")
             exit(1)
-            
-    
