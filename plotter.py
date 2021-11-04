@@ -53,11 +53,9 @@ class Plotter:
                          self.fuse_models for (d1, d2) in zip(dy[0], dy[1])]
             changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
-            import pdb
-            pdb.set_trace()
             dx = directions[0]
             changes = [d * step *
-                       self.fuse_models for d in dx]
+                       self.fuse_models for d in dx[1]]
 
         init_weights = self.get_init_weights()
         trainable_variables = self.get_weights()
