@@ -15,10 +15,10 @@ Trainer:
     name: 'DNN'
     units: [64,16,1]
     activations: [tanh,tanh,tanh]
-    fuse_models: 5000
+    fuse_models: 4000
 
 Plotter:
   task: "2d"
-  num_evaluate: [5000,1]
+  num_evaluate: [4000,1]
   step: [1e-4, 1e-4]
   save_csv: ./dataset/result/2d_uniform_dnn_5k5k.csv
