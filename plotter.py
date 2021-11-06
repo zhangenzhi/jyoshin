@@ -49,8 +49,8 @@ class Plotter:
             x_changes = [step[0] * d for d in dx[0]]
             # y_changes = [self.step[1] * d2 + step[1] * (self.fuse_models-1)
             #              * d1 for (d1, d2) in zip(dy[0], dy[1])]
-            y_changes = [self.step[1] * d2 + step[1] * d1 *
-                         self.fuse_models for (d1, d2) in zip(dy[0], dy[1])]
+            y_changes = [step[1] * d1 * self.fuse_models + self.step[1] * d2
+                         for (d1, d2) in zip(dy[0], dy[1])]
             changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
             dx = directions[0]
