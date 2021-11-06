@@ -194,9 +194,9 @@ class Plotter:
 
         try:
             if self.args["task"] == "1d":
-                self.plot_1d_loss(save_csv=self.args['save_file'])
+                self.plot_1d_loss(save_file=self.args['save_file'])
             elif self.args["task"] == "2d":
-                self.plot_2d_loss(save_csv=self.args['save_file'])
+                self.plot_2d_loss(save_file=self.args['save_file'])
             else:
                 print("No such task.")
         except Exception as e:
