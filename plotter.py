@@ -136,11 +136,17 @@ class Plotter:
     def load_directions(self):
         pass
 
-    def plot_1d_loss(self, save_csv="./result.csv"):
+    def plot_1d_loss(self, save_file="./result/1d"):
         # set init state
         fused_direction = self.create_random_direction(
             norm='layer')
         directions = fused_direction
+
+        if os.path.exists(save_file):
+            path_to_csv = os.path.join(save_file,'result.csv')
+        else:
+            os.makedirs(save_file)
+            path_to_csv = os.path.join(save_file,'result.csv')
 
         # plot num_evaluate * fuse_models points in lossland
         start_time = time.time()
@@ -148,19 +154,25 @@ class Plotter:
             step = self.step*(i-self.num_evaluate/2)
             self.set_weights(directions=[directions], step=step)
             avg_loss = self.trainer.uniform_self_evaluate()
-            with open(save_csv, "ab") as f:
+            with open(path_to_csv, "ab") as f:
                 np.savetxt(f, avg_loss, comments="")
         end_time = time.time()
 
         print("total time {}".format(end_time-start_time))
 
-    def plot_2d_loss(self, save_csv="./result.csv"):
+    def plot_2d_loss(self, save_file="./result/2d"):
         # random direction x,y
         direction_x = self.create_random_direction(
             norm='layer')
         direction_y = self.create_random_direction(
             norm='layer')
         directions = [direction_x, direction_y]
+
+        if os.path.exists(save_file):
+            path_to_csv = os.path.join(save_file,'result.csv')
+        else:
+            os.makedirs(save_file)
+            path_to_csv = os.path.join(save_file,'result.csv')
 
         # plot num_evaluate * fuse_models points in lossland
         start_time = time.time()
@@ -172,7 +184,7 @@ class Plotter:
                 step = [x_shift_step, y_shift_step]
                 self.set_weights(directions=directions, step=step)
                 avg_loss = self.trainer.uniform_self_evaluate()
-                with open(save_csv, "ab") as f:
+                with open(path_to_csv, "ab") as f:
                     np.savetxt(f, avg_loss, comments="")
 
         end_time = time.time()
@@ -182,9 +194,9 @@ class Plotter:
 
         try:
             if self.args["task"] == "1d":
-                self.plot_1d_loss(save_csv=self.args['save_csv'])
+                self.plot_1d_loss(save_csv=self.args['save_file'])
             elif self.args["task"] == "2d":
-                self.plot_2d_loss(save_csv=self.args['save_csv'])
+                self.plot_2d_loss(save_csv=self.args['save_file'])
             else:
                 print("No such task.")
         except Exception as e:
