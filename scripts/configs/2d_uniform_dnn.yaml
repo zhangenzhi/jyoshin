@@ -21,4 +21,4 @@ Plotter:
   task: "2d"
   num_evaluate: [1000,1]
   step: [1e-4, 1e-4]
-  save_csv: ./dataset/result/2d_uniform_dnn_1k1k.csv
+  save_file: ./dataset/result/2d_uniform_dnn_1k1k
