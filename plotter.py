@@ -54,8 +54,8 @@ class Plotter:
             changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
             dx = directions[0]
-            changes = [d * step *
-                       self.fuse_models for d in dx[1]]
+            changes = [d1 * step *
+                       self.fuse_models + d2 * self.step for (d1, d2) in zip(dx[0], dx[1])]
 
         init_weights = self.get_init_weights()
         trainable_variables = self.get_weights()
@@ -167,7 +167,7 @@ class Plotter:
 
         for i in range(self.num_evaluate[0]):
             for j in range(self.num_evaluate[1]):
-                x_shift_step = self.step[0]*(i-self.num_evaluate[0]/2)
+                x_shift_step = self.step[0] * (i-self.num_evaluate[0]/2)
                 y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
                 step = [x_shift_step, y_shift_step]
                 self.set_weights(directions=directions, step=step)
@@ -190,4 +190,4 @@ class Plotter:
         except Exception as e:
             print_error("Task broken.")
             print(e)
-            # exit(1)
+            exit(1)
