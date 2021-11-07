@@ -118,7 +118,7 @@ class Plotter:
                 normalized_direction)
         return fused_normalized_direction
 
-    def create_random_direction(self, ignore='bias_bn', norm='filter'):
+    def create_random_direction(self, name="x", ignore='bias_bn', norm='filter'):
         weights = self.get_weights()  # a list of parameters.
 
         if not self.args["load_directions"]:
@@ -126,7 +126,7 @@ class Plotter:
             direction = self.normalize_directions_for_weights(
                 raw_direction, weights, norm, ignore)
             if self.args["save_directions"]:
-                self.save_directions(raw_direction)
+                self.save_directions(raw_direction, filename=name+".hdf5")
         else:
             raw_direction = self.load_directions(
                 self.args["path_to_direction"])
@@ -135,23 +135,13 @@ class Plotter:
 
         return direction
 
-    def save_directions(self, directions, filename="directions.hdf5"):
+    def save_directions(self, directions, filename="x.hdf5"):
         save_to_hdf5 = os.path.join(self.args["save_file"], filename)
         with h5py.File(save_to_hdf5, "w") as f:
-            if len(directions) == 2:
-                grp_x = f.create_group("directions_x")
-                for i, w in enumerate(directions[0]):
-                    grp_x.create_dataset(str(i), data=w.numpy())
-
-                grp_y = f.create_group("directions_y")
-                for i, w in enumerate(directions[1]):
-                    grp_y.create_dataset(str(i), data=w.numpy())
-
-            else:
-                pdb.set_trace()
-                grp = f.create_group("directions")
-                for i, w in enumerate(directions):
-                    grp.create_dataset(str(i), data=w.numpy())
+            pdb.set_trace()
+            grp = f.create_group("directions")
+            for i, w in enumerate(directions):
+                grp.create_dataset(str(i), data=w.numpy())
 
     def load_directions(self, path_to_direction):
         pass
@@ -166,7 +156,7 @@ class Plotter:
 
         # set init state
         fused_direction = self.create_random_direction(
-            norm='layer')
+            norm='layer', name='x')
         directions = fused_direction
 
         # plot num_evaluate * fuse_models points in lossland
@@ -191,9 +181,9 @@ class Plotter:
 
         # random direction x,y
         direction_x = self.create_random_direction(
-            norm='layer')
+            norm='layer', name='x')
         direction_y = self.create_random_direction(
-            norm='layer')
+            norm='layer', name='y')
         directions = [direction_x, direction_y]
 
         # plot num_evaluate * fuse_models points in lossland
