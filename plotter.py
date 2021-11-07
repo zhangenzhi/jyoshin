@@ -141,17 +141,17 @@ class Plotter:
             if len(directions) == 2:
                 grp_x = f.create_group("directions_x")
                 for i, w in enumerate(directions[0]):
-                    grp_x.create_dataset(str(i), w.numpy())
+                    grp_x.create_dataset(str(i), data=w.numpy())
 
                 grp_y = f.create_group("directions_y")
                 for i, w in enumerate(directions[1]):
-                    grp_y.create_dataset(str(i), w.numpy())
+                    grp_y.create_dataset(str(i), data=w.numpy())
 
             else:
                 pdb.set_trace()
                 grp = f.create_group("directions")
                 for i, w in enumerate(directions):
-                    grp.create_dataset(str(i), w.numpy())
+                    grp.create_dataset(str(i), data=w.numpy())
 
     def load_directions(self, path_to_direction):
         pass
