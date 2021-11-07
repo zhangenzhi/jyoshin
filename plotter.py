@@ -1,4 +1,5 @@
 import os
+import pdb
 import h5py
 import time
 import numpy as np
@@ -117,23 +118,42 @@ class Plotter:
                 normalized_direction)
         return fused_normalized_direction
 
-    def create_target_direction(self):
-        pass
-
     def create_random_direction(self, ignore='bias_bn', norm='filter'):
         weights = self.get_weights()  # a list of parameters.
-        direction = self.get_random_weights(weights)
-        direction = self.normalize_directions_for_weights(
-            direction, weights, norm, ignore)
+
+        if not self.args["load_directions"]:
+            raw_direction = self.get_random_weights(weights)
+            direction = self.normalize_directions_for_weights(
+                raw_direction, weights, norm, ignore)
+            if self.args["save_directions"]:
+                self.save_directions(raw_direction)
+        else:
+            raw_direction = self.load_directions(
+                self.args["path_to_direction"])
+            direction = self.normalize_directions_for_weights(
+                raw_direction, weights, norm, ignore)
+
         return direction
 
-    def setup_direction(self):
-        pass
+    def save_directions(self, directions, filename="directions.hdf5"):
+        save_to_hdf5 = os.path.join(self.args["save_file"], filename)
+        with h5py.File(save_to_hdf5, "w") as f:
+            if len(directions) == 2:
+                grp_x = f.create_group("directions_x")
+                for i, w in enumerate(directions[0]):
+                    grp_x.create_dataset(str(i), w.numpy())
 
-    def name_direction_file(self):
-        pass
+                grp_y = f.create_group("directions_y")
+                for i, w in enumerate(directions[1]):
+                    grp_y.create_dataset(str(i), w.numpy())
 
-    def load_directions(self):
+            else:
+                pdb.set_trace()
+                grp = f.create_group("directions")
+                for i, w in enumerate(directions):
+                    grp.create_dataset(str(i), w.numpy())
+
+    def load_directions(self, path_to_direction):
         pass
 
     def plot_1d_loss(self, save_file="./result/1d"):
@@ -143,10 +163,10 @@ class Plotter:
         directions = fused_direction
 
         if os.path.exists(save_file):
-            path_to_csv = os.path.join(save_file,'result.csv')
+            path_to_csv = os.path.join(save_file, 'result.csv')
         else:
             os.makedirs(save_file)
-            path_to_csv = os.path.join(save_file,'result.csv')
+            path_to_csv = os.path.join(save_file, 'result.csv')
 
         # plot num_evaluate * fuse_models points in lossland
         start_time = time.time()
@@ -168,11 +188,11 @@ class Plotter:
             norm='layer')
         directions = [direction_x, direction_y]
 
-        if os.path.exists(save_file):
-            path_to_csv = os.path.join(save_file,'result.csv')
+        if not os.path.exists(save_file):
+            path_to_csv = os.path.join(save_file, 'result.csv')
         else:
             os.makedirs(save_file)
-            path_to_csv = os.path.join(save_file,'result.csv')
+            path_to_csv = os.path.join(save_file, 'result.csv')
 
         # plot num_evaluate * fuse_models points in lossland
         start_time = time.time()

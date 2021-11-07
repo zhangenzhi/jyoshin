@@ -21,5 +21,6 @@ Plotter:
   task: "1d"
   num_evaluate: 10
   step: 1e-3
-  save_direction: True
+  save_directions: True
+  load_directions: False
   save_file: ./dataset/result/1d_uniform_dnn_1k
