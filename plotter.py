@@ -157,16 +157,17 @@ class Plotter:
         pass
 
     def plot_1d_loss(self, save_file="./result/1d"):
-        # set init state
-        fused_direction = self.create_random_direction(
-            norm='layer')
-        directions = fused_direction
-
+        # prepare dirs
         if os.path.exists(save_file):
             path_to_csv = os.path.join(save_file, 'result.csv')
         else:
             os.makedirs(save_file)
             path_to_csv = os.path.join(save_file, 'result.csv')
+
+        # set init state
+        fused_direction = self.create_random_direction(
+            norm='layer')
+        directions = fused_direction
 
         # plot num_evaluate * fuse_models points in lossland
         start_time = time.time()
@@ -181,18 +182,19 @@ class Plotter:
         print("total time {}".format(end_time-start_time))
 
     def plot_2d_loss(self, save_file="./result/2d"):
+        # prepare dirs
+        if os.path.exists(save_file):
+            path_to_csv = os.path.join(save_file, 'result.csv')
+        else:
+            os.makedirs(save_file)
+            path_to_csv = os.path.join(save_file, 'result.csv')
+
         # random direction x,y
         direction_x = self.create_random_direction(
             norm='layer')
         direction_y = self.create_random_direction(
             norm='layer')
         directions = [direction_x, direction_y]
-
-        if not os.path.exists(save_file):
-            path_to_csv = os.path.join(save_file, 'result.csv')
-        else:
-            os.makedirs(save_file)
-            path_to_csv = os.path.join(save_file, 'result.csv')
 
         # plot num_evaluate * fuse_models points in lossland
         start_time = time.time()
