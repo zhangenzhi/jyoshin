@@ -138,7 +138,6 @@ class Plotter:
     def save_directions(self, directions, filename="x.hdf5"):
         save_to_hdf5 = os.path.join(self.args["save_file"], filename)
         with h5py.File(save_to_hdf5, "w") as f:
-            pdb.set_trace()
             grp = f.create_group("directions")
             for i, w in enumerate(directions):
                 grp.create_dataset(str(i), data=w.numpy())
