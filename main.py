@@ -1,10 +1,10 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 from plotter import Plotter
 from trainer import Trainer
-import os
 import argparse
 from utils import *
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 if __name__ == '__main__':
