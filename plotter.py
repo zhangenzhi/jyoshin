@@ -149,7 +149,7 @@ class Plotter:
         with h5py.File(load_from_hdf5, "r") as f:
             d = f["directions"]
             for key in d.keys():
-                directions.append(d[key][:])
+                directions.append(tf.convert_to_tensor(d[key][:]))
         return directions
 
     def plot_1d_loss(self, save_file="./result/1d"):
