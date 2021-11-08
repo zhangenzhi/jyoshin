@@ -129,7 +129,7 @@ class Plotter:
                 self.save_directions(raw_direction, filename=name+".hdf5")
         else:
             raw_direction = self.load_directions(
-                self.args["path_to_direction"])
+                path_to_direction=self.args["save_file"], filename=name, )
             direction = self.normalize_directions_for_weights(
                 raw_direction, weights, norm, ignore)
 
@@ -142,8 +142,15 @@ class Plotter:
             for i, w in enumerate(directions):
                 grp.create_dataset(str(i), data=w.numpy())
 
-    def load_directions(self, path_to_direction):
-        pass
+    def load_directions(self, path_to_direction, filename):
+        load_from_hdf5 = os.path.join(path_to_direction, filename)
+        directions = []
+        pdb.set_trace()
+        with h5py.File(load_from_hdf5, "r") as f:
+            for key in f.keys:
+                d = f[key]
+                directions.append(tf.convert_to_tensor(d[1]))
+        return directions
 
     def plot_1d_loss(self, save_file="./result/1d"):
         # prepare dirs
