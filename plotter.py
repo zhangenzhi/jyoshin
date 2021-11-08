@@ -145,7 +145,6 @@ class Plotter:
     def load_directions(self, path_to_direction, filename="x.hdf5"):
         load_from_hdf5 = os.path.join(path_to_direction, filename)
         directions = []
-        # pdb.set_trace()
         with h5py.File(load_from_hdf5, "r") as f:
             d = f["directions"]
             for key in d.keys():
