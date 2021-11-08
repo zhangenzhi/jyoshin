@@ -147,9 +147,9 @@ class Plotter:
         directions = []
         pdb.set_trace()
         with h5py.File(load_from_hdf5, "r") as f:
-            for key in f.keys:
-                d = f[key]
-                directions.append(tf.convert_to_tensor(d[1]))
+            d = f["directions"]
+            for key in d.keys():
+                directions.append(d[key][:])
         return directions
 
     def plot_1d_loss(self, save_file="./result/1d"):
