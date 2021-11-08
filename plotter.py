@@ -129,7 +129,7 @@ class Plotter:
                 self.save_directions(raw_direction, filename=name+".hdf5")
         else:
             raw_direction = self.load_directions(
-                path_to_direction=self.args["save_file"], filename=name, )
+                path_to_direction=self.args["save_file"], filename=name+".hdf5")
             direction = self.normalize_directions_for_weights(
                 raw_direction, weights, norm, ignore)
 
@@ -142,7 +142,7 @@ class Plotter:
             for i, w in enumerate(directions):
                 grp.create_dataset(str(i), data=w.numpy())
 
-    def load_directions(self, path_to_direction, filename):
+    def load_directions(self, path_to_direction, filename="x.hdf5"):
         load_from_hdf5 = os.path.join(path_to_direction, filename)
         directions = []
         pdb.set_trace()
