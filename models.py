@@ -60,6 +60,7 @@ class DNN(tf.keras.Model):
         self.units = units
         self.activations = activations
         self.fuse_models = fuse_models
+        self.flatten = tf.keras.layers.Flatten()
         self.fc_layers = self._build_fc()
         self.fc_act = self._build_act()
 
@@ -77,6 +78,7 @@ class DNN(tf.keras.Model):
 
     def call(self, inputs):
         x = inputs
+        x = self.flatten(x)
         for layer, act in zip(self.fc_layers, self.fc_act):
             x = layer(x)
             x = act(x)

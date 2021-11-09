@@ -7,7 +7,7 @@ Trainer:
     name: 'SGD'
     learning_rate: 0.001
   dataset:
-    name: 'uniform'
+    name: 'cifar10'
     batch_size: 100
     epoch: 1
     path_to_data: 'dataset/random/uniform/labeled.csv'
@@ -15,12 +15,12 @@ Trainer:
     name: 'DNN'
     units: [64,16,1]
     activations: [tanh,tanh,tanh]
-    fuse_models: 100
+    fuse_models: 1
 
 Plotter:
   task: "1d"
-  num_evaluate: 10
+  num_evaluate: 100
   step: 1e-3
   save_directions: False
   load_directions: False
-  save_file: ./dataset/result/1d_uniform_dnn_1k
+  save_file: ./dataset/result/1d_cifar10_dnn_100

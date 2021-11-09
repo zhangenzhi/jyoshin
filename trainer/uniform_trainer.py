@@ -1,53 +1,24 @@
-import os
+import sys
+sys.path.append('..')
+
+from utils import print_error
+from data_generator import read_data_from_csv
+from .base_trainer import BaseTrainer
 import tensorflow as tf
 
-from models import DNN
-from data_generator import read_data_from_csv
-from utils import print_error
 
-
-class Trainer:
+class UniformTrainer(BaseTrainer):
     def __init__(self, args):
-        self.args = args
-
-        self._build_envs()
-        self.dataset = self._build_dataset(self.args['dataset'])
-        self.loss = self._build_loss(self.args['loss'])
-        self.metric = self._build_metric(self.args['metric'])
-        self.optimizer = self._build_optimizer(self.args['optimizer'])
-        self.model = self._build_model(self.args['model'])
-        
-        self._just_build()
-
-    def _build_envs(self):
-        physical_devices = tf.config.list_physical_devices('GPU')
-        for item in physical_devices:
-            tf.config.experimental.set_memory_growth(item, True)
+        super(UniformTrainer, self).__init__(args=args)
 
     def _build_dataset(self, dataset_args):
-
-        if dataset_args['name'] == 'uniform':
-            self.x_v = None
-            self.y_v = None
-            path_to_data = dataset_args['path_to_data']
-            dataset = read_data_from_csv(filename=path_to_data,
-                                         filepath='./',
-                                         batch_size=dataset_args['batch_size'],
-                                         CSV_COLUMNS=['x', 'y'],
-                                         num_epochs=dataset_args['epoch'])
-        else:
-            dataset = None
-
+        self.x_v = None
+        self.y_v = None
+        dataset = read_data_from_csv(filename=dataset_args['path_to_data'],
+                                     batch_size=dataset_args['batch_size'],
+                                     CSV_COLUMNS=['x','y'],
+                                     num_epochs=dataset_args['epoch'])
         return dataset
-
-    def _build_model(self, model_args):
-        if model_args['name'] == 'DNN':
-            model = DNN(units=model_args['units'],
-                        activations=model_args['activations'],
-                        fuse_models=model_args['fuse_models'])
-        else:
-            model = None
-        return model
 
     def _just_build(self):
         try:
@@ -57,22 +28,6 @@ class Trainer:
             self.model(x['x'])
         except:
             print_error("build model with variables failed.")
-
-    def _build_metric(self, metric_args):
-        metric = tf.keras.metrics.get(metric_args['name'])
-        return metric
-
-    def _build_loss(self, loss_args):
-        loss = tf.keras.losses.get(loss_args['name'])
-        return loss
-
-    def _build_optimizer(self, optimizer_args):
-        if optimizer_args['name'] == 'SGD':
-            optimizer = tf.keras.optimizers.SGD(
-                learning_rate=optimizer_args['learning_rate'])
-        else:
-            optimizer = None
-        return optimizer
 
     def train_step(self, x):
         inputs = x['x']
@@ -91,10 +46,6 @@ class Trainer:
         # metric update
         self.metric.update_state(loss)
 
-    def valid_step(self, x):
-        inputs = x['x']
-        prediction = self.model(inputs)
-
     def run(self):
         iter_ds = iter(self.dataset)
 
@@ -107,31 +58,7 @@ class Trainer:
             print("loss:", self.metric.result().numpy())
             self.metric.reset_states()
 
-    def save_model_weights(self, filepath='./saved_models', name='model.h5', save_format="h5"):
-        num = len(os.listdir(filepath))
-        save_path = os.path.join(filepath, str(num)+'/')
-        if os.path.exists(save_path):
-            self.model.save_weights(save_path, save_format=save_format)
-        else:
-            os.mkdir(save_path)
-            self.model.save_weights(save_path+name, save_format=save_format)
-        print("model saved in  {}".format(save_path+name))
-
-    def load_model_weights(self, filepath='./saved_models', num=-1, name='model.h5'):
-
-        if num == -1:
-            # -1 means latest model
-            num = len(os.listdir(filepath)) - 1
-        filepath = os.path.join(filepath, str(num)+'/')
-
-        if os.path.exists(filepath):
-            self.just_build()
-            self.model.load_weights(filepath+name)
-            print("model load from {}".format(filepath+name))
-        else:
-            print("path doesn't exits.")
-
-    def uniform_self_evaluate(self, percent=20):
+    def device_self_evaluate(self, percent=20):
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
         self.metric.reset_states()
@@ -194,14 +121,13 @@ class Trainer:
 
 
 if __name__ == "__main__":
-    trainer_args = {'loss': {'name': 'mse'},
+    trainer_args = {'loss': {'name': "mse"},
                     'metric': {'name': 'Mean'},
                     'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
-                    'dataset': {'name': 'uniform', 'batch_size': 12, 'epoch': 3},
+                    'dataset': {'name': 'uniform', 'batch_size': 32, 'epoch': 1},
                     'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh']}, }
+                              'activations': ['tanh', 'tanh', 'tanh'],
+                              'fuse_models': 1}, }
 
-    trainer = Trainer(trainer_args)
-
-    # trainer.save_model_weights()
-    trainer.load_model_weights()
+    trainer = UniformTrainer(trainer_args)
+    trainer.run()

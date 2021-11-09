@@ -120,7 +120,7 @@ class Plotter:
 
     def create_random_direction(self, name="x", ignore='bias_bn', norm='filter'):
         weights = self.get_weights()  # a list of parameters.
-
+        
         if not self.args["load_directions"]:
             raw_direction = self.get_random_weights(weights)
             direction = self.normalize_directions_for_weights(
@@ -169,7 +169,7 @@ class Plotter:
         for i in range(self.num_evaluate):
             step = self.step*(i-self.num_evaluate/2)
             self.set_weights(directions=[directions], step=step)
-            avg_loss = self.trainer.uniform_self_evaluate()
+            avg_loss = self.trainer.device_self_evaluate()
             with open(path_to_csv, "ab") as f:
                 np.savetxt(f, avg_loss, comments="")
         end_time = time.time()
@@ -200,7 +200,7 @@ class Plotter:
                 y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
                 step = [x_shift_step, y_shift_step]
                 self.set_weights(directions=directions, step=step)
-                avg_loss = self.trainer.uniform_self_evaluate()
+                avg_loss = self.trainer.device_self_evaluate()
                 with open(path_to_csv, "ab") as f:
                     np.savetxt(f, avg_loss, comments="")
 
