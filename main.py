@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Plot lossland around ture minima.')
     parser.add_argument(
-        '--config', default='scripts/configs/2d_uniform_dnn.yaml')
+        '--config', default='scripts/configs/1d_uniform_dnn.yaml')
 
     args = parser.parse_args()
     config = get_yml_content(args.config)

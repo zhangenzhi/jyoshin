@@ -1,3 +1,4 @@
+.DS*
 *.csv
 .vscode
 __pycache__

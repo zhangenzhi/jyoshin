@@ -1,1 +1,1 @@
-python main.py --config="scripts/configs/1d_uniform_dnn.yaml"
+python main.py --config="scripts/configs/1d_cifar10_dnn.yaml"
