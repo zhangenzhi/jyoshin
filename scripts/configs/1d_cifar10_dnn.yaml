@@ -14,7 +14,7 @@ Trainer:
   model:
     name: 'DNN'
     units: [64,16,1]
-    activations: [tanh,tanh,tanh]
+    activations: [sigmoid,sigmoid,sigmoid]
     fuse_models: 1
 
 Plotter:
