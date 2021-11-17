@@ -8,11 +8,11 @@ Trainer:
     name: 'Mean'
   optimizer:
     name: 'SGD'
-    learning_rate: 0.1
+    learning_rate: 0.01
   dataset:
     name: 'cifar10'
     batch_size: 128
-    epoch: 10
+    epoch: 100
     path_to_data: 'dataset/random/uniform/labeled.csv'
   model:
     name: 'DNN'
