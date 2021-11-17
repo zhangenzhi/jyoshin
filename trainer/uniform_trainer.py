@@ -118,16 +118,3 @@ class UniformTrainer(BaseTrainer):
         avg_loss = self.metric.result().numpy()
         print("Avg loss:", avg_loss)
         return avg_loss
-
-
-if __name__ == "__main__":
-    trainer_args = {'loss': {'name': "mse"},
-                    'metric': {'name': 'Mean'},
-                    'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
-                    'dataset': {'name': 'uniform', 'batch_size': 32, 'epoch': 1},
-                    'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'],
-                              'fuse_models': 1}, }
-
-    trainer = UniformTrainer(trainer_args)
-    trainer.run()
