@@ -56,7 +56,7 @@ class Cifar10Trainer(BaseTrainer):
                 print_warning("run out of dataset.")
                 break
             self.train_step(x)
-            print("loss:", self.metric.result().numpy())
+            # print("loss:", self.metric.result().numpy())
             self.metric.reset_states()
 
     def device_self_evaluate(self, percent=20):
