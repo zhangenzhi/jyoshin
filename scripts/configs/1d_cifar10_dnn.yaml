@@ -3,7 +3,7 @@ Trainer:
     name:
         class_name: SparseCategoricalCrossentropy
         config:
-          from_logits: True
+          from_logits: False
   metric: 
     name: 'Mean'
   optimizer:
