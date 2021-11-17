@@ -35,7 +35,7 @@ class Cifar10Trainer(BaseTrainer):
         # L(x;theta) = |f(x;theta)-y| -> dL_dtheta
         with tf.GradientTape() as tape:
             prediction = self.model(inputs)
-            loss = self.loss(prediction, labels)
+            loss = self.loss(labels, prediction)
             grad = tape.gradient(loss, self.model.trainable_variables)
 
         # theta = theta - alpha * grad // optimizer
