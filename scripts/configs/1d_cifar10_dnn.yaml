@@ -1,6 +1,9 @@
 Trainer:
   loss:
-    name: 'SparseCategoricalCrossentropy'
+    name:
+        class_name: SparseCategoricalCrossentropy
+        config:
+          from_logits: True
   metric: 
     name: 'Mean'
   optimizer:
