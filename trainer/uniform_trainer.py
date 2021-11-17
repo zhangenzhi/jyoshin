@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 
-from utils import print_error
+from utils import print_error, print_warning
 from data_generator import read_data_from_csv
 from .base_trainer import BaseTrainer
 import tensorflow as tf
@@ -50,7 +50,11 @@ class UniformTrainer(BaseTrainer):
         iter_ds = iter(self.dataset)
 
         while True:
-            x = iter_ds.get_next()
+            try:
+                x = iter_ds.get_next()
+            except:
+                print_warning("run out of dataset.")
+                break
             x['x'] = tf.reshape(x['x'], (-1, 1))
             x['y'] = tf.reshape(x['x'], (-1, 1))
 
