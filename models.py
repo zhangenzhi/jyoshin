@@ -81,6 +81,8 @@ class DNN(tf.keras.Model):
         x = self.flatten(x)
         for layer, act in zip(self.fc_layers, self.fc_act):
             x = layer(x)
+            import pdb
+            pdb.set_trace()
             x = act(x)
         return x
 
