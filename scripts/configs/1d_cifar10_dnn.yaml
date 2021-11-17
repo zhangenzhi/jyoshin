@@ -8,7 +8,7 @@ Trainer:
     name: 'Mean'
   optimizer:
     name: 'SGD'
-    learning_rate: 0.01
+    learning_rate: 0.001
   dataset:
     name: 'cifar10'
     batch_size: 128
@@ -17,7 +17,7 @@ Trainer:
   model:
     name: 'DNN'
     units: [64,32,16,10]
-    activations: [sigmoid,sigmoid,sigmoid,softmax]
+    activations: [relu,relu,relu,softmax]
     fuse_models: 1
 
 Plotter:
