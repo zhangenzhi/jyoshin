@@ -4,7 +4,7 @@ sys.path.append('..')
 import tensorflow as tf
 
 from .base_trainer import BaseTrainer
-from utils import print_error
+from utils import *
 from data_generator import read_data_from_cifar10
 
 
@@ -50,7 +50,11 @@ class Cifar10Trainer(BaseTrainer):
     def run(self):
         iter_ds = iter(self.dataset)
         while True:
-            x = iter_ds.get_next()
+            try:
+                x = iter_ds.get_next()
+            except:
+                print_warning("run out of dataset.")
+                break
             self.train_step(x)
             print("loss:", self.metric.result().numpy())
             self.metric.reset_states()
