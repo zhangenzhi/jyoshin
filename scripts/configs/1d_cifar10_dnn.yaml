@@ -1,6 +1,6 @@
 Trainer:
   loss:
-    name: 'mse'
+    name: 'SparseCategoricalCrossentropy'
   metric: 
     name: 'Mean'
   optimizer:
