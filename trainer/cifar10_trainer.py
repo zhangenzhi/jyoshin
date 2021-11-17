@@ -46,6 +46,9 @@ class Cifar10Trainer(BaseTrainer):
         self.metric.update_state(loss)
 
     def run(self):
+        import pdb
+        pdb.set_trace()
+        
         iter_ds = iter(self.dataset)
         start_time = time.time()
         flag = 0
