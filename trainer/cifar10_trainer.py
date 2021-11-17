@@ -1,23 +1,21 @@
+from data_generator import read_data_from_cifar10
+from utils import *
+from .base_trainer import BaseTrainer
+import time
+import tensorflow as tf
 import sys
 sys.path.append('..')
-
-import tensorflow as tf
-
-from .base_trainer import BaseTrainer
-from utils import *
-from data_generator import read_data_from_cifar10
 
 
 class Cifar10Trainer(BaseTrainer):
     def __init__(self, args):
         super(Cifar10Trainer, self).__init__(args=args)
 
-
     def _build_dataset(self, dataset_args):
         self.x_v = None
         self.y_v = None
         dataset = read_data_from_cifar10(batch_size=dataset_args['batch_size'],
-                                             num_epochs=dataset_args['epoch'])
+                                         num_epochs=dataset_args['epoch'])
         return dataset
 
     def _just_build(self):
@@ -49,6 +47,8 @@ class Cifar10Trainer(BaseTrainer):
 
     def run(self):
         iter_ds = iter(self.dataset)
+        start_time = time.time()
+        flag = 0
         while True:
             try:
                 x = iter_ds.get_next()
@@ -56,8 +56,12 @@ class Cifar10Trainer(BaseTrainer):
                 print_warning("run out of dataset.")
                 break
             self.train_step(x)
-            # print("loss:", self.metric.result().numpy())
-            self.metric.reset_states()
+            if flag % 500 == 0:
+                print("loss:", self.metric.result().numpy())
+                self.metric.reset_states()
+            flag += 1
+        end_time = time.time()
+        print("training cost:{}".format(end_time - start_time))
 
     def device_self_evaluate(self, percent=20):
         # causue uniform dataset is small, so we load them directly to gpu mem.
