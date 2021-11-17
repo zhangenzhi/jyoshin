@@ -16,8 +16,8 @@ Trainer:
     path_to_data: 'dataset/random/uniform/labeled.csv'
   model:
     name: 'DNN'
-    units: [64,16,1]
-    activations: [sigmoid,sigmoid,sigmoid]
+    units: [64,16,10]
+    activations: [sigmoid,sigmoid,softmax]
     fuse_models: 1
 
 Plotter:
