@@ -23,6 +23,7 @@ if __name__ == '__main__':
         trainer = UniformTrainer(trainer_args)
     elif trainer_args['dataset']['name'] == 'cifar10':
         trainer = Cifar10Trainer(trainer_args)
+        trainer.run()
     # plotter = Plotter(plotter_args, trainer)
 
     # plotter.run()
