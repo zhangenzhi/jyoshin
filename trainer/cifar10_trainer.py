@@ -49,7 +49,7 @@ class Cifar10Trainer(BaseTrainer):
     def run(self):
         # import pdb
         # pdb.set_trace()
-        
+
         iter_ds = iter(self.dataset)
         start_time = time.time()
         flag = 0
@@ -60,7 +60,7 @@ class Cifar10Trainer(BaseTrainer):
                 print_warning("run out of dataset.")
                 break
             self.train_step(x)
-            if flag % 50 == 0:
+            if flag % 500 == 0:
                 print("loss:", self.metric.result().numpy())
                 self.metric.reset_states()
             flag += 1

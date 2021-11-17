@@ -12,7 +12,7 @@ Trainer:
   dataset:
     name: 'cifar10'
     batch_size: 128
-    epoch: 100
+    epoch: 10
     path_to_data: 'dataset/random/uniform/labeled.csv'
   model:
     name: 'DNN'
