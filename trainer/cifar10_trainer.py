@@ -34,8 +34,6 @@ class Cifar10Trainer(BaseTrainer):
         labels = x['y']
 
         # L(x;theta) = |f(x;theta)-y| -> dL_dtheta
-        import pdb
-        pdb.set_trace()
         with tf.GradientTape() as tape:
             prediction = self.model(inputs)
             prediction = tf.squeeze(prediction)
