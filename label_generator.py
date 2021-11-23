@@ -52,6 +52,8 @@ def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labe
         flag += 1
         print(flag)
         y = model(x['x'])
+        y = tf.squeeze(y)
+        y = tf.argmax(y)
         if isinstance(labeled_data, type(None)):
             labeled_data = y
         else:
