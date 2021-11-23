@@ -37,8 +37,8 @@ def read_data_from_cifar10(filepath='./',
                            batch_size=32,
                            num_epochs=1):
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    x_train = x_train.astype(np.float32)
-    y_train = y_train.astype(np.float32)
+    x_train = x_train.astype(np.int32)
+    y_train = y_train.astype(np.int32)
     train_dataset = tf.data.Dataset.from_tensor_slices(
         {'x': x_train, 'y': y_train})
     train_dataset = train_dataset.batch(batch_size).repeat(num_epochs)
