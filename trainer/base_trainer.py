@@ -49,10 +49,11 @@ class BaseTrainer:
         return optimizer
 
     def save_model_weights(self, filepath='./saved_models', name='latest.h5', save_format="h5"):
-        filepath = os.path.join(filepath,name)
+        filepath = os.path.join(filepath)
         check_mkdir(filepath)
+        filepath = os.path.join(filepath,name)
         self.model.save_weights(filepath, save_format=save_format)
-        print_green("model saved in  {}".format(filepath))
+        print_green("model saved in {}".format(filepath))
 
     def load_model_weights(self, filepath='./saved_models', name='latest.h5'):
         filepath = os.path.join(filepath,name)
