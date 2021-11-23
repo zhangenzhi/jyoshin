@@ -45,14 +45,14 @@ class Cifar10Trainer(BaseTrainer):
             zip(grad, self.model.trainable_variables))
 
         # metric update
-        self.metric.update_state(prediction,labels)
+        self.metric.update_state(prediction, labels)
         return loss
 
     def run(self):
-        
+
         iter_ds = iter(self.dataset)
         start_time = time.time()
-        flag=0
+        flag = 0
         while True:
             try:
                 x = iter_ds.get_next()
@@ -60,11 +60,12 @@ class Cifar10Trainer(BaseTrainer):
                 print_warning("run out of dataset.")
                 break
             loss = self.train_step(x)
-            if flag %500 ==0:
-                print("loss:{}, metric:{}".format(loss.numpy(), self.metric.result().numpy()))
-        self.metric.reset_states()
-        flag +=1
-            
+            if flag % 500 == 0:
+                print("loss:{}, metric:{}".format(
+                    loss.numpy(), self.metric.result().numpy()))
+            self.metric.reset_states()
+            flag += 1
+
         end_time = time.time()
         print("training cost:{}".format(end_time - start_time))
 
