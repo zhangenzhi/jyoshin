@@ -51,7 +51,6 @@ def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labe
             break
         flag += 1
         print(flag)
-        x['x'] = tf.reshape(x['x'], (-1, 1))
         y = model(x['x'])
         z = tf.concat([x['x'], y], axis=1).numpy()
         if isinstance(labeled_data, type(None)):
