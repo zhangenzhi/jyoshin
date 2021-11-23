@@ -2,6 +2,7 @@ import os
 import tensorflow as tf
 
 from models import DNN
+from utils import print_error
 
 class BaseTrainer:
     def __init__(self, args):
@@ -41,7 +42,10 @@ class BaseTrainer:
             optimizer = tf.keras.optimizers.SGD(
                 learning_rate=optimizer_args['learning_rate'])
         else:
-            optimizer = None
+            try:
+                optimizer = tf.keras.optimizers.get(optimizer_args['name'])
+            except:
+                print_error("no such optimizer")
         return optimizer
 
     def save_model_weights(self, filepath='./saved_models', name='model.h5', save_format="h5"):
