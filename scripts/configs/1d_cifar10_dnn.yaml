@@ -1,11 +1,11 @@
 Trainer:
   loss:
     name:
-        class_name: CategoricalCrossentropy
+        class_name: SparseCategoricalCrossentropy
         config:
           from_logits: False
   metric: 
-    name: 'Accuracy'
+    name: 'SparseCategoricalAccuracy'
   optimizer:
     name: 'SGD'
     learning_rate: 0.0001
