@@ -38,7 +38,7 @@ def generate_label_for_data(model, dataset, filename='./labeled.csv'):
 
 def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labeled.csv'):
     labeled_data = None
-    flag = 1
+    flag = 0
     check_mkdir(path_to_file)
     filename = os.path.join(path_to_file, filename)
     while True:
@@ -51,6 +51,8 @@ def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labe
         print(flag)
         y = model(x['x'])
         y = tf.squeeze(y)
+        import pdb
+        pdb.set_trace()
         y = tf.argmax(y, 2)
         if isinstance(labeled_data, type(None)):
             labeled_data = y
