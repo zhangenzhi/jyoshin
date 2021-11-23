@@ -63,7 +63,7 @@ class Cifar10Trainer(BaseTrainer):
             if flag % 500 == 0:
                 print("loss:{}, metric:{}".format(
                     loss.numpy(), self.metric.result().numpy()))
-            self.metric.reset_states()
+                self.metric.reset_states()
             flag += 1
 
         end_time = time.time()
