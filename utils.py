@@ -1,3 +1,4 @@
+import os
 import ruamel.yaml as yaml
 from colorama import Fore
 
@@ -5,7 +6,15 @@ ERROR_INFO = 'ERROR: '
 NORMAL_INFO = 'INFO: '
 WARNING_INFO = 'WARNING: '
 
-
+def check_file(file):
+    if not os.path.exists(path=file):
+        print_error("no such file: {}".format(file))
+        
+def check_mkdir(path):
+    if not os.path.exists(path=path):
+        print_warning("no such path: {}, but we made.".format(path))
+        os.makedirs(path)
+        
 def get_yml_content(file_path):
     '''Load yaml file content'''
     try:

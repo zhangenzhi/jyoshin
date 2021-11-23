@@ -1,7 +1,5 @@
 from utils import *
 import argparse
-# from trainer.uniform_trainer import UniformTrainer
-# from trainer.cifar10_trainer import Cifar10Trainer
 from trainer import UniformTrainer, Cifar10Trainer
 from plotter import Plotter
 import os

@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 
 from models import DNN
-from utils import print_error
+from utils import check_file, check_mkdir, print_error, print_green
 
 class BaseTrainer:
     def __init__(self, args):
@@ -48,29 +48,20 @@ class BaseTrainer:
                 print_error("no such optimizer")
         return optimizer
 
-    def save_model_weights(self, filepath='./saved_models', name='model.h5', save_format="h5"):
-        num = len(os.listdir(filepath))
-        save_path = os.path.join(filepath, str(num)+'/')
-        if os.path.exists(save_path):
-            self.model.save_weights(save_path, save_format=save_format)
-        else:
-            os.mkdir(save_path)
-            self.model.save_weights(save_path+name, save_format=save_format)
-        print("model saved in  {}".format(save_path+name))
+    def save_model_weights(self, filepath='./saved_models', name='latest.h5', save_format="h5"):
+        filepath = os.path.join(filepath,name)
+        check_mkdir(filepath)
+        self.model.save_weights(filepath, save_format=save_format)
+        print_green("model saved in  {}".format(filepath))
 
-    def load_model_weights(self, filepath='./saved_models', num=-1, name='model.h5'):
-
-        if num == -1:
-            # -1 means latest model
-            num = len(os.listdir(filepath)) - 1
-        filepath = os.path.join(filepath, str(num)+'/')
-
-        if os.path.exists(filepath):
+    def load_model_weights(self, filepath='./saved_models', name='latest.h5'):
+        filepath = os.path.join(filepath,name)
+        if check_file(filepath):
             self.just_build()
-            self.model.load_weights(filepath+name)
-            print("model load from {}".format(filepath+name))
+            self.model.load_weights(filepath)
+            print_green("model load from {}".format(filepath+name))
         else:
-            print("path doesn't exits.")
+            print_error("file doesn't exits in {}.".format(filepath))
 
     def _build_dataset(self, dataset_args):
         raise NotImplementedError
