@@ -5,7 +5,7 @@ Trainer:
         config:
           from_logits: True
   metric: 
-    name: 'Mean'
+    name: 'accuracy'
   optimizer:
     name: 'SGD'
     learning_rate: 0.01
@@ -13,7 +13,7 @@ Trainer:
     name: 'cifar10'
     batch_size: 128
     epoch: 1000
-    path_to_data: 'dataset/random/uniform/labeled.csv'
+    path_to_data: 'dataset/image/cifar10/labeled.csv'
   model:
     name: 'DNN'
     units: [64,32,16,10]
