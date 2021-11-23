@@ -1,3 +1,4 @@
+import pdb
 from data_generator import read_data_from_cifar10
 from utils import *
 from .base_trainer import BaseTrainer
@@ -55,6 +56,7 @@ class Cifar10Trainer(BaseTrainer):
         flag = 0
         while True:
             try:
+                pdb.set_trace()
                 x = iter_ds.get_next()
             except:
                 print_warning("run out of dataset.")
