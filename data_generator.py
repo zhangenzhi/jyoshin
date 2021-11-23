@@ -41,7 +41,7 @@ def read_data_from_cifar10(filepath='./',
     y_train = y_train.astype(np.float32)
     train_dataset = tf.data.Dataset.from_tensor_slices(
         {'x': x_train, 'y': y_train})
-    train_dataset = train_dataset.map(lambda x: x, num_parallel_calls=tf.data.AUTOTUNE)
+    train_dataset = train_dataset.map(lambda x: x, num_parallel_calls=80)
     train_dataset = train_dataset.batch(batch_size).repeat(num_epochs)
     if shuffle:
         train_dataset = train_dataset.shuffle(50000)
