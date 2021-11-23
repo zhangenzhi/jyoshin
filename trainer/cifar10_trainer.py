@@ -48,15 +48,12 @@ class Cifar10Trainer(BaseTrainer):
         self.metric.update_state(loss)
 
     def run(self):
-        # import pdb
-        # pdb.set_trace()
-
+        
         iter_ds = iter(self.dataset)
         start_time = time.time()
         flag = 0
         while True:
             try:
-                pdb.set_trace()
                 x = iter_ds.get_next()
             except:
                 print_warning("run out of dataset.")
