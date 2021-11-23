@@ -5,7 +5,7 @@ Trainer:
         config:
           from_logits: True
   metric: 
-    name: 'accuracy'
+    name: 'Accuracy'
   optimizer:
     name: 'SGD'
     learning_rate: 0.01
