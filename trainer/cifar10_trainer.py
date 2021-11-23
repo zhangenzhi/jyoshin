@@ -19,6 +19,7 @@ class Cifar10Trainer(BaseTrainer):
         self.y_v = None
         dataset = read_data_from_cifar10(batch_size=dataset_args['batch_size'],
                                          num_epochs=dataset_args['epoch'])
+        self.plotter_dataset = read_data_from_cifar10(batch_size=dataset_args['batch_size'], num_epochs=1)
         return dataset
 
     def _just_build(self):
