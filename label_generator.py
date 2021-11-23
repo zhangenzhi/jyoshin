@@ -53,11 +53,10 @@ def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labe
         print(flag)
         y = model(x['x'])
         y = tf.squeeze(y)
-        y = tf.argmax(y)
+        y = tf.argmax(y, 2)
         if isinstance(labeled_data, type(None)):
             labeled_data = y
         else:
             labeled_data = np.concatenate([labeled_data, y], axis=0)
     np.savetxt(filename, labeled_data, header='y',
                comments="", delimiter=',')
-
