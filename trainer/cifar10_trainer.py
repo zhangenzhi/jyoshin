@@ -32,7 +32,7 @@ class Cifar10Trainer(BaseTrainer):
     def train_step(self, x):
         inputs = x['x']
         labels = x['y']
-        onehot_labels = tf.one_hot(labels)
+        onehot_labels = tf.one_hot(labels, depth=10)
 
         # L(x;theta) = |f(x;theta)-y| -> dL_dtheta
         with tf.GradientTape() as tape:
