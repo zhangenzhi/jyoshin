@@ -32,12 +32,13 @@ class Cifar10Trainer(BaseTrainer):
     def train_step(self, x):
         inputs = x['x']
         labels = x['y']
+        onehot_labels = tf.one_hot(labels)
 
         # L(x;theta) = |f(x;theta)-y| -> dL_dtheta
         with tf.GradientTape() as tape:
             prediction = self.model(inputs)
             prediction = tf.squeeze(prediction)
-            loss = self.loss(labels, prediction)
+            loss = self.loss(onehot_labels, prediction)
             grad = tape.gradient(loss, self.model.trainable_variables)
 
         # theta = theta - alpha * grad // optimizer
@@ -45,7 +46,7 @@ class Cifar10Trainer(BaseTrainer):
             zip(grad, self.model.trainable_variables))
 
         # metric update
-        self.metric.update_state(labels, prediction)
+        self.metric.update_state(onehot_labels, prediction)
         return loss
 
     def run(self):
