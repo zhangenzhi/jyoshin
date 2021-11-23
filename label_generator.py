@@ -41,8 +41,6 @@ def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labe
     flag = 1
     check_mkdir(path_to_file)
     filename = os.path.join(path_to_file, filename)
-    import pdb
-    pdb.set_trace()
     while True:
         try:
             x = dataset.get_next()
