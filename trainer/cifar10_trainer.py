@@ -71,6 +71,10 @@ class Cifar10Trainer(BaseTrainer):
         end_time = time.time()
         print("training cost:{}".format(end_time - start_time))
 
+        # check if save trained model.
+        if 'save_path_to_model' in self.args['model']:
+            self.save_model_weights(filepath=self.args['model']['save_path_to_model'])
+
     def device_self_evaluate(self, percent=20):
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
