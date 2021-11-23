@@ -7,8 +7,8 @@ Trainer:
   metric: 
     name: 'CategoricalAccuracy'
   optimizer:
-    name: 'Adam'
-    learning_rate: 0.01
+    name: 'SGD'
+    learning_rate: 0.0001
   dataset:
     name: 'cifar10'
     batch_size: 128
