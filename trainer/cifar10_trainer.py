@@ -45,7 +45,7 @@ class Cifar10Trainer(BaseTrainer):
             zip(grad, self.model.trainable_variables))
 
         # metric update
-        self.metric.update_state(loss)
+        self.metric.update_state(prediction,labels)
         return loss
 
     def run(self):
