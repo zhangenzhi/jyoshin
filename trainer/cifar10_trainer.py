@@ -19,7 +19,8 @@ class Cifar10Trainer(BaseTrainer):
         self.y_v = None
         dataset = read_data_from_cifar10(batch_size=dataset_args['batch_size'],
                                          num_epochs=dataset_args['epoch'])
-        self.plotter_dataset = read_data_from_cifar10(batch_size=dataset_args['batch_size'], num_epochs=1)
+        self.plotter_dataset = read_data_from_cifar10(
+            batch_size=dataset_args['batch_size'], num_epochs=1)
         return dataset
 
     def _just_build(self):
@@ -64,8 +65,11 @@ class Cifar10Trainer(BaseTrainer):
                 break
             loss = self.train_step(x)
             if flag % 100 == 0:
-                print("loss:{}, metric:{}".format(
-                    loss.numpy(), self.metric.result().numpy()))
+                train_log = "loss:{}, metric:{}".format(
+                    loss.numpy(), self.metric.result().numpy())
+                print(train_log)
+                write_to_file(
+                    path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
                 self.metric.reset_states()
             flag += 1
 
@@ -74,7 +78,8 @@ class Cifar10Trainer(BaseTrainer):
 
         # check if save trained model.
         if 'save_path_to_model' in self.args['model']:
-            self.save_model_weights(filepath=self.args['model']['save_path_to_model'])
+            self.save_model_weights(
+                filepath=self.args['model']['save_path_to_model'])
 
     def device_self_evaluate(self, percent=20):
         # causue uniform dataset is small, so we load them directly to gpu mem.

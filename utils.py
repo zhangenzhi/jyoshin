@@ -6,15 +6,24 @@ ERROR_INFO = 'ERROR: '
 NORMAL_INFO = 'INFO: '
 WARNING_INFO = 'WARNING: '
 
+
+def write_to_file(path, filename, s):
+    check_mkdir(path=path)
+    with open(file=filename, mode='w') as f:
+        f.writelines(s)
+
+
 def check_file(file):
     if not os.path.exists(path=file):
         print_error("no such file: {}".format(file))
-        
+
+
 def check_mkdir(path):
     if not os.path.exists(path=path):
         print_warning("no such path: {}, but we made.".format(path))
         os.makedirs(path)
-        
+
+
 def get_yml_content(file_path):
     '''Load yaml file content'''
     try:
@@ -62,6 +71,8 @@ def print_dict(d, indent=0):
             except:
                 print_error("value can not print: ", type(value))
                 raise
+
+
 if __name__ == '__main__':
     print_error("wang ru qin")
     print("wang ru qin")

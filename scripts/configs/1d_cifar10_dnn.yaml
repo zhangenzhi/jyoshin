@@ -20,6 +20,8 @@ Trainer:
     activations: [relu,relu,relu,softmax]
     fuse_models: 1
     save_path_to_model: './dataset/model/cifar10/'
+  others:
+    path_to_log: './dataset/logs/cifar10/'
 
 Plotter:
   task: "1d"
