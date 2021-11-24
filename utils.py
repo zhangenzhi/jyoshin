@@ -10,7 +10,7 @@ WARNING_INFO = 'WARNING: '
 def write_to_file(path, filename, s):
     check_mkdir(path=path)
     file = os.path.join(path,filename)
-    with open(file=file, mode='w') as f:
+    with open(file=file, mode='a') as f:
         f.writelines(s)
 
 
