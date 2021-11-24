@@ -7,7 +7,7 @@ NORMAL_INFO = 'INFO: '
 WARNING_INFO = 'WARNING: '
 
 
-def write_to_file(path, filename, s):
+def write_to_file(path, filename, s, overwrite=False):
     check_mkdir(path=path)
     file = os.path.join(path,filename)
     with open(file=file, mode='a') as f:
