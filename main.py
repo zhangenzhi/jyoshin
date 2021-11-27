@@ -29,6 +29,6 @@ if __name__ == '__main__':
                                model=trainer.model,
                                path_to_file=trainer_args['dataset']['path_to_data'])
 
-    # plotter = Plotter(plotter_args, trainer)
+    plotter = Plotter(plotter_args, trainer)
 
-    # plotter.run()
+    plotter.run()
