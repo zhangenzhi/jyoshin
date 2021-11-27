@@ -25,9 +25,9 @@ Trainer:
 
 Plotter:
   task: "1d"
-  num_evaluate: 3000
-  step: 1e-3
+  num_evaluate: 10000
+  step: 1e-4
   save_directions: False
   load_directions: False
   path_to_adapt_label: './dataset/image/cifar10/'
-  save_file: ./dataset/result/1d_cifar10_dnn_3000
+  save_file: ./dataset/result/1d_cifar10_dnn_1w
