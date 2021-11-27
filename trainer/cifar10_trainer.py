@@ -81,7 +81,7 @@ class Cifar10Trainer(BaseTrainer):
             self.save_model_weights(
                 filepath=self.args['model']['save_path_to_model'])
 
-    def device_self_evaluate(self, batch_nums=20):
+    def device_self_evaluate(self, batch_nums=10):
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
         self.metric.reset_states()
@@ -100,6 +100,8 @@ class Cifar10Trainer(BaseTrainer):
                     break
             self.x_v = tf.concat(all_x, axis=0)
             self.y_v = tf.concat(all_y, axis=0)
+        import pdb
+        pdb.set_trace()
 
         avg_loss = self.evaluate_in_all(self.x_v, self.y_v)
         avg_loss = tf.reshape(avg_loss, shape=(-1, 1))
