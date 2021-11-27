@@ -119,7 +119,7 @@ class Cifar10Trainer(BaseTrainer):
         loss = self.loss(labels, prediction)
         
         # metric
-        self.metric.reset_state()
+        self.metric.reset_states()
         metric = self.metric.update_state(labels, prediction)
         metric = 1.0 - self.metric.result().numpy()
         
