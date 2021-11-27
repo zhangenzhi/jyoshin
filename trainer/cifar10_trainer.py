@@ -100,8 +100,6 @@ class Cifar10Trainer(BaseTrainer):
                     break
             self.x_v = tf.concat(all_x, axis=0)
             self.y_v = tf.concat(all_y, axis=0)
-        import pdb
-        pdb.set_trace()
 
         avg_loss = self.evaluate_in_all(self.x_v, self.y_v)
         avg_loss = tf.reshape(avg_loss, shape=(-1, 1))
