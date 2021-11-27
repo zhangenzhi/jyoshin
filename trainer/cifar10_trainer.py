@@ -112,7 +112,8 @@ class Cifar10Trainer(BaseTrainer):
     # @tf.function(experimental_relax_shapes=True)
     def evaluate_in_all(self, inputs, labels):
         prediction = self.model(inputs)
-        loss = self.loss(prediction, labels)
+        prediction = tf.squeeze(prediction)
+        loss = self.loss(labels, prediction)
         if self.args['model']['fuse_models'] == None:
             self.metric.update_state(loss)
             avg_loss = self.metric.result()
