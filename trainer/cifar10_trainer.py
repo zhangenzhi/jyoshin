@@ -81,7 +81,7 @@ class Cifar10Trainer(BaseTrainer):
             self.save_model_weights(
                 filepath=self.args['model']['save_path_to_model'])
 
-    def device_self_evaluate(self, percent=20):
+    def device_self_evaluate(self, batch_nums=20):
         # causue uniform dataset is small, so we load them directly to gpu mem.
         iter_test = iter(self.dataset)
         self.metric.reset_states()
@@ -89,12 +89,12 @@ class Cifar10Trainer(BaseTrainer):
         all_x = []
         all_y = []
         if self.x_v == None or self.y_v == None:
-            while True and percent != 0:
+            while True and batch_nums != 0:
                 try:
                     x = iter_test.get_next()
                     all_x.append(x['x'])
                     all_y.append(x['y'])
-                    percent -= 1
+                    batch_nums -= 1
                 except:
                     print("run out of data. ")
                     break
