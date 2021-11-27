@@ -1,7 +1,7 @@
 import pdb
 
 from tensorflow.python.util.compat import path_to_str
-from data_generator import read_data_from_cifar10
+from data_generator import read_data_from_cifar10, read_data_from_csv
 from utils import *
 from .base_trainer import BaseTrainer
 import time
@@ -81,9 +81,11 @@ class Cifar10Trainer(BaseTrainer):
             self.save_model_weights(
                 filepath=self.args['model']['save_path_to_model'])
 
-    def device_self_evaluate(self, batch_nums=10):
+    def device_self_evaluate(self, adapt_label_dataset, batch_nums=10):
         # causue uniform dataset is small, so we load them directly to gpu mem.
-        iter_test = iter(self.dataset)
+        iter_test = iter(self.plotter_dataset)
+        iter_label = iter(adapt_label_dataset)
+        
         self.metric.reset_states()
 
         all_x = []
@@ -92,8 +94,9 @@ class Cifar10Trainer(BaseTrainer):
             while True and batch_nums != 0:
                 try:
                     x = iter_test.get_next()
+                    y = iter_label.get_next()
                     all_x.append(x['x'])
-                    all_y.append(x['y'])
+                    all_y.append(y['y'])
                     batch_nums -= 1
                 except:
                     print("run out of data. ")

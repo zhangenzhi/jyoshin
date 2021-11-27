@@ -5,6 +5,7 @@ import time
 import numpy as np
 import tensorflow as tf
 
+from data_generator import read_data_from_csv
 from utils import print_error
 
 
@@ -18,7 +19,16 @@ class Plotter:
         self.model = trainer.model
         self.init_weights = [tf.convert_to_tensor(
             w) for w in self.model.trainable_weights]
-
+        self.adapt_label_dataset = self._build_adapt_label_dataset()
+    
+    def _build_adapt_label_dataset(self):
+        adapt_label_ds = read_data_from_csv(filename="labeled.csv",
+                                            filepath=self.plotter_args["path_to_adapt_label"],
+                                            batch_size=self.trainer.args["dataset"]["batch_size"],
+                                            num_epochs=1,
+                                            CSV_COLUMNS=['y'])
+        return adapt_label_ds
+        
     def get_init_weights(self):
         return self.init_weights
 
@@ -169,7 +179,7 @@ class Plotter:
         for i in range(self.num_evaluate):
             step = self.step*(i-self.num_evaluate/2)
             self.set_weights(directions=[directions], step=step)
-            avg_loss = self.trainer.device_self_evaluate()
+            avg_loss = self.trainer.device_self_evaluate(adapt_label_dataset= self.adapt_label_dataset)
             with open(path_to_csv, "ab") as f:
                 np.savetxt(f, avg_loss, comments="")
         end_time = time.time()
