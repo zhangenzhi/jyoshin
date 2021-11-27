@@ -25,7 +25,7 @@ Trainer:
 
 Plotter:
   task: "1d"
-  num_evaluate: 300
+  num_evaluate: 3000
   step: 1e-3
   save_directions: False
   load_directions: False
