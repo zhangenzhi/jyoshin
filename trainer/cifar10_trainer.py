@@ -112,15 +112,7 @@ class Cifar10Trainer(BaseTrainer):
         prediction = self.model(inputs)
         prediction = tf.squeeze(prediction)
         loss = self.loss(labels, prediction)
-        if self.args['model']['fuse_models'] == None:
-            self.metric.update_state(loss)
-            avg_loss = self.metric.result()
-        else:
-            import pdb
-            pdb.set_trace()
-            avg_loss = tf.reduce_mean(loss, axis=-1)
-
-        return avg_loss
+        return loss
 
     def self_evaluate(self):
         iter_test = iter(self.dataset)
