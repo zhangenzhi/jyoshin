@@ -23,7 +23,7 @@ class Plotter:
     
     def _build_adapt_label_dataset(self):
         adapt_label_ds = read_data_from_csv(filename="labeled.csv",
-                                            filepath=self.plotter_args["path_to_adapt_label"],
+                                            filepath=self.args["path_to_adapt_label"],
                                             batch_size=self.trainer.args["dataset"]["batch_size"],
                                             num_epochs=1,
                                             CSV_COLUMNS=['y'])
