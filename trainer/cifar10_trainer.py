@@ -116,6 +116,8 @@ class Cifar10Trainer(BaseTrainer):
             self.metric.update_state(loss)
             avg_loss = self.metric.result()
         else:
+            import pdb
+            pdb.set_trace()
             avg_loss = tf.reduce_mean(loss, axis=-1)
 
         return avg_loss
