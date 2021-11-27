@@ -36,6 +36,8 @@ class Cifar10Trainer(BaseTrainer):
     def train_step(self, x):
         inputs = x['x']
         labels = x['y']
+        import pdb
+        pdb.set_trace()
 
         # L(x;theta) = |f(x;theta)-y| -> dL_dtheta
         with tf.GradientTape() as tape:
