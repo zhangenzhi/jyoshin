@@ -114,11 +114,14 @@ class Cifar10Trainer(BaseTrainer):
     def evaluate_in_all(self, inputs, labels):
         prediction = self.model(inputs)
         prediction = tf.squeeze(prediction)
+        
+        # loss
         loss = self.loss(labels, prediction)
         
-        metric = self.metric.update_state()
-        metric = 1.0 - self.metric.result().numpy()
+        # metric
         self.metric.reset_state()
+        metric = self.metric.update_state(labels, prediction)
+        metric = 1.0 - self.metric.result().numpy()
         
         return loss, metric
 
