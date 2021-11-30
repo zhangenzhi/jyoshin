@@ -58,6 +58,9 @@ if __name__ == "__main__":
                        filepath="./dataset/image/cifar10", 
                        CSV_COLUMNS=['y'],
                        batch_size=128)
+    import pdb
+    pdb.set_trace()
+    
     iter(ds)
 
     # dataset = read_data_from_csv()
