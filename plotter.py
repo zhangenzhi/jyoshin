@@ -169,8 +169,8 @@ class Plotter:
         start_time = time.time()
 
         for i in range(self.num_evaluate[0]):
+            x_shift_step = self.step[0] * (i-self.num_evaluate[0]/2)
             for j in range(self.num_evaluate[1]):
-                x_shift_step = self.step[0] * (i-self.num_evaluate[0]/2)
                 y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
                 step = [x_shift_step, y_shift_step]
                 self.set_weights(directions=directions, step=step)
