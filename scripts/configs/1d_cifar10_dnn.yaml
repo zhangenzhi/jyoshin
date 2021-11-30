@@ -24,8 +24,8 @@ Trainer:
 
 Plotter:
   task: "1d"
-  num_evaluate: 10000
-  step: 1e-4
+  num_evaluate: 1000
+  step: 1e-3
   fuse_models: None
   save_directions: False
   load_directions: False

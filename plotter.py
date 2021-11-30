@@ -14,7 +14,7 @@ class Plotter:
         self.args = plotter_args
         self.step = plotter_args['step']
         self.num_evaluate = plotter_args['num_evaluate']
-        self.fuse_models = trainer.args['model']['fuse_models']
+        self.fuse_nums = plotter_args['fuse_nums']
         self.trainer = trainer
         self.model = trainer.model
         self.init_weights = [tf.convert_to_tensor(
@@ -41,7 +41,7 @@ class Plotter:
         for d in normalized_directions:
             shift_direction = []
             base_direction = []
-            for i in range(self.fuse_models):
+            for i in range(self.fuse_nums):
                 base_direction.append(d)
                 shift_direction.append(d * (i+1))
             shift_directions.append(tf.stack(shift_direction))
@@ -58,15 +58,13 @@ class Plotter:
             dx = directions[0]
             dy = directions[1]
             x_changes = [step[0] * d for d in dx[0]]
-            # y_changes = [self.step[1] * d2 + step[1] * (self.fuse_models-1)
-            #              * d1 for (d1, d2) in zip(dy[0], dy[1])]
-            y_changes = [step[1] * d1 * self.fuse_models + self.step[1] * d2
+            y_changes = [step[1] * d1 * self.fuse_nums + self.step[1] * d2
                          for (d1, d2) in zip(dy[0], dy[1])]
             changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
             dx = directions[0]
             changes = [d1 * step *
-                       self.fuse_models + d2 * self.step for (d1, d2) in zip(dx[0], dx[1])]
+                       self.fuse_nums + d2 * self.step for (d1, d2) in zip(dx[0], dx[1])]
 
         init_weights = self.get_init_weights()
         trainable_variables = self.get_weights()
@@ -75,7 +73,7 @@ class Plotter:
 
     def get_random_weights(self, weights):
         # random w have save shape with w
-        if self.fuse_models == None:
+        if self.fuse_nums == None:
             return [tf.random.normal(w.shape) for w in weights]
         else:
             single_random_direction = []
@@ -123,7 +121,7 @@ class Plotter:
                 normalized_direction.append(
                     self.normalize_direction(d, w, norm))
         fused_normalized_direction = []
-        if self.fuse_models != None:
+        if self.fuse_nums != None:
             fused_normalized_direction = self.fuse_directions(
                 normalized_direction)
         return fused_normalized_direction
@@ -174,7 +172,7 @@ class Plotter:
             norm='layer', name='x')
         directions = fused_direction
 
-        # plot num_evaluate * fuse_models points in lossland
+        # plot num_evaluate * fuse_nums points in lossland
         start_time = time.time()
         for i in range(self.num_evaluate):
             step = self.step*(i-self.num_evaluate/2)
@@ -201,7 +199,7 @@ class Plotter:
             norm='layer', name='y')
         directions = [direction_x, direction_y]
 
-        # plot num_evaluate * fuse_models points in lossland
+        # plot num_evaluate * fuse_nums points in lossland
         start_time = time.time()
 
         for i in range(self.num_evaluate[0]):
