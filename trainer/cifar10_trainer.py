@@ -101,7 +101,7 @@ class Cifar10Trainer(BaseTrainer):
                 except:
                     print_error("run out of data to put in device. ")
                     break
-            with tf.device("/device:gpu:1"):
+            with tf.device("/device:gpu:0"):
                 self.x_v = tf.concat(all_x, axis=0)
                 self.y_v = tf.concat(all_y, axis=0)
                 
