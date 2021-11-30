@@ -62,6 +62,7 @@ class DNN(tf.keras.Model):
         layers = []
         for units in self.units:
             layers.append(Linear(units=units))
+            layers.append(keras.layers.BatchNormalization())
         return layers
 
     def _build_act(self):
