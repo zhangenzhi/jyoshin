@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 
 from data_generator import read_data_from_csv
-from utils import print_error
+from utils import check_mkdir, print_error
 
 
 class Plotter:
@@ -22,10 +22,10 @@ class Plotter:
 
     def _build_adapt_label_dataset(self):
         adapt_label_dataset = read_data_from_csv(filename="labeled.csv",
-                                            filepath=self.args["path_to_adapt_label"],
-                                            batch_size=self.trainer.args["dataset"]["batch_size"],
-                                            num_epochs=1,
-                                            CSV_COLUMNS=['y'])
+                                                 filepath=self.args["path_to_adapt_label"],
+                                                 batch_size=self.trainer.args["dataset"]["batch_size"],
+                                                 num_epochs=1,
+                                                 CSV_COLUMNS=['y'])
         return adapt_label_dataset
 
     def get_init_weights(self):
@@ -38,7 +38,7 @@ class Plotter:
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
-        
+
         if len(directions) == 2:
             dx = directions[0]
             dy = directions[1]
@@ -48,7 +48,7 @@ class Plotter:
         else:
             dx = directions[0]
             changes = [d * step for d in dx]
-            
+
         # should ref in model::set fuse weight.
         init_weights = self.get_init_weights()
         trainable_variables = self.get_weights()
@@ -131,13 +131,10 @@ class Plotter:
                 directions.append(tf.convert_to_tensor(d[key][:]))
         return directions
 
-    def plot_1d_loss(self, save_file="./result/1d"):
+    def plot_1d_loss(self, save_file="./result/1d", save_name='result.csv'):
         # prepare dirs
-        if os.path.exists(save_file):
-            path_to_csv = os.path.join(save_file, 'result.csv')
-        else:
-            os.makedirs(save_file)
-            path_to_csv = os.path.join(save_file, 'result.csv')
+        check_mkdir(save_file)
+        path_to_csv = os.path.join(save_file, save_name)
 
         # set init state
         directions = self.create_random_direction(
@@ -156,13 +153,10 @@ class Plotter:
 
         print("total time {}".format(end_time-start_time))
 
-    def plot_2d_loss(self, save_file="./result/2d"):
+    def plot_2d_loss(self, save_file="./result/2d", save_name='result.csv'):
         # prepare dirs
-        if os.path.exists(save_file):
-            path_to_csv = os.path.join(save_file, 'result.csv')
-        else:
-            os.makedirs(save_file)
-            path_to_csv = os.path.join(save_file, 'result.csv')
+        check_mkdir(save_file)
+        path_to_csv = os.path.join(save_file, save_name)
 
         # random direction x,y
         direction_x = self.create_random_direction(
