@@ -79,6 +79,8 @@ class Plotter:
 
         init_weights = self.get_init_weights()
         trainable_variables = self.get_weights()
+        import pdb 
+        pdb.set_trace()
         for (i_w, t_w, change) in zip(init_weights, trainable_variables, changes):
             t_w.assign(i_w + change)
 
