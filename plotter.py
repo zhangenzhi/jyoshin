@@ -14,7 +14,7 @@ class Plotter:
         self.args = plotter_args
         self.step = plotter_args['step']
         self.num_evaluate = plotter_args['num_evaluate']
-        self.fuse_nums = plotter_args['fuse_nums']
+        self.fuse_nums = None if plotter_args['fuse_nums'] == 'None' else plotter_args['fuse_nums']
         self.trainer = trainer
         self.model = trainer.model
         self.init_weights = [tf.convert_to_tensor(
