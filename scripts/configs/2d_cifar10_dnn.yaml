@@ -18,14 +18,14 @@ Trainer:
     name: 'DNN'
     units: [64,32,16,10]
     activations: [relu,relu,relu,softmax]
-    fuse_models: 10
+    fuse_models: 100
     save_path_to_model: './dataset/model/cifar10/'
   others:
     path_to_log: './dataset/logs/cifar10/'
 
 Plotter:
   task: "2d"
-  num_evaluate: [1000,1]
+  num_evaluate: [100,1]
   step: [1e-3,1e-1]
   save_directions: False
   load_directions: False
