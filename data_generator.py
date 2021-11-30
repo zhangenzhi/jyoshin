@@ -53,7 +53,12 @@ if __name__ == "__main__":
     # data = uniform_generator(range=[-1.0, 1.0])
     # print(data)
     # save_data_to_csv(data=data)
-    read_data_from_cifar10()
+    # read_data_from_cifar10()
+    ds = read_data_from_csv(filename='labeled.csv',
+                       filepath="./dataset/image/cifar10", 
+                       CSV_COLUMNS=['y'],
+                       batch_size=128)
+    iter(ds)
 
     # dataset = read_data_from_csv()
     # ds = iter(dataset)
