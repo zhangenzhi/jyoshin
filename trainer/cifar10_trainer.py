@@ -106,7 +106,8 @@ class Cifar10Trainer(BaseTrainer):
                 self.y_v = tf.concat(all_y, axis=0)
 
         print(self.x_v.device, self.y_v.device)
-        _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
+        with tf.device("/device:gpu:0"):
+            _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
         avg_metric = 1.0 - self.metric.result()
         avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
         np_avg_metric = avg_metric.numpy()
