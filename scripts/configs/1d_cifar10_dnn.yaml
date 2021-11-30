@@ -18,7 +18,6 @@ Trainer:
     name: 'DNN'
     units: [64,32,16,10]
     activations: [relu,relu,relu,softmax]
-    fuse_models: 1
     save_path_to_model: './dataset/model/cifar10/'
   others:
     path_to_log: './dataset/logs/cifar10/'
