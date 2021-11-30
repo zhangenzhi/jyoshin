@@ -85,12 +85,15 @@ class Cifar10Trainer(BaseTrainer):
         iter_test = iter(self.plotter_dataset)
         iter_label = iter(adapt_label_dataset)
         
+        import pdb
+        pdb.set_trace()
+        
         self.metric.reset_states()
 
         all_x = []
         all_y = []
         if self.x_v == None or self.y_v == None:
-            while True and batch_nums != 0:
+            for _ in range(batch_nums):
                 try:
                     x = iter_test.get_next()
                     y = iter_label.get_next()
@@ -98,13 +101,10 @@ class Cifar10Trainer(BaseTrainer):
                     all_y.append(y['y'])
                     batch_nums -= 1
                 except:
-                    print("run out of data. ")
+                    print_error("run out of data to put in device. ")
                     break
             self.x_v = tf.concat(all_x, axis=0)
             self.y_v = tf.concat(all_y, axis=0)
-
-        import pdb
-        pdb.set_trace()
         
         _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
         avg_metric = 1.0 - self.metric.result().numpy()
