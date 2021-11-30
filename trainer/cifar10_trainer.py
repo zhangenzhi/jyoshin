@@ -81,7 +81,7 @@ class Cifar10Trainer(BaseTrainer):
                 filepath=self.args['model']['save_path_to_model'])
 
     def device_self_evaluate(self, adapt_label_dataset, batch_nums=10):
-        # causue uniform dataset is small, so we load them directly to gpu mem.
+        # causue cifar10 dataset is small, so we load them directly to gpu mem.
         import pdb
         pdb.set_trace()
         

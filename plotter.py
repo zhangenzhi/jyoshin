@@ -19,6 +19,8 @@ class Plotter:
         self.model = trainer.model
         self.init_weights = [tf.convert_to_tensor(
             w) for w in self.model.trainable_weights]
+        import pdb
+        pdb.set_trace()
         self.adapt_label_dataset = self._build_adapt_label_dataset()
 
     def _build_adapt_label_dataset(self):
