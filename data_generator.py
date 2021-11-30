@@ -67,6 +67,9 @@ if __name__ == "__main__":
             x.append(v['y'])
         x_gpu = tf.concat(x, axis=0)
     print(x_gpu.device)
+    
+    import pdb
+    pdb.set_trace()
         
 
     # dataset = read_data_from_csv()
