@@ -82,11 +82,11 @@ class Cifar10Trainer(BaseTrainer):
 
     def device_self_evaluate(self, adapt_label_dataset, batch_nums=10):
         # causue uniform dataset is small, so we load them directly to gpu mem.
-        iter_test = iter(self.plotter_dataset)
-        iter_label = iter(adapt_label_dataset)
-        
         import pdb
         pdb.set_trace()
+        
+        iter_test = iter(self.plotter_dataset)
+        iter_label = iter(adapt_label_dataset)
         
         self.metric.reset_states()
 
