@@ -26,7 +26,7 @@ Plotter:
   task: "1d"
   num_evaluate: 1000
   step: 1e-3
-  fuse_models: None
+  fuse_nums: None
   save_directions: False
   load_directions: False
   path_to_adapt_label: './dataset/image/cifar10/'
