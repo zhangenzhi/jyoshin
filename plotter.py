@@ -74,11 +74,8 @@ class Plotter:
             y_changes = [step[1] * d2 for d2 in dy[0]]
             changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
-            import pdb 
-            pdb.set_trace()
-            
             dx = directions[0]
-            changes = [d * step for d in dx[0]]
+            changes = [d * step for d in dx]
 
         init_weights = self.get_init_weights()
         trainable_variables = self.get_weights()
