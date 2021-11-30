@@ -59,17 +59,17 @@ if __name__ == "__main__":
                        CSV_COLUMNS=['y'],
                        batch_size=128)
 
-    i_ds = iter(ds)
-    x = []
-    with tf.device("/device:gpu:0"):
-        for _ in range(100):
-            v = i_ds.get_next()
-            x.append(v['y'])
-        x_gpu = tf.concat(x, axis=0)
-    print(x_gpu.device)
+    # i_ds = iter(ds)
+    # x = []
+    # with tf.device("/device:gpu:0"):
+    #     for _ in range(100):
+    #         v = i_ds.get_next()
+    #         x.append(v['y'])
+    #     x_gpu = tf.concat(x, axis=0)
+    # print(x_gpu.device)
     
-    import pdb
-    pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
         
 
     # dataset = read_data_from_csv()

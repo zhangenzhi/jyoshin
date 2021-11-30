@@ -104,9 +104,6 @@ class Cifar10Trainer(BaseTrainer):
             with tf.device("/device:gpu:0"):
                 self.x_v = tf.concat(all_x, axis=0)
                 self.y_v = tf.concat(all_y, axis=0)
-                
-        import pdb
-        pdb.set_trace()
         
         _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
         avg_metric = 1.0 - self.metric.result().numpy()
