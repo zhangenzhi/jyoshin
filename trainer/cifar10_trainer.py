@@ -83,14 +83,11 @@ class Cifar10Trainer(BaseTrainer):
     def device_self_evaluate(self, adapt_label_dataset, batch_nums=100):
         # causue cifar10 dataset is small, so we load them directly to gpu mem.
 
-        iter_test = iter(self.plotter_dataset)
-        iter_label = iter(adapt_label_dataset)
-
-        self.metric.reset_states()
-
-        all_x = []
-        all_y = []
         if self.x_v == None or self.y_v == None:
+            all_x = []
+            all_y = []
+            iter_test = iter(self.plotter_dataset)
+            iter_label = iter(adapt_label_dataset)
             for _ in range(batch_nums):
                 try:
                     x = iter_test.get_next()
@@ -108,8 +105,8 @@ class Cifar10Trainer(BaseTrainer):
         print(self.x_v.device, self.y_v.device)
         with tf.device("/device:gpu:0"):
             _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
-        avg_metric = tf.constant(1.0) - self.metric.result()
-        avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
+            avg_metric = tf.constant(1.0) - self.metric.result()
+            avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
         np_avg_metric = avg_metric.numpy()
 
         return np_avg_metric
