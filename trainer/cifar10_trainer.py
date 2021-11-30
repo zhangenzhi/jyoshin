@@ -102,7 +102,6 @@ class Cifar10Trainer(BaseTrainer):
                 self.x_v = tf.concat(all_x, axis=0)
                 self.y_v = tf.concat(all_y, axis=0)
 
-        print(self.x_v.device, self.y_v.device)
         with tf.device("/device:gpu:0"):
             _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
             avg_metric = tf.constant(1.0) - self.metric.result()
@@ -123,25 +122,6 @@ class Cifar10Trainer(BaseTrainer):
         metric = self.metric.update_state(labels, prediction)
 
         return loss, metric
-
-    def self_evaluate(self):
-        iter_test = iter(self.dataset)
-        self.metric.reset_states()
-
-        while True:
-            try:
-                x = iter_test.get_next()
-            except:
-                print("run out of data. ")
-                break
-            prediction = self.model(x['x'])
-
-            loss = self.loss(prediction, x['y'])
-            self.metric.update_state(loss)
-
-        avg_loss = self.metric.result().numpy()
-        print("Avg loss:", avg_loss)
-        return avg_loss
 
 
 if __name__ == "__main__":

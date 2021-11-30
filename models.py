@@ -23,7 +23,7 @@ class Linear(keras.layers.Layer):
             name="b"
         )
             
-    def build_fuse_model(self, fuse_nums):
+    def build_fuse_layer(self, fuse_nums):
         
         w_init = tf.random_normal_initializer(seed=100000)
         b_init = tf.zeros_initializer()

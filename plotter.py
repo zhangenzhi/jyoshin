@@ -75,7 +75,8 @@ class Plotter:
         else:
             dx = directions[0]
             changes = [d * step for d in dx]
-
+            
+        # should ref in model::set fuse weight.
         init_weights = self.get_init_weights()
         trainable_variables = self.get_weights()
         for (i_w, t_w, change) in zip(init_weights, trainable_variables, changes):
