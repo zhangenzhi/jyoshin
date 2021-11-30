@@ -4,7 +4,7 @@ import tensorflow as tf
 
 from models import DNN
 from data_generator import read_data_from_csv, read_data_from_cifar10
-from utils import check_mkdir
+from utils import check_mkdir, print_green
 
 
 def run_uniform():
@@ -58,3 +58,4 @@ def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labe
             labeled_data = np.concatenate([labeled_data, y], axis=0)
     np.savetxt(filename, labeled_data, header='y',
                comments="", delimiter=',')
+    print_green("saved adapt label in {}".format(filename))
