@@ -41,6 +41,9 @@ class Linear(keras.layers.Layer):
                 initial_value=init_b, trainable=True,
                 name="b"
             )
+            
+    def build_fuse_model(self, fuse_nums):
+        pass
 
     def call(self, inputs):
         if self.fuse_layers == None:
@@ -54,12 +57,11 @@ class DNN(tf.keras.Model):
     def __init__(self,
                  units=[64, 32, 16, 1],
                  activations=['tanh', 'tanh', 'tanh', 'tanh'],
-                 fuse_models=None):
+                ):
         super(DNN, self).__init__()
 
         self.units = units
         self.activations = activations
-        self.fuse_models = fuse_models
         self.flatten = tf.keras.layers.Flatten()
         self.fc_layers = self._build_fc()
         self.fc_act = self._build_act()
@@ -67,7 +69,7 @@ class DNN(tf.keras.Model):
     def _build_fc(self):
         layers = []
         for units in self.units:
-            layers.append(Linear(units=units, fuse_layers=self.fuse_models))
+            layers.append(Linear(units=units))
         return layers
 
     def _build_act(self):
@@ -75,6 +77,9 @@ class DNN(tf.keras.Model):
         for act in self.activations:
             acts.append(tf.keras.layers.Activation(act))
         return acts
+    
+    def build_fuse_model(self, fuse_nums):
+        pass
 
     def call(self, inputs):
         x = inputs
