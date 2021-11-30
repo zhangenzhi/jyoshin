@@ -58,10 +58,15 @@ if __name__ == "__main__":
                        filepath="./dataset/image/cifar10", 
                        CSV_COLUMNS=['y'],
                        batch_size=128)
-    import pdb
-    pdb.set_trace()
-    
-    iter(ds)
+
+    i_ds = iter(ds)
+    x = []
+    with tf.device("/device:gpu:0"):
+        for _ in range(100):
+            x.append(i_ds.get_next())
+        x_gpu = tf.concat(x, axis=0)
+    print(x_gpu.device)
+        
 
     # dataset = read_data_from_csv()
     # ds = iter(dataset)
