@@ -84,15 +84,15 @@ class Plotter:
 
     def get_random_weights(self, weights):
         # random w have save shape with w
-        if self.fuse_nums == None:
-            return [tf.random.normal(w.shape) for w in weights]
-        else:
-            single_random_direction = []
-            for w in weights:
-                dims = list(w.shape)
-                single_random_direction.append(
-                    tf.random.normal(shape=dims[1:]))
-            return single_random_direction
+        # if self.fuse_nums == None:
+        return [tf.random.normal(w.shape) for w in weights]
+        # else:
+        #     single_random_direction = []
+        #     for w in weights:
+        #         dims = list(w.shape)
+        #         single_random_direction.append(
+        #             tf.random.normal(shape=dims[1:]))
+        #     return single_random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
         return [w2 - w1 for (w1, w2) in zip(weights_1, weights_2)]
