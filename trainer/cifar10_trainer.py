@@ -82,10 +82,10 @@ class Cifar10Trainer(BaseTrainer):
 
     def device_self_evaluate(self, adapt_label_dataset, batch_nums=10):
         # causue cifar10 dataset is small, so we load them directly to gpu mem.
-        
+
         iter_test = iter(self.plotter_dataset)
         iter_label = iter(adapt_label_dataset)
-        
+
         self.metric.reset_states()
 
         all_x = []
@@ -104,7 +104,8 @@ class Cifar10Trainer(BaseTrainer):
             with tf.device("/device:gpu:0"):
                 self.x_v = tf.concat(all_x, axis=0)
                 self.y_v = tf.concat(all_y, axis=0)
-        
+
+        print(self.x_v.device, self.x_y.device)
         _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
         avg_metric = 1.0 - self.metric.result().numpy()
         avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
@@ -115,15 +116,14 @@ class Cifar10Trainer(BaseTrainer):
     # @tf.function(experimental_relax_shapes=True)
     def evaluate_in_all(self, inputs, labels):
         prediction = self.model(inputs)
-        prediction = tf.squeeze(prediction)
-        
+
         # loss
         loss = self.loss(labels, prediction)
-        
+
         # metric
         self.metric.reset_states()
         metric = self.metric.update_state(labels, prediction)
-        
+
         return loss, metric
 
     def self_evaluate(self):
