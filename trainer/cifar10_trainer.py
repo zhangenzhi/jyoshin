@@ -105,7 +105,7 @@ class Cifar10Trainer(BaseTrainer):
                 self.x_v = tf.concat(all_x, axis=0)
                 self.y_v = tf.concat(all_y, axis=0)
 
-        print(self.x_v.device, self.x_y.device)
+        print(self.x_v.device, self.y_v.device)
         _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
         avg_metric = 1.0 - self.metric.result().numpy()
         avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
