@@ -34,43 +34,16 @@ class Plotter:
     def get_weights(self):
         return self.model.trainable_weights
 
-    # def fuse_directions(self, normalized_directions):
-    #     shift_directions = []
-    #     base_directions = []
-    #     for d in normalized_directions:
-    #         shift_direction = []
-    #         base_direction = []
-    #         for i in range(self.fuse_nums):
-    #             base_direction.append(d)
-    #             shift_direction.append(d * (i+1))
-    #         shift_directions.append(tf.stack(shift_direction))
-    #         base_directions.append(tf.stack(base_direction))
-    #     return base_directions, shift_directions
-
     def set_weights(self, directions=None, step=0):
         # L(alpha * theta + (1- alpha)* theta') => L(theta + alpha * (theta-theta'))
         # L(theta + alpha * theta_1 + beta * theta_2)
         # Each direction have same shape with trainable weights
-   
-        # if len(directions) == 2:
-        #     # just fuse models in y direction.
-        #     dx = directions[0]
-        #     dy = directions[1]
-        #     x_changes = [step[0] * d for d in dx[0]]
-        #     y_changes = [step[1] * d1 * self.fuse_nums + self.step[1] * d2
-        #                     for (d1, d2) in zip(dy[0], dy[1])]
-        #     changes = [x + y for (x, y) in zip(x_changes, y_changes)]
-        # else:
-        #     dx = directions[0]
-        #     changes = [d1 * step *
-        #                 self.fuse_nums + d2 * self.step for (d1, d2) in zip(dx[0], dx[1])]
         
         if len(directions) == 2:
-            # just fuse models in y direction.
             dx = directions[0]
             dy = directions[1]
-            x_changes = [step[0] * d1 for d1 in dx[0]]
-            y_changes = [step[1] * d2 for d2 in dy[0]]
+            x_changes = [step[0] * d1 for d1 in dx]
+            y_changes = [step[1] * d2 for d2 in dy]
             changes = [x + y for (x, y) in zip(x_changes, y_changes)]
         else:
             dx = directions[0]
@@ -84,15 +57,7 @@ class Plotter:
 
     def get_random_weights(self, weights):
         # random w have save shape with w
-        # if self.fuse_nums == None:
         return [tf.random.normal(w.shape) for w in weights]
-        # else:
-        #     single_random_direction = []
-        #     for w in weights:
-        #         dims = list(w.shape)
-        #         single_random_direction.append(
-        #             tf.random.normal(shape=dims[1:]))
-        #     return single_random_direction
 
     def get_diff_weights(self, weights_1, weights_2):
         return [w2 - w1 for (w1, w2) in zip(weights_1, weights_2)]
@@ -178,7 +143,7 @@ class Plotter:
         directions = self.create_random_direction(
             norm='layer', name='x')
 
-        # plot num_evaluate * fuse_nums points in lossland
+        # plot num_evaluate points in lossland
         start_time = time.time()
         for i in range(self.num_evaluate):
             step = self.step*(i-self.num_evaluate/2)
@@ -206,7 +171,7 @@ class Plotter:
             norm='layer', name='y')
         directions = [direction_x, direction_y]
 
-        # plot num_evaluate * fuse_nums points in lossland
+        # plot num_evaluate points in lossland
         start_time = time.time()
 
         for i in range(self.num_evaluate[0]):
