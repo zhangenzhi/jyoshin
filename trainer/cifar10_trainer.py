@@ -105,12 +105,13 @@ class Cifar10Trainer(BaseTrainer):
             self.y_v = tf.concat(all_y, axis=0)
 
         _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
+        avg_metric = 1.0 - self.metric.result().numpy()
         avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
         np_avg_metric = avg_metric.numpy()
 
         return np_avg_metric
 
-    # @tf.function(experimental_relax_shapes=True)
+    @tf.function(experimental_relax_shapes=True)
     def evaluate_in_all(self, inputs, labels):
         prediction = self.model(inputs)
         prediction = tf.squeeze(prediction)
@@ -121,7 +122,6 @@ class Cifar10Trainer(BaseTrainer):
         # metric
         self.metric.reset_states()
         metric = self.metric.update_state(labels, prediction)
-        metric = 1.0 - self.metric.result().numpy()
         
         return loss, metric
 
