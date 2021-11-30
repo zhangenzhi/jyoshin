@@ -63,7 +63,8 @@ if __name__ == "__main__":
     x = []
     with tf.device("/device:gpu:0"):
         for _ in range(100):
-            x.append(i_ds.get_next())
+            v = i_ds.get_next()
+            x.append(v['y'])
         x_gpu = tf.concat(x, axis=0)
     print(x_gpu.device)
         
