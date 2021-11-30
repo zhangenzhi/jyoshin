@@ -210,7 +210,7 @@ class Plotter:
                 y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
                 step = [x_shift_step, y_shift_step]
                 self.set_weights(directions=directions, step=step)
-                avg_loss = self.trainer.device_self_evaluate()
+                avg_loss = self.trainer.device_self_evaluate(adapt_label_dataset= self.adapt_label_dataset)
                 with open(path_to_csv, "ab") as f:
                     np.savetxt(f, avg_loss, comments="")
 
