@@ -57,6 +57,6 @@ def generate_label_for_cifar10(model, dataset, path_to_file='./', filename='labe
             labeled_data = y
         else:
             labeled_data = np.concatenate([labeled_data, y], axis=0)
-    np.savetxt(filename, labeled_data, header='y',
+    np.savetxt(filename, labeled_data, header='y',fmt='%i',
                comments="", delimiter=',')
     print_green("saved adapt label in {}".format(filename))
