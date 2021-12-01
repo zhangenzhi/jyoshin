@@ -1,0 +1,26 @@
+Trainer:
+  loss:
+    name: 'mse'
+  metric: 
+    name: 'Mean'
+  optimizer:
+    name: 'SGD'
+    learning_rate: 0.001
+  dataset:
+    name: 'uniform'
+    batch_size: 100
+    epoch: 1
+    path_to_data: 'dataset/random/uniform/labeled.csv'
+  model:
+    name: 'DNN'
+    units: [64,16,1]
+    activations: [tanh,tanh,tanh]
+    fuse_models: 100
+
+Plotter:
+  task: "1d"
+  num_evaluate: 10
+  step: 1e-3
+  save_directions: False
+  load_directions: False
+  save_file: ./dataset/result/1d_uniform_dnn_1k

@@ -1,40 +1,33 @@
-from trainer import Trainer
+from utils import *
+import argparse
+from trainer import UniformTrainer, Cifar10Trainer
 from plotter import Plotter
-import time
-import numpy as np
-import tensorflow as tf
+from label_generator import generate_label_for_cifar10
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 if __name__ == '__main__':
-    trainer_args = {'loss': {'name': 'mse'},
-                    'metric': {'name': 'Mean'},
-                    'optimizer': {'name': 'SGD', 'learning_rate': 0.001},
-                    'dataset': {'name': 'uniform', 'batch_size': 100, 'epoch': 1},
-                    'model': {'name': 'DNN', 'units': [64, 16, 1],
-                              'activations': ['tanh', 'tanh', 'tanh'], 'fuse_models': 1000},
-                    }
+    parser = argparse.ArgumentParser(
+        description='Plot lossland around ture minima.')
+    parser.add_argument(
+        '--config', default='scripts/configs/1d_uniform_dnn.yaml')
 
-    trainer = Trainer(trainer_args)
-    trainer.just_build()
-    trainer.model.summary()
-    # trainer.uniform_self_evaluate()
+    args = parser.parse_args()
+    config = get_yml_content(args.config)
 
-    # plotter_args = {'num_evaluate': 10,
-    #                 'step': 1/10,
-    #                 'fuse_models': trainer_args['model']['fuse_models'],
-    #                 }
-    # plotter = Plotter(plotter_args, trainer.model)
+    trainer_args = config['Trainer']
+    plotter_args = config['Plotter']
 
-    # # 1d-loss
-    # plotter.plot_1d_loss(trainer=trainer)
+    if trainer_args['dataset']['name'] == 'uniform':
+        trainer = UniformTrainer(trainer_args)
+    elif trainer_args['dataset']['name'] == 'cifar10':
+        trainer = Cifar10Trainer(trainer_args)
+        trainer.run()
 
-    plotter_args = {'num_evaluate': [1000, 1],
-                    'step': [1e-3, 1e-3],
-                    'fuse_models': trainer_args['model']['fuse_models'],
-                    }
-    plotter = Plotter(plotter_args, trainer.model)
+    generate_label_for_cifar10(dataset=iter(trainer.plotter_dataset),
+                               model=trainer.model,
+                               path_to_file=trainer_args['dataset']['path_to_data'])
 
-    # 2d-loss
-    plotter.plot_2d_loss(trainer=trainer)
+    plotter = Plotter(plotter_args, trainer)
+    plotter.run()

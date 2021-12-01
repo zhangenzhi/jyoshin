@@ -1,4 +1,6 @@
+.DS*
 *.csv
 .vscode
 __pycache__
 saved_models
+dataset

@@ -19,7 +19,7 @@ def save_data_to_csv(data, filename='uniform.csv', filepath='./'):
 
 def read_data_from_csv(filename='uniform.csv',
                        filepath='./',
-                       CSV_COLUMNS = ['x'],
+                       CSV_COLUMNS=['x'],
                        batch_size=100,
                        num_epochs=1):
 
@@ -32,10 +32,45 @@ def read_data_from_csv(filename='uniform.csv',
     return dataset
 
 
+def read_data_from_cifar10(filepath='./',
+                           shuffle=False,
+                           batch_size=32,
+                           num_epochs=1):
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    x_train = x_train.astype(np.float32)
+    y_train = y_train.astype(np.float32)
+    train_dataset = tf.data.Dataset.from_tensor_slices(
+        {'x': x_train, 'y': y_train})
+    train_dataset = train_dataset.map(lambda x: x, num_parallel_calls=80)
+    train_dataset = train_dataset.batch(batch_size).repeat(num_epochs)
+    if shuffle:
+        train_dataset = train_dataset.shuffle(50000)
+
+    return train_dataset
+
+
 if __name__ == "__main__":
-    data = uniform_generator(range=[-1.0, 1.0])
-    print(data)
-    save_data_to_csv(data=data)
+    # data = uniform_generator(range=[-1.0, 1.0])
+    # print(data)
+    # save_data_to_csv(data=data)
+    # read_data_from_cifar10()
+    ds = read_data_from_csv(filename='labeled.csv',
+                       filepath="./dataset/image/cifar10", 
+                       CSV_COLUMNS=['y'],
+                       batch_size=128)
+
+    # i_ds = iter(ds)
+    # x = []
+    # with tf.device("/device:gpu:0"):
+    #     for _ in range(100):
+    #         v = i_ds.get_next()
+    #         x.append(v['y'])
+    #     x_gpu = tf.concat(x, axis=0)
+    # print(x_gpu.device)
+    
+    # import pdb
+    # pdb.set_trace()
+        
 
     # dataset = read_data_from_csv()
     # ds = iter(dataset)
