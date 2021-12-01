@@ -1,8 +1,6 @@
 import tensorflow as tf
 from tensorflow import keras
 
-
-
 class Linear(keras.layers.Layer):
     def __init__(self, units=32):
         super(Linear, self).__init__()
@@ -62,7 +60,7 @@ class DNN(tf.keras.Model):
         layers = []
         for units in self.units:
             layers.append(Linear(units=units))
-            layers.append(keras.layers.BatchNormalization())
+            layers.append()
         return layers
 
     def _build_act(self):
