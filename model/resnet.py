@@ -98,10 +98,10 @@ class ResNet(keras.Model):
 
     def _build_stack(self, filters, blocks, stride1=2, name=None):
         stack = []
-        stack.append(self.block1(
+        stack.append(self._build_block(
             filters, stride=stride1, name=name + '_block1'))
         for i in range(2, blocks + 1):
-            stack.append(self.block1(filters, conv_shortcut=False,
+            stack.append(self._build_block(filters, conv_shortcut=False,
                          name=name + '_block' + str(i)))
         return stack
 
