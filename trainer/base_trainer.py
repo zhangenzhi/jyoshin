@@ -1,7 +1,7 @@
 import os
 import tensorflow as tf
 
-from models import DNN
+from ..model import DNN, ResNet
 from utils import check_file, check_mkdir, print_error, print_green
 
 
@@ -25,6 +25,9 @@ class BaseTrainer:
         if model_args['name'] == 'DNN':
             model = DNN(units=model_args['units'],
                         activations=model_args['activations'])
+        if model_args['name'] == "ResNet50":
+            model = ResNet(classes=10, 
+                           name=model_args['name'])
         else:
             model = None
         return model

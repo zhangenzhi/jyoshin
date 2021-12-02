@@ -32,7 +32,8 @@ class Cifar10Trainer(BaseTrainer):
             self.model(x['x'])
         except:
             print_error("build model with variables failed.")
-
+            
+    @tf.function(experimental_relax_shapes=True)
     def train_step(self, x):
         inputs = x['x']
         labels = x['y']
@@ -64,7 +65,7 @@ class Cifar10Trainer(BaseTrainer):
                 break
             loss = self.train_step(x)
             if flag % 100 == 0:
-                train_log = "loss:{}, metric:{}".format(
+                train_log = "step:{},loss:{}, metric:{}".format(flag,
                     loss.numpy(), self.metric.result().numpy())
                 print(train_log)
                 write_to_file(
