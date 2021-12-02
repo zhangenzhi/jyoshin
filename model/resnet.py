@@ -41,6 +41,8 @@ class ResNet(keras.Model):
             head.append(layers.BatchNormalization(
                 axis=bn_axis, epsilon=1.001e-5, name='conv1_bn'))
             head.append(layers.Activation('relu', name='conv1_relu'))
+            
+        return head
 
     def _build_top(self):
         top = []
