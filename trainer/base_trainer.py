@@ -37,6 +37,11 @@ class BaseTrainer:
         return loss
 
     def _build_optimizer(self, optimizer_args):
+        
+        if type(optimizer_args['learning_rate']) != float:
+            lr_schedule = tf.keras.optimizers.deserialize(optimizer_args['learning_rate'])
+            optimizer_args['learning_rate'] = lr_schedule
+            
         if optimizer_args['name'] == 'SGD':
             optimizer = tf.keras.optimizers.SGD(
                 learning_rate=optimizer_args['learning_rate'])
