@@ -75,7 +75,6 @@ class DNN(tf.keras.Model):
         acts = []
         for act in self.activations:
             acts.append(tf.keras.layers.Activation(act))
-        
         return acts
     
     def build_fuse_model(self, fuse_nums):
