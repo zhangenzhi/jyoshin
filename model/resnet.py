@@ -133,11 +133,13 @@ class ResNet(keras.Model):
         for stack in self.stem:
             for block in stack:
                 conv_layers, shortcuts = block
+                #shortcut 
+                s = x
+                for shortcut in shortcuts:
+                    s = shortcut(s)
+                #conv layers
                 for layer in conv_layers:
                     if isinstance(layer, tf.keras.layers.Add):
-                        s = x
-                        for shortcut in shortcuts:
-                            s = shortcut(s)
                         x = layer([x,s])
                     else:
                         x = layer(x)
