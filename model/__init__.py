@@ -1,2 +1,2 @@
-from dnn import DNN
-from resnet import ResNet
+from .dnn import DNN
+from .resnet import ResNet
