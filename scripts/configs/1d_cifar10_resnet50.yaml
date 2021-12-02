@@ -16,9 +16,9 @@ Trainer:
     path_to_data: './dataset/image/cifar10/'
   model:
     name: 'ResNet50'
-    save_path_to_model: './dataset/model/cifar10/'
+    save_path_to_model: './dataset/model/cifar10_resnet50/'
   others:
-    path_to_log: './dataset/logs/cifar10/'
+    path_to_log: './dataset/logs/cifar10_resnet50/'
 
 Plotter:
   task: "1d"
@@ -27,5 +27,5 @@ Plotter:
   fuse_nums: None
   save_directions: False
   load_directions: False
-  path_to_adapt_label: './dataset/image/cifar10/'
-  save_file: ./dataset/result/1d_cifar10_dnn_1w
+  path_to_adapt_label: './dataset/image/cifar10_resnet50/'
+  save_file: ./dataset/result/1d_cifar10_resnet50_1w
