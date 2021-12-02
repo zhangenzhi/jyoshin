@@ -55,6 +55,7 @@ class DNN(tf.keras.Model):
         self.flatten = tf.keras.layers.Flatten()
         self.fc_layers = self._build_fc()
         self.fc_act = self._build_act()
+        self.fc_bn = self._build_bn()
 
     def _build_fc(self):
         layers = []
@@ -62,11 +63,19 @@ class DNN(tf.keras.Model):
             layers.append(Linear(units=units))
             layers.append()
         return layers
+    
+    def _build_bn(self):
+        bn = []
+        for _ in range(len(self.activations)-1):
+            bn.append(tf.keras.layers.BatchNormalization())
+        bn.append(tf.keras.layers.Lambda(lambda x:x))
+        return bn
 
     def _build_act(self):
         acts = []
         for act in self.activations:
             acts.append(tf.keras.layers.Activation(act))
+        
         return acts
     
     def build_fuse_model(self, fuse_nums):
@@ -75,7 +84,8 @@ class DNN(tf.keras.Model):
     def call(self, inputs):
         x = inputs
         x = self.flatten(x)
-        for layer, act in zip(self.fc_layers, self.fc_act):
+        for layer, act, bn in zip(self.fc_layers, self.fc_act, self.fc_bn):
             x = layer(x)
             x = act(x)
+            x = bn(x)
         return x
