@@ -29,7 +29,7 @@ class BaseTrainer:
                         activations=model_args['activations'])
         if model_args['name'] == "ResNet50":
             model = ResNet(classes=10, 
-                           name=model_args['name'])
+                           model_type=model_args['name'])
         else:
             model = None
         return model
