@@ -15,7 +15,7 @@ class ResNet(keras.Model):
                  name="ResNet50"):
         super(ResNet, self).__init__()
 
-        self.name = name
+        # self.name = name
         self.include_top = include_top
         self.preact = preact
         self.use_bias = use_bias
