@@ -6,7 +6,7 @@ from tensorflow.python.ops.gen_array_ops import identity
 
 class ResNet(keras.Model):
     def __init__(self,
-                 name="ResNet50",
+                 model_type="ResNet50",
                  include_top=True,
                  preact=False,
                  use_bias=True,
@@ -16,7 +16,7 @@ class ResNet(keras.Model):
                  ):
         super(ResNet, self).__init__()
 
-        # self.type = type
+        self.model_type = model_type
         self.include_top = include_top
         self.preact = preact
         self.use_bias = use_bias
@@ -107,7 +107,7 @@ class ResNet(keras.Model):
 
     def _build_stack_fn(self):
         stem = []
-        if self.name == "ResNet50":
+        if self.model_type == "ResNet50":
             stem.append(self._build_stack(
                 filters=64, blocks=3, stride1=1, name='conv2'))
             stem.append(self._build_stack(
