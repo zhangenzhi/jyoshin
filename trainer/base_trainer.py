@@ -41,7 +41,7 @@ class BaseTrainer:
 
         if type(optimizer_args['learning_rate']) != float:
             lr_schedule = tf.keras.optimizers.deserialize(
-                config={'config': optimizer_args['learning_rate']})
+                config=optimizer_args['learning_rate'])
             optimizer_args['learning_rate'] = lr_schedule
 
         if optimizer_args['name'] == 'SGD':
