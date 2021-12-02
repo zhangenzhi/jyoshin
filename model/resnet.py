@@ -24,7 +24,7 @@ class ResNet(keras.Model):
         self.classes = classes
         self.classifier_activation = classifier_activation
 
-        self.head = self._build_head
+        self.head = self._build_head()
         self.stem = self._build_stack_fn()
         self.top = self._build_top()
 
