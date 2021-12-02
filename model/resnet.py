@@ -107,7 +107,7 @@ class ResNet(keras.Model):
 
     def _build_stack_fn(self):
         stem = []
-        if self.type == "ResNet50":
+        if self.name == "ResNet50":
             stem.append(self._build_stack(
                 filters=64, blocks=3, stride1=1, name='conv2'))
             stem.append(self._build_stack(
