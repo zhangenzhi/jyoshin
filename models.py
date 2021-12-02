@@ -61,7 +61,6 @@ class DNN(tf.keras.Model):
         layers = []
         for units in self.units:
             layers.append(Linear(units=units))
-            layers.append()
         return layers
     
     def _build_bn(self):
