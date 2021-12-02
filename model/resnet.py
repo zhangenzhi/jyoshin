@@ -62,7 +62,7 @@ class ResNet(keras.Model):
                 top.append(layers.GlobalMaxPooling2D(name='max_pool'))
         return top
 
-    def _build_block(filters, kernel_size=3, stride=1, conv_shortcut=True, name=None):
+    def _build_block(self, filters, kernel_size=3, stride=1, conv_shortcut=True, name=None):
 
         bn_axis = 3
         layer = []
