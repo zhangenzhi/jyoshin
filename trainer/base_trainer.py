@@ -1,7 +1,9 @@
 import os
 import tensorflow as tf
+import sys
+sys.path.append('..')
 
-from ..model import DNN, ResNet
+from model import DNN, ResNet
 from utils import check_file, check_mkdir, print_error, print_green
 
 

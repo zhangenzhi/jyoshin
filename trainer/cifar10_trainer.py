@@ -1,5 +1,3 @@
-import pdb
-
 from tensorflow.python.util.compat import path_to_str
 from data_generator import read_data_from_cifar10, read_data_from_csv
 from utils import *
