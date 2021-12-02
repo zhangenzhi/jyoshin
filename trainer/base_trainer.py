@@ -40,7 +40,7 @@ class BaseTrainer:
     def _build_optimizer(self, optimizer_args):
 
         if type(optimizer_args['learning_rate']) != float:
-            lr_schedule = tf.keras.optimizers.deserialize(
+            lr_schedule = tf.keras.optimizers.schedules.deserialize(
                 config=optimizer_args['learning_rate'])
             optimizer_args['learning_rate'] = lr_schedule
 
