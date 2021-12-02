@@ -4,6 +4,7 @@ import tensorflow as tf
 from models import DNN
 from utils import check_file, check_mkdir, print_error, print_green
 
+
 class BaseTrainer:
     def __init__(self, args):
         self.args = args
@@ -37,11 +38,12 @@ class BaseTrainer:
         return loss
 
     def _build_optimizer(self, optimizer_args):
-        
+
         if type(optimizer_args['learning_rate']) != float:
-            lr_schedule = tf.keras.optimizers.deserialize(optimizer_args['learning_rate'])
+            lr_schedule = tf.keras.optimizers.deserialize(
+                config={'config': optimizer_args['learning_rate']})
             optimizer_args['learning_rate'] = lr_schedule
-            
+
         if optimizer_args['name'] == 'SGD':
             optimizer = tf.keras.optimizers.SGD(
                 learning_rate=optimizer_args['learning_rate'])
@@ -55,12 +57,12 @@ class BaseTrainer:
     def save_model_weights(self, filepath='./saved_models', name='latest.h5', save_format="h5"):
         filepath = os.path.join(filepath)
         check_mkdir(filepath)
-        filepath = os.path.join(filepath,name)
+        filepath = os.path.join(filepath, name)
         self.model.save_weights(filepath, save_format=save_format)
         print_green("model saved in {}".format(filepath))
 
     def load_model_weights(self, filepath='./saved_models', name='latest.h5'):
-        filepath = os.path.join(filepath,name)
+        filepath = os.path.join(filepath, name)
         if check_file(filepath):
             self.just_build()
             self.model.load_weights(filepath)
@@ -70,16 +72,16 @@ class BaseTrainer:
 
     def _build_dataset(self, dataset_args):
         raise NotImplementedError
-    
+
     def _just_build(self):
         raise NotImplementedError
-        
+
     def train_step(self, x):
         raise NotImplementedError
 
     def run(self):
         raise NotImplementedError
-    
+
     def self_evaluate(self):
         raise NotImplementedError
 
