@@ -21,7 +21,7 @@ with tf.device("/device:gpu:0"):
     y = slice_y
 
     def f(x, y): return tf.matmul(x, y)
-    def c(x, y): return False
+    def c(x, y): return tf.less(1, 2 ** 20)
     r = tf.while_loop(cond=c, body=f, loop_vars=(x, y))
 
 # f1 = h5py.File("./saved_models/1/model.h5")
