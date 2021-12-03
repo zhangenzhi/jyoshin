@@ -13,18 +13,17 @@ for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
 
 def on_device_matmul():
+    # Test on v100-32GB
     with tf.device("/device:gpu:0"):
-        x = tf.zeros(shape=[512*32, 32*32*3])
+        x = tf.zeros(shape=[500*32, 32*32*3])
         y = tf.zeros(shape=[32*32*3, 1])
 
         # for loop: total time: 118.20909833908081
-        # 5k:
-        # for i in tf.range(1, 2**20):
-        #     output = tf.matmul(slice_data, slice_y)
+        for i in tf.range(1, 2**20):
+            output = tf.matmul(x, y)
 
         # whille loop: total time: 49.9278666973114
         # 8-bodys:  total time: 32.072572231292725
-        # 16-bodys: total time: 30.435903072357178
         # 32-bodys: total time: 28.816709756851196
         # 32-batches: total time: 13.645819187164307
         # 64-batches: total time: 13.342840909957886
