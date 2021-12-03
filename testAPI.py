@@ -19,9 +19,9 @@ def on_device_matmul():
         slice_data = tf.reshape(slice_data, shape=(500, -1))
         
         # for-loop
-        for i in tf.range(1, 2**20):
-            # for i in range(100):
-            output = tf.matmul(slice_data, slice_y)
+        # for i in tf.range(1, 2**20):
+        #     # for i in range(100):
+        #     output = tf.matmul(slice_data, slice_y)
             
         # whille-loop
         i = tf.constant(0)
