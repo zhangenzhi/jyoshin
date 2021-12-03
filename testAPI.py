@@ -11,6 +11,15 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 physical_devices = tf.config.list_physical_devices('GPU')
 for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
+    
+def on_host_matmul():
+    with tf.device("/device:cpu:0"):
+        x = tf.zeros(shape=[500*32, 32*32*3])
+        y = tf.zeros(shape=[32*32*3, 1])
+        # for loop: total time: 118.20909833908081
+        for i in tf.range(1, 2**20):
+            output = tf.matmul(x, y)
+    
 
 def on_device_matmul():
     # Test on v100-32GB
@@ -19,7 +28,8 @@ def on_device_matmul():
         y = tf.zeros(shape=[32*32*3, 1])
 
         # for loop: total time: 118.20909833908081
-        for i in tf.range(1, 2**20):
+        # 32-batches: total time: 13.645819187164307
+        for i in tf.range(1, 2**15):
             output = tf.matmul(x, y)
 
         # whille loop: total time: 49.9278666973114
@@ -29,7 +39,7 @@ def on_device_matmul():
         # 64-batches: total time: 13.342840909957886
         # 32-batches * 32 bodys: total time:  total time: 13.570245742797852
         # i = tf.constant(0)
-        # while tf.less(i, 2**15):
+        # while tf.less(i, 2**20):
         #     output = tf.matmul(x, y)
         #     i = tf.add(i, 1)
 
@@ -48,7 +58,8 @@ def on_device_matmul():
 
 if __name__ == '__main__':
     start = time.time()
-    on_device_matmul()
+    # on_device_matmul()
+    on_host_matmul
     end = time.time()
     print("total time: {}".format(end-start))
 
