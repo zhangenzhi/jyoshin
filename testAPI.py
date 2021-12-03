@@ -4,7 +4,6 @@ import h5py
 import time
 import os
 
-from tensorflow.python.keras.layers.core import Lambda
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -12,6 +11,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 physical_devices = tf.config.list_physical_devices('GPU')
 for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
+tf.config.experimental.enable_mlir_graph_optimization
 
 @tf.function
 def on_device_matmul():
