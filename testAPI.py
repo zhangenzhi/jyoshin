@@ -35,12 +35,15 @@ def on_device_matmul():
 
         # tf.while_loop: total time: 83.1172776222229
         i = tf.constant(0)
-        def c(i,x,y): 
+
+        def c(i, x, y):
             return tf.less(i, 2**20)
+
         def f(i, x, y):
             output = tf.matmul(x, y)
-            return i + 1
-        r = tf.while_loop(cond=c, body=f, loop_vars=(i, slice_data, slice_y))
+            return i + 1, x, y
+        r = tf.while_loop(cond=c, body=f, loop_vars=(i, slice_data, slice_y), parallel_iterations=128)
+
 
 if __name__ == '__main__':
     start = time.time()
