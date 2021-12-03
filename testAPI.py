@@ -40,7 +40,9 @@ def on_device_matmul():
             output = tf.matmul(x, y)
             return tf.add(i, 1), x, y
 
-        r = tf.while_loop(cond=c, body=f, loop_vars=(0, tf.zeros(shape=[500, 32*32*3]), tf.zeros(shape=[32*32*3, 1])))
+        r = tf.while_loop(cond=c, body=f, 
+                          loop_vars=(0, tf.zeros(shape=[500, 32*32*3]), tf.zeros(shape=[32*32*3, 1])),
+                          parallel_iterations=64)
 
 
 if __name__ == '__main__':
