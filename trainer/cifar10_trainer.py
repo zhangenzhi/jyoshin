@@ -31,7 +31,7 @@ class Cifar10Trainer(BaseTrainer):
         except:
             print_error("build model with variables failed.")
             
-    # @tf.function(experimental_relax_shapes=True)
+    @tf.function(experimental_relax_shapes=True)
     def train_step(self, x):
         inputs = x['x']
         labels = x['y']
