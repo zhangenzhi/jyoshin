@@ -13,7 +13,7 @@ physical_devices = tf.config.list_physical_devices('GPU')
 for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
 
-
+@tf.function
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
         slice_y = tf.zeros(shape=[32*32*3, 1])
@@ -34,15 +34,16 @@ def on_device_matmul():
         #     i = tf.add(i, 1)
 
         # tf.while_loop: total time: 83.1172776222229
+        # parallel_iter_32: total time: 52.43951988220215
         def c(i, x, y):
             return tf.less(i, 2**20)
 
         def f(i, x, y):
             output = tf.matmul(x, y)
-            return (i + 1, x, y)
+            return i + 1, x, y
         
         r = tf.while_loop(cond=c, body=f, loop_vars=(0, slice_data, slice_y), 
-                          parallel_iterations=32)
+                          parallel_iterations=128)
 
 
 if __name__ == '__main__':
