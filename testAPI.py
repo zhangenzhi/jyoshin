@@ -19,15 +19,25 @@ with tf.device("/device:gpu:0"):
     slice_data = tf.zeros(shape=[500, 32, 32, 3])
     slice_data = tf.reshape(slice_data, shape=(500, -1))
 
-    # while True:
-    #     # for i in range(100):
-    #     output = tf.matmul(slice_data, slice_y)
-    x = slice_data
-    y = slice_y
-    i = tf.constant(0)
-    def f(i, x, y): return tf.matmul(x, y)
-    def c(i, x, y): return tf.less(i, 2 ** 20)
-    r = tf.while_loop(cond=c, body=f, loop_vars=(i, x, y))
+    while True:
+        # for i in range(100):
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        output = tf.matmul(slice_data, slice_y)
+        
+    # x = slice_data
+    # y = slice_y
+    # i = tf.constant(0)
+    # def f(i, x, y): return tf.matmul(x, y)
+    # def c(i, x, y): return tf.less(i, 2 ** 20)
+    # r = tf.while_loop(cond=c, body=f, loop_vars=(i, x, y))
 
 # f1 = h5py.File("./saved_models/1/model.h5")
 # f2 = h5py.File("./saved_models/2/model.h5")
