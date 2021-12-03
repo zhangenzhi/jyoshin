@@ -26,10 +26,43 @@ def on_device_matmul():
         # 8-bodys:  total time: 32.072572231292725
         # 16-bodys: total time: 30.435903072357178
         # 32-bodys: total time: 28.816709756851196
-        # 32-batches: total time:
+        # 32-batches: total time: 13.645819187164307
+        # 32-batches * 32 bodys: total time: 
         i = tf.constant(0)
-        while tf.less(i, 2**15):
+        while tf.less(i, 2**10):
             output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            output = tf.matmul(x, y)
+            
             i = tf.add(i, 1)
 
         # tf.while_loop: total time:52.43951988220215
