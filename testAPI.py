@@ -40,12 +40,11 @@ def on_device_matmul():
         def f(i, x, y):
             output = tf.matmul(x, y)
             return i + 1, x, y
-        r = tf.while_loop(cond=c, body=f, loop_vars=[i, slice_data, slice_y])
-
+        r = tf.while_loop(cond=c, body=f, loop_vars=(i, slice_data, slice_y))
 
 if __name__ == '__main__':
     start = time.time()
-    # on_device_matmul()
+    on_device_matmul()
     end = time.time()
     print("total time: {}".format(end-start))
 
