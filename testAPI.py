@@ -24,10 +24,18 @@ def on_device_matmul():
         #     output = tf.matmul(slice_data, slice_y)
             
         # whille-loop: total time: 49.9278666973114
-        # 8-body: 
+        # 8-body: total time: 32.072572231292725
         # tf.function: total time: 82.62994313240051
         i = tf.constant(0)
-        while tf.less(i, 2**17):
+        while tf.less(i, 2**16):
+            output = tf.matmul(slice_data, slice_y)
+            output = tf.matmul(slice_data, slice_y)
+            output = tf.matmul(slice_data, slice_y)
+            output = tf.matmul(slice_data, slice_y)
+            output = tf.matmul(slice_data, slice_y)
+            output = tf.matmul(slice_data, slice_y)
+            output = tf.matmul(slice_data, slice_y)
+            output = tf.matmul(slice_data, slice_y)
             output = tf.matmul(slice_data, slice_y)
             output = tf.matmul(slice_data, slice_y)
             output = tf.matmul(slice_data, slice_y)
