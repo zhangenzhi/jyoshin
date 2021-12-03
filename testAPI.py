@@ -14,9 +14,8 @@ with tf.device("/device:gpu:0"):
     # tf.while_loop(cond=True)
     while True:
         # for i in range(100):
-            # slice_data = data[500*i:500*(i+1)]
-        i = 0
-        slice_data = tf.reshape(data[500*i:500*(i+1)], shape=(500, -1))
+        slice_data = tf.zeros(shape=[500, 32, 32, 3])
+        slice_data = tf.reshape(slice_data, shape=(500, -1))
         output = tf.matmul(slice_data, slice_y)
 
 # f1 = h5py.File("./saved_models/1/model.h5")
