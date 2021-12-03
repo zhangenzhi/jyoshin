@@ -16,6 +16,7 @@ def on_host_matmul():
     with tf.device("/device:cpu:0"):
         x = tf.zeros(shape=[500*32, 32*32*3])
         y = tf.zeros(shape=[32*32*3, 1])
+        
         # for loop: total time: 118.20909833908081
         for i in tf.range(1, 2**20):
             output = tf.matmul(x, y)
@@ -58,8 +59,8 @@ def on_device_matmul():
 
 if __name__ == '__main__':
     start = time.time()
-    on_device_matmul()
-    # on_host_matmul
+    # on_device_matmul()
+    on_host_matmul()
     end = time.time()
     print("total time: {}".format(end-start))
 
