@@ -11,11 +11,13 @@ for item in physical_devices:
 with tf.device("/device:gpu:0"):
     data = tf.zeros(shape=[50000, 32, 32, 3])
     slice_y = tf.zeros(shape=[32*32*3, 1])
+    # tf.while_loop(cond=True)
     while True:
-        for i in range(100):
+        # for i in range(100):
             # slice_data = data[500*i:500*(i+1)]
-            slice_data = tf.reshape(data[500*i:500*(i+1)], shape=(500, -1))
-            output = tf.matmul(slice_data, slice_y)
+        i = 0
+        slice_data = tf.reshape(data[500*i:500*(i+1)], shape=(500, -1))
+        output = tf.matmul(slice_data, slice_y)
 
 # f1 = h5py.File("./saved_models/1/model.h5")
 # f2 = h5py.File("./saved_models/2/model.h5")
