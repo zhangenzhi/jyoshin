@@ -1,5 +1,6 @@
 import pdb
 import h5py
+import time
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -15,20 +16,23 @@ for item in physical_devices:
 # b = lambda i: (tf.add(i, 1), )
 # r = tf.while_loop(c, b, [i])
 
-@tf.function
+
+# @tf.function
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
-        # data = tf.zeros(shape=[50000, 32, 32, 3])
         slice_y = tf.zeros(shape=[32*32*3, 1])
         slice_data = tf.zeros(shape=[500, 32, 32, 3])
         slice_data = tf.reshape(slice_data, shape=(500, -1))
         
-        for i in tf.range(1, 2**32 + 1):
+        for i in tf.range(1, 2**20):
             # for i in range(100):
             output = tf.matmul(slice_data, slice_y)
             
 if __name__ == '__main__':
+    start = time.time()
     on_device_matmul()
+    end = time.time()
+    print("total time: {}".format(end-start))
         
     # x = slice_data
     # y = slice_y
