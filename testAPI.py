@@ -19,11 +19,11 @@ def on_device_matmul():
         slice_data = tf.zeros(shape=[500, 32, 32, 3])
         slice_data = tf.reshape(slice_data, shape=(500, -1))
 
-        # for-loop: total time: 118.20909833908081
+        # for loop: total time: 118.20909833908081
         # for i in tf.range(1, 2**20):
         #     output = tf.matmul(slice_data, slice_y)
 
-        # whille-loop: total time: 49.9278666973114
+        # whille loop: total time: 49.9278666973114
         # 8-body:  total time: 32.072572231292725
         # 16-body: total time: 30.435903072357178
         # 32-body: total time: 28.816709756851196
@@ -42,7 +42,7 @@ def on_device_matmul():
             return i + 1, x, y
         
         r = tf.while_loop(cond=c, body=f, loop_vars=(0, slice_data, slice_y), 
-                          parallel_iterations=128)
+                          parallel_iterations=64)
 
 
 if __name__ == '__main__':
