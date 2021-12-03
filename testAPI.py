@@ -15,15 +15,15 @@ for item in physical_devices:
 # b = lambda i: (tf.add(i, 1), )
 # r = tf.while_loop(c, b, [i])
 
-@tf.function(experimental_relax_shapes=True)
+@tf.function
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
         # data = tf.zeros(shape=[50000, 32, 32, 3])
         slice_y = tf.zeros(shape=[32*32*3, 1])
         slice_data = tf.zeros(shape=[500, 32, 32, 3])
         slice_data = tf.reshape(slice_data, shape=(500, -1))
-
-        while True:
+        
+        for i in tf.range(1, 2**32 + 1):
             # for i in range(100):
             output = tf.matmul(slice_data, slice_y)
             
