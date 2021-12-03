@@ -28,10 +28,10 @@ def on_device_matmul():
         # 32-batches: total time: 13.645819187164307
         # 64-batches: total time: 13.342840909957886
         # 32-batches * 32 bodys: total time:  total time: 13.570245742797852
-        i = tf.constant(0)
-        while tf.less(i, 2**15):
-            output = tf.matmul(x, y)
-            i = tf.add(i, 1)
+        # i = tf.constant(0)
+        # while tf.less(i, 2**15):
+        #     output = tf.matmul(x, y)
+        #     i = tf.add(i, 1)
 
         # tf.while_loop: total time:52.43951988220215
         # def c(i, x, y):
