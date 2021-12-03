@@ -2,17 +2,14 @@ import h5py
 import tensorflow as tf
 import pdb
 
-
-x1 = tf.zeros(shape=(1, 64))
-x2 = tf.zeros(shape=(1, 64))
-x3 = tf.zeros(shape=(1, 64))
-
-x = tf.zeros(shape=(3, 1000, 1))
-b = tf.zeros(shape=(1, 64))
-z = tf.stack([x1, x2, x3])
-pdb.set_trace()
-t = tf.matmul(x, z)
-a = t+b
+with tf.device("/device:gpu:0"):
+    data = tf.zeros(shape=[50000, 32, 32, 3])
+    slice_y = tf.zeros(shape=[32*32*3,1])
+    while True:
+        for i in range(100):
+            # slice_data = data[500*i:500*(i+1)]
+            slice_data = tf.reshape(data[500*i:500*(i+1)], shape=(500, -1))
+            output = slice_data * slice_y
 
 # f1 = h5py.File("./saved_models/1/model.h5")
 # f2 = h5py.File("./saved_models/2/model.h5")
