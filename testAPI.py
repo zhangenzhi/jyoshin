@@ -41,8 +41,7 @@ def on_device_matmul():
             output = tf.matmul(x, y)
             return i + 1, x, y
         
-        r = tf.while_loop(cond=c, body=f, loop_vars=(0, slice_data, slice_y), 
-                          parallel_iterations=64)
+        r = tf.while_loop(cond=c, body=f, loop_vars=(0, slice_data, slice_y))
 
 
 if __name__ == '__main__':
