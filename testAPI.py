@@ -13,7 +13,6 @@ physical_devices = tf.config.list_physical_devices('GPU')
 for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
 
-@tf.function
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
         slice_y = tf.zeros(shape=[32*32*3, 1])
