@@ -16,8 +16,8 @@ for item in physical_devices:
 
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
-        x = tf.zeros(shape=[500, 32*32*3])
-        y = tf.zeros(shape=[32*32*3, 1])
+        # x = tf.zeros(shape=[500, 32*32*3])
+        # y = tf.zeros(shape=[32*32*3, 1])
 
         # for loop: total time: 118.20909833908081
         # for i in tf.range(1, 2**20):
@@ -40,7 +40,7 @@ def on_device_matmul():
             output = tf.matmul(x, y)
             return tf.add(i, 1), x, y
 
-        r = tf.while_loop(cond=c, body=f, loop_vars=(0, x, y))
+        r = tf.while_loop(cond=c, body=f, loop_vars=(0, tf.zeros(shape=[500, 32*32*3]), tf.zeros(shape=[32*32*3, 1])))
 
 
 if __name__ == '__main__':
