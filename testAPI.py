@@ -58,8 +58,8 @@ def on_device_matmul():
 
 if __name__ == '__main__':
     start = time.time()
-    # on_device_matmul()
-    on_host_matmul
+    on_device_matmul()
+    # on_host_matmul
     end = time.time()
     print("total time: {}".format(end-start))
 
