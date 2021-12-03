@@ -2,14 +2,14 @@ import pdb
 import tensorflow as tf
 import h5py
 import os
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIABLE_DEVICE"] = "0"
 
 physical_devices = tf.config.list_physical_devices('GPU')
 for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
 
 i = tf.constant(0)
-c = lambda i: tf.less(i, 10)
+c = lambda i: tf.less(i, 2**20)
 b = lambda i: (tf.add(i, 1), )
 r = tf.while_loop(c, b, [i])
 
