@@ -11,9 +11,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 physical_devices = tf.config.list_physical_devices('GPU')
 for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
-tf.config.experimental.enable_mlir_graph_optimization
 
-@tf.function
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
         x = tf.zeros(shape=[500, 32*32*3])
