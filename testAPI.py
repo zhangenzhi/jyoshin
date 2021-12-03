@@ -15,7 +15,7 @@ for item in physical_devices:
 # b = lambda i: (tf.add(i, 1), )
 # r = tf.while_loop(c, b, [i])
 
-@tf.function
+@tf.function(experimental_relax_shapes=True)
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
         # data = tf.zeros(shape=[50000, 32, 32, 3])
