@@ -9,7 +9,7 @@ for item in physical_devices:
     tf.config.experimental.set_memory_growth(item, True)
 
 with tf.device("/device:gpu:0"):
-    data = tf.zeros(shape=[50000, 32, 32, 3])
+    # data = tf.zeros(shape=[50000, 32, 32, 3])
     slice_y = tf.zeros(shape=[32*32*3, 1])
     slice_data = tf.zeros(shape=[500, 32, 32, 3])
     slice_data = tf.reshape(slice_data, shape=(500, -1))
@@ -17,10 +17,12 @@ with tf.device("/device:gpu:0"):
     # while True:
     #     # for i in range(100):
     #     output = tf.matmul(slice_data, slice_y)
+    x = slice_data
+    y = slice_y
 
     def f(x, y): return tf.matmul(x, y)
     def c(x, y): return True
-    tf.while_loop(cond=c, body=f, loop_vars=[slice_data, slice_y])
+    r = tf.while_loop(cond=c, body=f, loop_vars=(x, y))
 
 # f1 = h5py.File("./saved_models/1/model.h5")
 # f2 = h5py.File("./saved_models/2/model.h5")
