@@ -35,7 +35,7 @@ def on_device_matmul():
 
         # tf.while_loop
         i = tf.constant(0)
-        def c(i): 
+        def c(i,x,y): 
             return tf.less(i, 2**20)
         def f(i, x, y):
             output = tf.matmul(x, y)
