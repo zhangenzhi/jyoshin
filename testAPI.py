@@ -16,8 +16,8 @@ for item in physical_devices:
 @tf.function(experimental_relax_shapes=True)
 def on_device_matmul():
     with tf.device("/device:gpu:0"):
-        # x = tf.zeros(shape=[500, 32*32*3])
-        # y = tf.zeros(shape=[32*32*3, 1])
+        x = tf.zeros(shape=[500, 32*32*3])
+        y = tf.zeros(shape=[32*32*3, 1])
 
         # for loop: total time: 118.20909833908081
         # for i in tf.range(1, 2**20):
@@ -27,22 +27,22 @@ def on_device_matmul():
         # 8-bodys:  total time: 32.072572231292725
         # 16-bodys: total time: 30.435903072357178
         # 32-bodys: total time: 28.816709756851196
-        # i = tf.constant(0)
-        # while tf.less(i, 2**20):
-        #     output = tf.matmul(slice_data, slice_y)
-        #     i = tf.add(i, 1)
+        i = tf.constant(0)
+        while tf.less(i, 2**20):
+            output = tf.matmul(x, y)
+            i = tf.add(i, 1)
 
         # tf.while_loop: total time:52.43951988220215
-        def c(i, x, y):
-            return tf.less(i, 2**20)
+        # def c(i, x, y):
+        #     return tf.less(i, 2**20)
 
-        def f(i, x, y):
-            output = tf.matmul(x, y)
-            return tf.add(i, 1), x, y
+        # def f(i, x, y):
+        #     output = tf.matmul(x, y)
+        #     return tf.add(i, 1), x, y
 
-        r = tf.while_loop(cond=c, body=f, 
-                          loop_vars=(0, tf.zeros(shape=[500, 32*32*3]), tf.zeros(shape=[32*32*3, 1])),
-                          parallel_iterations=64)
+        # r = tf.while_loop(cond=c, body=f, 
+        #                   loop_vars=(0, x, y),
+        #                   parallel_iterations=64)
 
 
 if __name__ == '__main__':
