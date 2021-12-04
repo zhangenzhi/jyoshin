@@ -25,13 +25,13 @@ def on_host_matmul():
 def on_device_matmul():
     # Test on v100-32GB
     with tf.device("/device:gpu:0"):
-        x = tf.zeros(shape=[500, 32*32*3])
+        x = tf.zeros(shape=[500*256, 32*32*3])
         y = tf.zeros(shape=[32*32*3, 1])
 
         # for loop:   total time: 118.20909833908081
         # 32-batches: total time: 13.580278158187866
-        for i in tf.range(1, 2**20):
-            output = tf.matmul(x, y)
+        # for i in tf.range(1, 2**20):
+        #     output = tf.matmul(x, y)
 
         # whille loop: total time: 49.9278666973114
         # 8-bodys:  total time: 32.072572231292725
@@ -39,10 +39,10 @@ def on_device_matmul():
         # 32-batches: total time: 13.645819187164307
         # 64-batches: total time: 13.342840909957886
         # 32-batches * 32 bodys: total time:  total time: 13.570245742797852
-        # i = tf.constant(0)
-        # while tf.less(i, 2**20):
-        #     output = tf.matmul(x, y)
-        #     i = tf.add(i, 1)
+        i = tf.constant(0)
+        while tf.less(i, 2**12):
+            output = tf.matmul(x, y)
+            i = tf.add(i, 1)
 
         # tf.while_loop: total time:52.43951988220215
         # def c(i, x, y):
@@ -59,8 +59,8 @@ def on_device_matmul():
 
 if __name__ == '__main__':
     start = time.time()
-    # on_device_matmul()
-    on_host_matmul()
+    on_device_matmul()
+    # on_host_matmul()
     end = time.time()
     print("total time: {}".format(end-start))
 
