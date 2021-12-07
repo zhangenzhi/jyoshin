@@ -11,17 +11,25 @@ class BaseTrainer:
     def __init__(self, args):
         self.args = args
 
-        self._build_envs()
-        self.dataset = self._build_dataset(self.args['dataset'])
-        self.loss = self._build_loss(self.args['loss'])
-        self.metric = self._build_metric(self.args['metric'])
-        self.optimizer = self._build_optimizer(self.args['optimizer'])
-        self.model = self._build_model(self.args['model'])
+        self.strategy =  self._build_envs()
+        
+        with self.strategy.scope():
+            self.dataset = self._build_dataset(self.args['dataset'])
+            self.loss = self._build_loss(self.args['loss'])
+            self.metric = self._build_metric(self.args['metric'])
+            self.optimizer = self._build_optimizer(self.args['optimizer'])
+            self.model = self._build_model(self.args['model'])
 
     def _build_envs(self):
         physical_devices = tf.config.list_physical_devices('GPU')
         for item in physical_devices:
             tf.config.experimental.set_memory_growth(item, True)
+        
+        if physical_devices:
+            strategy = tf.distribute.MirroredStrategy(physical_devices)
+        else:  # use one device strategy
+            strategy = tf.distribute.OneDeviceStrategy(device="/gpu:0")
+        return strategy
 
     def _build_model(self, model_args):
         if model_args['name'] == 'DNN':
@@ -94,6 +102,5 @@ class BaseTrainer:
         # causue uniform dataset is small, so we load them directly to gpu mem.
         pass
 
-    # @tf.function(experimental_relax_shapes=True)
     def evaluate_in_all(self, inputs, labels):
         pass

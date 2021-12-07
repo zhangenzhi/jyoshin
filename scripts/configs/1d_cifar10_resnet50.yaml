@@ -11,13 +11,14 @@ Trainer:
     learning_rate: 0.001
   dataset:
     name: 'cifar10'
-    batch_size: 2048
+    batch_size: 1024
     epoch: 100
     path_to_data: './dataset/image/cifar10/'
   model:
     name: 'ResNet50'
     save_path_to_model: './dataset/model/cifar10_resnet50/'
   others:
+    distribute: True
     path_to_log: './dataset/logs/cifar10_resnet50/'
 
 Plotter:

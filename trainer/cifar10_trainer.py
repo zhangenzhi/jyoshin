@@ -30,7 +30,7 @@ class Cifar10Trainer(BaseTrainer):
             self.model(x['x'])
         except:
             print_error("build model with variables failed.")
-            
+
     @tf.function(experimental_relax_shapes=True)
     def train_step(self, x):
         inputs = x['x']
@@ -50,6 +50,12 @@ class Cifar10Trainer(BaseTrainer):
         self.metric.update_state(labels, prediction)
         return loss
 
+    @tf.function(experimental_relax_shapes=True)
+    def distribute_train_step(self, x):
+        per_replica_losses = self.strategy.run(self.train_step, args=(x,))
+        return self.strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses,
+                                    axis=None)
+
     def run(self):
 
         iter_ds = iter(self.dataset)
@@ -61,10 +67,11 @@ class Cifar10Trainer(BaseTrainer):
             except:
                 print_warning("run out of dataset.")
                 break
-            loss = self.train_step(x)
+            loss = self.train_step(
+                x) if not self.args['other']['distribute'] else self.distribute_train_step(x)
             if flag % 100 == 0:
                 train_log = "step:{},loss:{}, metric:{}".format(flag,
-                    loss.numpy(), self.metric.result().numpy())
+                                                                loss.numpy(), self.metric.result().numpy())
                 print(train_log)
                 write_to_file(
                     path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
