@@ -28,7 +28,7 @@ class BaseTrainer:
         if self.args['others']['distribute']:
             strategy = tf.distribute.MirroredStrategy()
         else:  # use one device strategy
-            strategy = None
+            strategy = tf.distribute.get_strategy()
         return strategy
 
     def _build_model(self, model_args):
