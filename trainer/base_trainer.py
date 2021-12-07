@@ -28,7 +28,7 @@ class BaseTrainer:
         if physical_devices:
             strategy = tf.distribute.MirroredStrategy()
         else:  # use one device strategy
-            strategy = tf.distribute.OneDeviceStrategy(device="/gpu:0")
+            strategy = None
         return strategy
 
     def _build_model(self, model_args):
