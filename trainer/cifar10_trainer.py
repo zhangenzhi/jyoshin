@@ -68,7 +68,7 @@ class Cifar10Trainer(BaseTrainer):
                 print_warning("run out of dataset.")
                 break
             loss = self.train_step(
-                x) if not self.args['other']['distribute'] else self.distribute_train_step(x)
+                x) if not self.args['others']['distribute'] else self.distribute_train_step(x)
             if flag % 100 == 0:
                 train_log = "step:{},loss:{}, metric:{}".format(flag,
                                                                 loss.numpy(), self.metric.result().numpy())
