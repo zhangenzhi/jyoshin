@@ -25,7 +25,7 @@ class BaseTrainer:
         for item in physical_devices:
             tf.config.experimental.set_memory_growth(item, True)
         
-        if physical_devices:
+        if self.args['others']['distribute']:
             strategy = tf.distribute.MirroredStrategy()
         else:  # use one device strategy
             strategy = None
