@@ -4,6 +4,7 @@ Trainer:
         class_name: SparseCategoricalCrossentropy
         config:
           from_logits: False
+          reduction: None
   metric: 
     name: 'SparseCategoricalAccuracy'
   optimizer:
