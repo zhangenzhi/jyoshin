@@ -19,7 +19,7 @@ Trainer:
     name: 'ResNet50'
     save_path_to_model: './dataset/model/cifar10_resnet50/'
   others:
-    distribute: True
+    distribute: False
     path_to_log: './dataset/logs/cifar10_resnet50/'
 
 Plotter:
