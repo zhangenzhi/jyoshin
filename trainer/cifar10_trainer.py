@@ -54,7 +54,7 @@ class Cifar10Trainer(BaseTrainer):
     def distribute_train_step(self, x):
         per_replica_losses = self.strategy.run(self.train_step, args=(x,))
         return self.strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses,
-                                    axis=-1)
+                                    axis=0)
 
     def run(self):
 
