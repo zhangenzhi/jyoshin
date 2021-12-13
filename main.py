@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     generate_label_for_cifar10(dataset=iter(trainer.plotter_dataset),
                                model=trainer.model,
-                               path_to_file=trainer_args['dataset']['path_to_data'])
+                               path_to_file=plotter_args['path_to_adapt_label'])
 
     plotter = Plotter(plotter_args, trainer)
     plotter.run()
