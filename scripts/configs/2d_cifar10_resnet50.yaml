@@ -13,7 +13,7 @@ Trainer:
   dataset:
     name: 'cifar10'
     batch_size: 2048
-    epoch: 70
+    epoch: 500
     path_to_data: './dataset/image/cifar10/'
   model:
     name: 'ResNet50'
@@ -24,10 +24,10 @@ Trainer:
 
 Plotter:
   task: "2d"
-  num_evaluate: [100,100]
+  num_evaluate: [500,500]
   step: [1e-2,1e-2]
   save_directions: False
   load_directions: False
   fuse_nums: None
   path_to_adapt_label: './dataset/image/cifar10/'
-  save_file: ./dataset/result/2d_cifar10_resnet50_1w
+  save_file: ./dataset/result/2d_cifar10_resnet50_25w
