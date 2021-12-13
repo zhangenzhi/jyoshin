@@ -29,5 +29,5 @@ Plotter:
   fuse_nums: None
   save_directions: False
   load_directions: False
-  path_to_adapt_label: './dataset/image/cifar10_resnet50/'
+  path_to_adapt_label: './dataset/image/cifar10/resnet50/'
   save_file: ./dataset/result/1d_cifar10_resnet50_1k
