@@ -90,7 +90,7 @@ class Cifar10Trainer(BaseTrainer):
             self.save_model_weights(
                 filepath=self.args['model']['save_path_to_model'])
 
-    def device_self_evaluate(self, adapt_label_dataset, batch_nums=100):
+    def device_self_evaluate(self, adapt_label_dataset, batch_nums=2):
         # causue cifar10 dataset is small, so we load them directly to gpu mem.
 
         if self.x_v == None or self.y_v == None:
