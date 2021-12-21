@@ -1,6 +1,8 @@
 import os
 import tensorflow as tf
 import sys
+
+from model.cnn import CNN
 sys.path.append('..')
 
 from model import DNN, ResNet
@@ -35,9 +37,14 @@ class BaseTrainer:
         if model_args['name'] == 'DNN':
             model = DNN(units=model_args['units'],
                         activations=model_args['activations'])
-        if model_args['name'] == "ResNet50":
+        elif model_args['name'] == "ResNet50":
             model = ResNet(classes=10, 
                            model_type=model_args['name'])
+        elif model_args['name'] == "CNN":
+            model = CNN(kernels=model_args['kernels'],
+                        filters=model_args['filters'],
+                        tail_acts=model_args['tail_acts'],
+                        classes=model_args['classes'])
         else:
             model = None
         return model
