@@ -52,7 +52,7 @@ class CNN(tf.keras.Model):
         x = inputs
         
         # cnn
-        for cnn, act, bn in zip(self.cnn_layers, self.fc_act, self.fc_bn):
+        for cnn, act, bn in zip(self.cnn_layers, self.cnn_act, self.cnn_bn):
             x = cnn(x)
             x = act(x)
             x = bn(x)
