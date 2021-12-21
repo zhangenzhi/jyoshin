@@ -25,9 +25,9 @@ if __name__ == '__main__':
         trainer = Cifar10Trainer(trainer_args)
         trainer.run()
 
-    generate_label_for_cifar10(dataset=iter(trainer.plotter_dataset),
-                               model=trainer.model,
-                               path_to_file=plotter_args['path_to_adapt_label'])
+    # generate_label_for_cifar10(dataset=iter(trainer.plotter_dataset),
+    #                            model=trainer.model,
+    #                            path_to_file=plotter_args['path_to_adapt_label'])
 
-    plotter = Plotter(plotter_args, trainer)
-    plotter.run()
+    # plotter = Plotter(plotter_args, trainer)
+    # plotter.run()
