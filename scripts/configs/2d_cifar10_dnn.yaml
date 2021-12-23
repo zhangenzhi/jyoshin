@@ -25,6 +25,7 @@ Trainer:
     activations: [relu,relu,relu,softmax]
     save_path_to_model: './dataset/model/cifar10/'
   others:
+    distribute: False
     path_to_log: './dataset/logs/cifar10_dnn/'
 
 Plotter:
