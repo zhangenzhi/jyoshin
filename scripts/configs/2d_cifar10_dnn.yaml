@@ -36,4 +36,4 @@ Plotter:
   load_directions: False
   fuse_nums: None
   path_to_adapt_label: './dataset/image/cifar10_dnn/'
-  save_file: ./dataset/result/2d_cifar10_dnn_100w
+  save_file: ./dataset/result/2d_cifar10_dnn_25w
