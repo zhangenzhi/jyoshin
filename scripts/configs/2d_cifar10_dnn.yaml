@@ -18,7 +18,7 @@ Trainer:
     name: 'cifar10'
     batch_size: 256
     epoch: 200
-    path_to_data: './dataset/image/cifar10_dnn/'
+    path_to_data: './dataset/image/cifar10_dnn_acc/'
   model:
     name: 'DNN'
     units: [64,32,16,10]
@@ -35,5 +35,5 @@ Plotter:
   save_directions: False
   load_directions: False
   fuse_nums: None
-  path_to_adapt_label: './dataset/image/cifar10_dnn/'
-  save_file: ./dataset/result/2d_cifar10_dnn_25w
+  path_to_adapt_label: './dataset/image/cifar10_dnn_acc/'
+  save_file: ./dataset/result/2d_cifar10_dnn_25w_acc
