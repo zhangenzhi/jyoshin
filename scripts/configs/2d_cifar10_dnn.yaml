@@ -16,16 +16,16 @@ Trainer:
         decay_rate: 0.96 
   dataset:
     name: 'cifar10'
-    batch_size: 128
-    epoch: 100
-    path_to_data: './dataset/image/cifar10/'
+    batch_size: 256
+    epoch: 200
+    path_to_data: './dataset/image/cifar10_dnn/'
   model:
     name: 'DNN'
     units: [64,32,16,10]
     activations: [relu,relu,relu,softmax]
     save_path_to_model: './dataset/model/cifar10/'
   others:
-    path_to_log: './dataset/logs/cifar10/'
+    path_to_log: './dataset/logs/cifar10_dnn/'
 
 Plotter:
   task: "2d"
@@ -34,5 +34,5 @@ Plotter:
   save_directions: False
   load_directions: False
   fuse_nums: None
-  path_to_adapt_label: './dataset/image/cifar10/'
+  path_to_adapt_label: './dataset/image/cifar10_dnn/'
   save_file: ./dataset/result/2d_cifar10_dnn_100w
