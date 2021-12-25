@@ -16,7 +16,7 @@ Trainer:
         decay_rate: 0.96 
   dataset:
     name: 'cifar10'
-    batch_size: 256
+    batch_size: 2560
     epoch: 20
     path_to_data: './dataset/image/cifar10_dnn_acc/'
   model:
@@ -30,10 +30,10 @@ Trainer:
 
 Plotter:
   task: "2d"
-  num_evaluate: [100,100]
+  num_evaluate: [200,200]
   step: [1e-2,1e-2]
   save_directions: False
   load_directions: False
   fuse_nums: None
   path_to_adapt_label: './dataset/image/cifar10_dnn_acc/'
-  save_file: ./dataset/result/2d_cifar10_dnn_1w_acc
+  save_file: ./dataset/result/2d_cifar10_dnn_4w_acc
