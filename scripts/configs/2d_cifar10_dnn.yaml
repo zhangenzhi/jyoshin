@@ -16,8 +16,8 @@ Trainer:
         decay_rate: 0.96 
   dataset:
     name: 'cifar10'
-    batch_size: 2560
-    epoch: 20
+    batch_size: 256
+    epoch: 200
     path_to_data: './dataset/image/cifar10_dnn_acc/'
   model:
     name: 'DNN'
