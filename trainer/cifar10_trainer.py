@@ -132,7 +132,7 @@ class Cifar10Trainer(BaseTrainer):
         self.metric.reset_states()
         self.metric.update_state(labels, prediction)
 
-        return loss, self.metric
+        return loss, self.metric.result()
 
 
 if __name__ == "__main__":
