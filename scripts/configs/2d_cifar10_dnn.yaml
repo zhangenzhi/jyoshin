@@ -30,10 +30,10 @@ Trainer:
 
 Plotter:
   task: "2d"
-  num_evaluate: [200,200]
-  step: [1e-1,1e-1]
+  num_evaluate: [500,500]
+  step: [1e-2,1e-2]
   save_directions: False
   load_directions: False
   fuse_nums: None
   path_to_adapt_label: './dataset/image/cifar10_dnn_acc/'
-  save_file: ./dataset/result/2d_cifar10_dnn_4w_acc
+  save_file: ./dataset/result/2d_cifar10_dnn_25w_acc
