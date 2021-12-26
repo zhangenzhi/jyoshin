@@ -8,16 +8,16 @@ Trainer:
     name: 'SparseCategoricalAccuracy'
   optimizer:
     name: 'Adam'
-    learning_rate: 
-      class_name: "ExponentialDecay"
-      config:
-        initial_learning_rate: 0.001
-        decay_steps: 3000
-        decay_rate: 0.96 
+    learning_rate: 0.001
+      # class_name: "ExponentialDecay"
+      # config:
+      #   initial_learning_rate: 0.001
+      #   decay_steps: 3000
+      #   decay_rate: 0.96 
   dataset:
     name: 'cifar10'
     batch_size: 256
-    epoch: 3000
+    epoch: 30000
     path_to_data: './dataset/image/cifar10_dnn_acc/'
   model:
     name: 'DNN'
