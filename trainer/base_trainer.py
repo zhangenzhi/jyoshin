@@ -85,7 +85,7 @@ class BaseTrainer:
     def load_model_weights(self, filepath='./saved_models', name='latest.h5'):
         filepath = os.path.join(filepath, name)
         if check_file(filepath):
-            self.just_build()
+            self._just_build()
             self.model.load_weights(filepath)
             print_green("model load from {}".format(filepath+name))
         else:
