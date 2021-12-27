@@ -90,6 +90,7 @@ class BaseTrainer:
             print_green("model load from {}".format(filepath+name))
         else:
             print_error("file doesn't exits in {}.".format(filepath))
+            exit()
 
     def _build_dataset(self, dataset_args):
         raise NotImplementedError
