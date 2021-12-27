@@ -25,8 +25,6 @@ class Cifar10Trainer(BaseTrainer):
         try:
             iter_ds = iter(self.dataset)
             x = iter_ds.get_next()
-            if self.args['dataset']['name'] == 'uniform':
-                x['x'] = tf.reshape(x['x'], (-1, 1))
             self.model(x['x'])
         except:
             print_error("build model with variables failed.")
@@ -61,6 +59,12 @@ class Cifar10Trainer(BaseTrainer):
         iter_ds = iter(self.dataset)
         start_time = time.time()
         flag = 0
+        
+        if 'restore_from_weight' in self.args['others'].keys():
+            path = self.args['model']['save_path_to_model']
+            self.load_model_weights(filepath=path)
+        
+        # train loop
         while True:
             try:
                 x = iter_ds.get_next()
@@ -68,7 +72,7 @@ class Cifar10Trainer(BaseTrainer):
                 print_warning("run out of dataset.")
                 break
             # train step
-            if self.args['others']['distribute']:
+            if 'distribute' in self.args['others'].keys():
                 loss = self.distribute_train_step(x)
             else: 
                 loss = self.train_step(x)

@@ -1,4 +1,5 @@
 import os
+from typing import KeysView
 import tensorflow as tf
 import sys
 
@@ -27,7 +28,7 @@ class BaseTrainer:
         for item in physical_devices:
             tf.config.experimental.set_memory_growth(item, True)
         
-        if self.args['others']['distribute']:
+        if 'distribute' in self.args['others'].keys():
             strategy = tf.distribute.MirroredStrategy()
         else:  # use one device strategy
             strategy = tf.distribute.get_strategy()
