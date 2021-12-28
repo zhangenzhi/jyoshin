@@ -21,11 +21,14 @@ class Plotter:
         self.adapt_label_dataset = self._build_adapt_label_dataset()
 
     def _build_adapt_label_dataset(self):
-        adapt_label_dataset = read_data_from_csv(filename="labeled.csv",
-                                                 filepath=self.args["path_to_adapt_label"],
-                                                 batch_size=self.trainer.args["dataset"]["batch_size"],
-                                                 num_epochs=1,
-                                                 CSV_COLUMNS=['y'])
+        if 'localminima' in self.args.keys():
+            adapt_label_dataset = self.trainer.plotter_dataset
+        else:
+            adapt_label_dataset = read_data_from_csv(filename="labeled.csv",
+                                                    filepath=self.args["path_to_adapt_label"],
+                                                    batch_size=self.trainer.args["dataset"]["batch_size"],
+                                                    num_epochs=1,
+                                                    CSV_COLUMNS=['y'])
         return adapt_label_dataset
 
     def get_init_weights(self):
