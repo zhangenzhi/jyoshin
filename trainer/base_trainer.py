@@ -87,7 +87,7 @@ class BaseTrainer:
         if check_file(filepath):
             self._just_build()
             self.model.load_weights(filepath)
-            print_green("model load from {}".format(filepath+name))
+            print_green("model load from {}".format(filepath))
         else:
             print_error("file doesn't exits in {}.".format(filepath))
             exit()

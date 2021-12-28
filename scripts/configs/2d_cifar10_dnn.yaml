@@ -17,7 +17,7 @@ Trainer:
   dataset:
     name: 'cifar10'
     batch_size: 256
-    epoch: 30000
+    epoch: 30
     path_to_data: './dataset/image/cifar10_dnn_acc/'
   model:
     name: 'DNN'
@@ -31,10 +31,10 @@ Trainer:
 
 Plotter:
   task: "2d"
-  num_evaluate: [2000,2000]
+  num_evaluate: [1000,1000]
   step: [1e-3,1e-3]
   save_directions: False
   load_directions: False
   fuse_nums: None
   path_to_adapt_label: './dataset/image/cifar10_dnn_acc/'
-  save_file: ./dataset/result/2d_cifar10_dnn_400w_acc
+  save_file: ./dataset/result/2d_cifar10_dnn_100w_acc
