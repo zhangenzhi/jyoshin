@@ -120,10 +120,10 @@ class Cifar10Trainer(BaseTrainer):
             avg_loss, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
             avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
             avg_loss = tf.reshape(avg_loss, shape=(-1, 1))
-        np_avg_metric = avg_metric.numpy()
+        # np_avg_metric = avg_metric.numpy()
         np_avg_loss = avg_loss.numpy()
 
-        return np_avg_metric
+        return np_avg_loss
 
     # @tf.function(experimental_relax_shapes=True)
     def evaluate_in_all(self, inputs, labels):
