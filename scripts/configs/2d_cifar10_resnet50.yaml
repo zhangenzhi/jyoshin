@@ -13,14 +13,14 @@ Trainer:
   dataset:
     name: 'cifar10'
     batch_size: 64
-    epoch: 500
-    path_to_data: './dataset/image/cifar10_resnet/'
+    epoch: 1
+    path_to_data: './dataset/image/cifar10_resnet50/'
   model:
     name: 'ResNet50'
     save_path_to_model: './dataset/model/cifar10_resnet50/'
   others:
     # distribute: False
-    # restore_from_weight: True
+    restore_from_weight: True
     path_to_log: './dataset/logs/cifar10_resnet50/'
 
 Plotter:
@@ -30,6 +30,6 @@ Plotter:
   save_directions: False
   load_directions: False
   fuse_nums: None
-  localminima: True
-  path_to_adapt_label: './dataset/image/cifar10/'
+  # localminima: True
+  path_to_adapt_label: './dataset/image/cifar10_resnet50/'
   save_file: ./dataset/result/2d_cifar10_resnet50_25w
