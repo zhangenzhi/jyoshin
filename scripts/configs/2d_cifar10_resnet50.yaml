@@ -12,14 +12,15 @@ Trainer:
     learning_rate: 0.001
   dataset:
     name: 'cifar10'
-    batch_size: 2048
+    batch_size: 64
     epoch: 500
-    path_to_data: './dataset/image/cifar10/'
+    path_to_data: './dataset/image/cifar10_resnet/'
   model:
     name: 'ResNet50'
     save_path_to_model: './dataset/model/cifar10_resnet50/'
   others:
-    distribute: False
+    # distribute: False
+    # restore_from_weight: True
     path_to_log: './dataset/logs/cifar10_resnet50/'
 
 Plotter:
@@ -29,5 +30,6 @@ Plotter:
   save_directions: False
   load_directions: False
   fuse_nums: None
+  localminima: True
   path_to_adapt_label: './dataset/image/cifar10/'
   save_file: ./dataset/result/2d_cifar10_resnet50_25w
