@@ -21,8 +21,6 @@ class Plotter:
         self.adapt_label_dataset = self._build_adapt_label_dataset()
 
     def _build_adapt_label_dataset(self):
-        import pdb
-        pdb.set_trace()
         
         if 'localminima' in self.args.keys():
             adapt_label_dataset = self.trainer.plotter_dataset
