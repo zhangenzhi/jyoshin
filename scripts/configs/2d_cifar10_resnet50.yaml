@@ -25,11 +25,11 @@ Trainer:
 
 Plotter:
   task: "2d"
-  num_evaluate: [500,500]
-  step: [1e-2,1e-2]
+  num_evaluate: [100,100]
+  step: [1e-3,1e-3]
   save_directions: False
   load_directions: False
   fuse_nums: None
   # localminima: True
   path_to_adapt_label: './dataset/image/cifar10_resnet50/'
-  save_file: ./dataset/result/2d_cifar10_resnet50_25w
+  save_file: ./dataset/result/2d_cifar10_resnet50_1w_1e-6
