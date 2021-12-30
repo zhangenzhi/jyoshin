@@ -32,4 +32,4 @@ Plotter:
   fuse_nums: None
   # localminima: True
   path_to_adapt_label: './dataset/image/cifar10_resnet50/'
-  save_file: ./dataset/result/2d_cifar10_resnet50_1w_1e-6
+  save_file: ./dataset/result/2d_cifar10_resnet50_1w_1e-6_acc
