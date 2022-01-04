@@ -17,6 +17,8 @@ def write_to_file(path, filename, s):
 def check_file(file):
     if not os.path.exists(path=file):
         print_error("no such file: {}".format(file))
+        return False
+    return True
 
 
 def check_mkdir(path):

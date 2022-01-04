@@ -1,5 +1,3 @@
-import pdb
-
 from tensorflow.python.util.compat import path_to_str
 from data_generator import read_data_from_cifar10, read_data_from_csv
 from utils import *
@@ -27,12 +25,11 @@ class Cifar10Trainer(BaseTrainer):
         try:
             iter_ds = iter(self.dataset)
             x = iter_ds.get_next()
-            if self.args['dataset']['name'] == 'uniform':
-                x['x'] = tf.reshape(x['x'], (-1, 1))
             self.model(x['x'])
         except:
             print_error("build model with variables failed.")
 
+    @tf.function(experimental_relax_shapes=True)
     def train_step(self, x):
         inputs = x['x']
         labels = x['y']
@@ -51,21 +48,38 @@ class Cifar10Trainer(BaseTrainer):
         self.metric.update_state(labels, prediction)
         return loss
 
+    @tf.function(experimental_relax_shapes=True)
+    def distribute_train_step(self, x):
+        per_replica_losses = self.strategy.run(self.train_step, args=(x,))
+        return self.strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses,
+                                    axis=0)
+
     def run(self):
 
         iter_ds = iter(self.dataset)
         start_time = time.time()
         flag = 0
+        
+        if 'restore_from_weight' in self.args['others'].keys():
+            path = self.args['model']['save_path_to_model']
+            self.load_model_weights(filepath=path)
+        
+        # train loop
         while True:
             try:
                 x = iter_ds.get_next()
             except:
                 print_warning("run out of dataset.")
                 break
-            loss = self.train_step(x)
+            # train step
+            if 'distribute' in self.args['others'].keys():
+                loss = self.distribute_train_step(x)
+            else: 
+                loss = self.train_step(x)
+                
             if flag % 100 == 0:
-                train_log = "loss:{}, metric:{}".format(
-                    loss.numpy(), self.metric.result().numpy())
+                train_log = "step:{},loss:{}, metric:{}".format(flag,
+                                                                loss.numpy(), self.metric.result().numpy())
                 print(train_log)
                 write_to_file(
                     path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
@@ -80,7 +94,7 @@ class Cifar10Trainer(BaseTrainer):
             self.save_model_weights(
                 filepath=self.args['model']['save_path_to_model'])
 
-    def device_self_evaluate(self, adapt_label_dataset, batch_nums=100):
+    def device_self_evaluate(self, adapt_label_dataset, batch_nums=2):
         # causue cifar10 dataset is small, so we load them directly to gpu mem.
 
         if self.x_v == None or self.y_v == None:
@@ -103,10 +117,11 @@ class Cifar10Trainer(BaseTrainer):
                 self.y_v = tf.concat(all_y, axis=0)
 
         with tf.device("/device:gpu:0"):
-            _, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
-            avg_metric = tf.constant(1.0) - self.metric.result()
+            avg_loss, avg_metric = self.evaluate_in_all(self.x_v, self.y_v)
             avg_metric = tf.reshape(avg_metric, shape=(-1, 1))
+            avg_loss = tf.reshape(avg_loss, shape=(-1, 1))
         np_avg_metric = avg_metric.numpy()
+        # np_avg_loss = avg_loss.numpy()
 
         return np_avg_metric
 
@@ -119,9 +134,9 @@ class Cifar10Trainer(BaseTrainer):
 
         # metric
         self.metric.reset_states()
-        metric = self.metric.update_state(labels, prediction)
+        self.metric.update_state(labels, prediction)
 
-        return loss, metric
+        return loss, self.metric.result()
 
 
 if __name__ == "__main__":

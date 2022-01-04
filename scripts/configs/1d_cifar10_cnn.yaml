@@ -15,11 +15,15 @@ Trainer:
     epoch: 100
     path_to_data: './dataset/image/cifar10/'
   model:
-    name: 'DNN'
-    units: [64,32,16,10]
-    activations: [relu,relu,relu,softmax]
+    name: 'CNN'
+    kernels: [3,3,3,3]
+    filters: [64,32,16,8]
+    activations: [relu,relu,relu,relu]
+    classes: 10
+    tail_acts: softmax
     save_path_to_model: './dataset/model/cifar10/'
   others:
+    distribute: False
     path_to_log: './dataset/logs/cifar10/'
 
 Plotter:
@@ -30,4 +34,4 @@ Plotter:
   save_directions: False
   load_directions: False
   path_to_adapt_label: './dataset/image/cifar10/'
-  save_file: ./dataset/result/1d_cifar10_dnn_1w
+  save_file: ./dataset/result/1d_cifar10_cnn_1w

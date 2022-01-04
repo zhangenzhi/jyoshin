@@ -9,25 +9,33 @@ Trainer:
   optimizer:
     name: 'Adam'
     learning_rate: 0.001
+      # class_name: "ExponentialDecay"
+      # config:
+      #   initial_learning_rate: 0.001
+      #   decay_steps: 3000
+      #   decay_rate: 0.96 
   dataset:
     name: 'cifar10'
-    batch_size: 128
+    batch_size: 256
     epoch: 100
-    path_to_data: './dataset/image/cifar10/'
+    path_to_data: './dataset/image/cifar10_dnn_local/'
   model:
     name: 'DNN'
-    units: [64,32,16,10]
-    activations: [relu,relu,relu,softmax]
-    save_path_to_model: './dataset/model/cifar10/'
+    units: [128,64,32,16,10]
+    activations: [relu,relu,relu,relu,softmax]
+    save_path_to_model: './dataset/model/cifar10_dnn_local/'
   others:
-    path_to_log: './dataset/logs/cifar10/'
+    # distribute: True
+    # restore_from_weight: True
+    path_to_log: './dataset/logs/cifar10_dnn_local/'
 
 Plotter:
   task: "2d"
-  num_evaluate: [1000,1000]
-  step: [1e-2,1e-2]
+  num_evaluate: [500,500]
+  step: [1e-3,1e-3]
   save_directions: False
   load_directions: False
   fuse_nums: None
-  path_to_adapt_label: './dataset/image/cifar10/'
-  save_file: ./dataset/result/2d_cifar10_dnn_100w
+  localminima: True
+  path_to_adapt_label: './dataset/image/cifar10_dnn_local/'
+  save_file: ./dataset/result/2d_cifar10_lcdnn_100w_loss

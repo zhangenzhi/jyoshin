@@ -3,6 +3,7 @@ import h5py
 import time
 import numpy as np
 import tensorflow as tf
+import tqdm
 
 from data_generator import read_data_from_csv
 from utils import check_mkdir, print_error
@@ -21,11 +22,15 @@ class Plotter:
         self.adapt_label_dataset = self._build_adapt_label_dataset()
 
     def _build_adapt_label_dataset(self):
-        adapt_label_dataset = read_data_from_csv(filename="labeled.csv",
-                                                 filepath=self.args["path_to_adapt_label"],
-                                                 batch_size=self.trainer.args["dataset"]["batch_size"],
-                                                 num_epochs=1,
-                                                 CSV_COLUMNS=['y'])
+
+        if 'localminima' in self.args.keys():
+            adapt_label_dataset = self.trainer.plotter_dataset
+        else:
+            adapt_label_dataset = read_data_from_csv(filename="labeled.csv",
+                                                     filepath=self.args["path_to_adapt_label"],
+                                                     batch_size=self.trainer.args["dataset"]["batch_size"],
+                                                     num_epochs=1,
+                                                     CSV_COLUMNS=['y'])
         return adapt_label_dataset
 
     def get_init_weights(self):
@@ -167,18 +172,20 @@ class Plotter:
 
         # plot num_evaluate points in lossland
         start_time = time.time()
-
-        for i in range(self.num_evaluate[0]):
-            x_shift_step = self.step[0] * (i-self.num_evaluate[0]/2)
-            for j in range(self.num_evaluate[1]):
-                y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
-                step = [x_shift_step, y_shift_step]
-                self.set_weights(directions=directions, step=step)
-                avg_loss = self.trainer.device_self_evaluate(
-                    adapt_label_dataset=self.adapt_label_dataset)
-                with open(path_to_csv, "ab") as f:
-                    np.savetxt(f, avg_loss, comments="")
-
+        with tqdm.trange(self.num_evaluate[0]) as t:
+            for i in t:
+                x_shift_step = self.step[0] * (i-self.num_evaluate[0]/2)
+                t.set_description(f'Step {i*self.num_evaluate[1]}')
+                avg_loss = 0
+                for j in range(self.num_evaluate[1]):
+                    y_shift_step = self.step[1] * (j-self.num_evaluate[1]/2)
+                    step = [x_shift_step, y_shift_step]
+                    self.set_weights(directions=directions, step=step)
+                    avg_loss = self.trainer.device_self_evaluate(
+                        adapt_label_dataset=self.adapt_label_dataset)
+                    with open(path_to_csv, "ab") as f:
+                        np.savetxt(f, avg_loss, comments="")
+                t.set_postfix(step_avg_loss=avg_loss)
         end_time = time.time()
         print("total time {}".format(end_time-start_time))
 
@@ -189,4 +196,3 @@ class Plotter:
             self.plot_2d_loss(save_file=self.args['save_file'])
         else:
             print("No such task.")
-

@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from models import DNN
+from model import DNN
 from data_generator import read_data_from_csv, read_data_from_cifar10
 from utils import check_mkdir, print_green
 

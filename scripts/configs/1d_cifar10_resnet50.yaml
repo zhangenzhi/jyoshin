@@ -4,6 +4,7 @@ Trainer:
         class_name: SparseCategoricalCrossentropy
         config:
           from_logits: False
+          reduction: auto
   metric: 
     name: 'SparseCategoricalAccuracy'
   optimizer:
@@ -11,16 +12,15 @@ Trainer:
     learning_rate: 0.001
   dataset:
     name: 'cifar10'
-    batch_size: 128
-    epoch: 100
+    batch_size: 2048
+    epoch: 70
     path_to_data: './dataset/image/cifar10/'
   model:
-    name: 'DNN'
-    units: [64,32,16,10]
-    activations: [relu,relu,relu,softmax]
-    save_path_to_model: './dataset/model/cifar10/'
+    name: 'ResNet50'
+    save_path_to_model: './dataset/model/cifar10_resnet50/'
   others:
-    path_to_log: './dataset/logs/cifar10/'
+    distribute: False
+    path_to_log: './dataset/logs/cifar10_resnet50/'
 
 Plotter:
   task: "1d"
@@ -29,5 +29,5 @@ Plotter:
   fuse_nums: None
   save_directions: False
   load_directions: False
-  path_to_adapt_label: './dataset/image/cifar10/'
-  save_file: ./dataset/result/1d_cifar10_dnn_1w
+  path_to_adapt_label: './dataset/image/cifar10/resnet50/'
+  save_file: ./dataset/result/1d_cifar10_resnet50_1k
