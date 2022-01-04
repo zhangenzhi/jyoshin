@@ -173,7 +173,7 @@ class Plotter:
         # plot num_evaluate points in lossland
         start_time = time.time()
         with tqdm.trange(self.num_evaluate[0]) as t:
-            for i in range(t):
+            for i in t:
                 x_shift_step = self.step[0] * (i-self.num_evaluate[0]/2)
                 t.set_description(f'Step {i*self.num_evaluate[1]}')
                 avg_loss = 0
