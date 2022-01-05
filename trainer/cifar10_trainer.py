@@ -74,7 +74,7 @@ class Cifar10Trainer(BaseTrainer):
         with tqdm.trange(self.total_train_steps) as t:
             for step in t:
                 t.set_description(f'Epoch {int(step/self.epoch_per_step)}')
-                
+                # pop data
                 try:
                     x = iter_ds.get_next()
                 except:
@@ -85,7 +85,7 @@ class Cifar10Trainer(BaseTrainer):
                     loss = self.distribute_train_step(x)
                 else: 
                     loss = self.train_step(x)
-                
+                # logging
                 if step % self.epoch_per_step == 0:
                     t.set_postfix(loss=loss.numpy(), metric=self.metric.result().numpy())
                     # train_log = "step:{},loss:{}, metric:{}".format(step, loss.numpy(), self.metric.result().numpy())
