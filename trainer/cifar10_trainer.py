@@ -25,7 +25,8 @@ class Cifar10Trainer(BaseTrainer):
                                          num_epochs=dataset_args['epoch'])
         self.plotter_dataset = read_data_from_cifar10(
             batch_size=dataset_args['batch_size'], num_epochs=1)
-        self.total_train_steps = int(self.train_dataset_size / dataset_args['batch_size'] * dataset_args['epoch'])
+        self.epoch_per_step = int(self.train_dataset_size / dataset_args['batch_size'])
+        self.total_train_steps = int(self.epoch_per_step * dataset_args['epoch'])
         return dataset
 
     def _just_build(self):
@@ -72,8 +73,7 @@ class Cifar10Trainer(BaseTrainer):
         # train loop
         with tqdm.trange(self.total_train_steps) as t:
             for step in t:
-                epochs = int(step/self.args['dataset']['batch_size'])
-                t.set_description(f'Epoch {epochs}')
+                t.set_description(f'Epoch {int(step/self.epoch_per_step)}')
                 
                 try:
                     x = iter_ds.get_next()
@@ -86,7 +86,7 @@ class Cifar10Trainer(BaseTrainer):
                 else: 
                     loss = self.train_step(x)
                 
-                if step % self.args['dataset']['batch_size'] == 0:
+                if step % self.epoch_per_step == 0:
                     t.set_postfix(loss=loss.numpy(), metric=self.metric.result().numpy())
                     # train_log = "step:{},loss:{}, metric:{}".format(step, loss.numpy(), self.metric.result().numpy())
                     # write_to_file(path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
