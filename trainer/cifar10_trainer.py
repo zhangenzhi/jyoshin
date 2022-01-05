@@ -64,14 +64,13 @@ class Cifar10Trainer(BaseTrainer):
     def run(self):
 
         iter_ds = iter(self.dataset)
-        flag = 0
         
         if 'restore_from_weight' in self.args['others'].keys():
             path = self.args['model']['save_path_to_model']
             self.load_model_weights(filepath=path)
         
         # train loop
-        with tqdm.tgrange(self.total_train_steps) as t:
+        with tqdm.trange(self.total_train_steps) as t:
             for step in t:
                 t.set_description(f'Step {step}')
                 
