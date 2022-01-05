@@ -73,7 +73,7 @@ class Cifar10Trainer(BaseTrainer):
         # train loop
         with tqdm.trange(self.total_train_steps) as t:
             for step in t:
-                t.set_description(f'Epoch {int(step/self.epoch_per_step)}')
+                t.set_description(f'Epoch {int(step/self.epoch_per_step)+1}')
                 # pop data
                 try:
                     x = iter_ds.get_next()
