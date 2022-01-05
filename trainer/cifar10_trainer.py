@@ -12,10 +12,11 @@ sys.path.append('..')
 
 class Cifar10Trainer(BaseTrainer):
     def __init__(self, args):
-        super(Cifar10Trainer, self).__init__(args=args)
         
         self.train_dataset_size = 50000
         self.validation_dataset_size = 10000
+        
+        super(Cifar10Trainer, self).__init__(args=args)
 
     def _build_dataset(self, dataset_args):
         self.x_v = None
