@@ -18,16 +18,16 @@ Trainer:
     name: 'cifar10'
     batch_size: 256
     epoch: 100
-    path_to_data: './dataset/image/cifar10_dnn_local/'
+    path_to_data: './dataset/image/cifar10_dnn_trail/'
   model:
     name: 'DNN'
     units: [128,64,32,16,10]
     activations: [relu,relu,relu,relu,softmax]
-    save_path_to_model: './dataset/model/cifar10_dnn_local/'
+    save_path_to_model: './dataset/model/cifar10_dnn_trail/'
   others:
     # distribute: True
     # restore_from_weight: True
-    path_to_log: './dataset/logs/cifar10_dnn_local/'
+    path_to_log: './dataset/logs/cifar10_dnn_trail/'
 
 Plotter:
   task: "2d"
@@ -36,6 +36,6 @@ Plotter:
   save_directions: False
   load_directions: False
   fuse_nums: None
-  localminima: True
-  path_to_adapt_label: './dataset/image/cifar10_dnn_local/'
+  # localminima: True
+  path_to_adapt_label: './dataset/image/cifar10_dnn_trail/'
   save_file: ./dataset/result/2d_cifar10_lcdnn_100w_loss
