@@ -119,6 +119,15 @@ class Plotter:
                 raw_direction, weights, norm, ignore)
 
         return direction
+    
+    def orthogonalize_directions_for_weights(self, directions):
+        alpha = directions[0]
+        beta = []
+        for v1, v2 in zip(directions[0],directions[1]):
+            beta.append()
+    
+    def weights_projection(self):
+        pass
 
     def save_directions(self, directions, filename="x.hdf5"):
         save_to_hdf5 = os.path.join(self.args["save_file"], filename)
@@ -146,17 +155,17 @@ class Plotter:
             norm='layer', name='x')
 
         # plot num_evaluate points in lossland
-        start_time = time.time()
-        for i in range(self.num_evaluate):
-            step = self.step*(i-self.num_evaluate/2)
-            self.set_weights(directions=[directions], step=step)
-            avg_loss = self.trainer.device_self_evaluate(
-                adapt_label_dataset=self.adapt_label_dataset)
-            with open(path_to_csv, "ab") as f:
-                np.savetxt(f, avg_loss, comments="")
-        end_time = time.time()
+        with tqdm.trange(self.num_evaluate) as t:
+            for i in t:
+                t.set_description(f'Step {i}')
+                step = self.step*(i-self.num_evaluate/2)
+                self.set_weights(directions=[directions], step=step)
+                avg_loss = self.trainer.device_self_evaluate(
+                    adapt_label_dataset=self.adapt_label_dataset)
+                with open(path_to_csv, "ab") as f:
+                    np.savetxt(f, avg_loss, comments="")
+                t.set_postfix(step_avg_loss=avg_loss)
 
-        print("total time {}".format(end_time-start_time))
 
     def plot_2d_loss(self, save_file="./result/2d", save_name='result.csv'):
         # prepare dirs
@@ -171,7 +180,6 @@ class Plotter:
         directions = [direction_x, direction_y]
 
         # plot num_evaluate points in lossland
-        start_time = time.time()
         with tqdm.trange(self.num_evaluate[0]) as t:
             for i in t:
                 x_shift_step = self.step[0] * (i-self.num_evaluate[0]/2)
@@ -186,8 +194,6 @@ class Plotter:
                     with open(path_to_csv, "ab") as f:
                         np.savetxt(f, avg_loss, comments="")
                 t.set_postfix(step_avg_loss=avg_loss)
-        end_time = time.time()
-        print("total time {}".format(end_time-start_time))
 
     def run(self):
         if self.args["task"] == "1d":

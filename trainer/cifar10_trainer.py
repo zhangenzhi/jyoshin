@@ -2,6 +2,8 @@ from tensorflow.python.util.compat import path_to_str
 from data_generator import read_data_from_cifar10, read_data_from_csv
 from utils import *
 from .base_trainer import BaseTrainer
+
+import tqdm
 import time
 import tensorflow as tf
 import sys
@@ -11,6 +13,9 @@ sys.path.append('..')
 class Cifar10Trainer(BaseTrainer):
     def __init__(self, args):
         super(Cifar10Trainer, self).__init__(args=args)
+        
+        self.train_dataset_size = 50000
+        self.validation_dataset_size = 10000
 
     def _build_dataset(self, dataset_args):
         self.x_v = None
@@ -19,6 +24,7 @@ class Cifar10Trainer(BaseTrainer):
                                          num_epochs=dataset_args['epoch'])
         self.plotter_dataset = read_data_from_cifar10(
             batch_size=dataset_args['batch_size'], num_epochs=1)
+        self.total_train_steps = int(self.train_dataset_size / dataset_args['batch_size'] * dataset_args['epoch'])
         return dataset
 
     def _just_build(self):
@@ -57,7 +63,6 @@ class Cifar10Trainer(BaseTrainer):
     def run(self):
 
         iter_ds = iter(self.dataset)
-        start_time = time.time()
         flag = 0
         
         if 'restore_from_weight' in self.args['others'].keys():
@@ -65,29 +70,25 @@ class Cifar10Trainer(BaseTrainer):
             self.load_model_weights(filepath=path)
         
         # train loop
-        while True:
-            try:
-                x = iter_ds.get_next()
-            except:
-                print_warning("run out of dataset.")
-                break
-            # train step
-            if 'distribute' in self.args['others'].keys():
-                loss = self.distribute_train_step(x)
-            else: 
-                loss = self.train_step(x)
+        with tqdm.tgrange(self.total_train_steps) as t:
+            for step in t:
+                try:
+                    x = iter_ds.get_next()
+                except:
+                    print_warning("run out of dataset.")
+                    break
+                # train step
+                if 'distribute' in self.args['others'].keys():
+                    loss = self.distribute_train_step(x)
+                else: 
+                    loss = self.train_step(x)
                 
-            if flag % 100 == 0:
-                train_log = "step:{},loss:{}, metric:{}".format(flag,
-                                                                loss.numpy(), self.metric.result().numpy())
-                print(train_log)
-                write_to_file(
-                    path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
-                self.metric.reset_states()
-            flag += 1
-
-        end_time = time.time()
-        print("training cost:{}".format(end_time - start_time))
+                if step % self.args['dataset']['batch_size'] == 0:
+                    t.set_description(f'Step {step}')
+                    t.set_postfix(step=step, loss=loss.numpy(), metric=self.metric.result().numpy())
+                    # train_log = "step:{},loss:{}, metric:{}".format(step, loss.numpy(), self.metric.result().numpy())
+                    # write_to_file(path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
+                    self.metric.reset_states()
 
         # check if save trained model.
         if 'save_path_to_model' in self.args['model']:
