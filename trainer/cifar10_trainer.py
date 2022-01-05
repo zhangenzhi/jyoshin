@@ -72,7 +72,8 @@ class Cifar10Trainer(BaseTrainer):
         # train loop
         with tqdm.trange(self.total_train_steps) as t:
             for step in t:
-                t.set_description(f'Step {step}')
+                epochs = step/self.args['dataset']['batch_size']
+                t.set_description(f'Epoch {epochs}')
                 
                 try:
                     x = iter_ds.get_next()
@@ -86,7 +87,7 @@ class Cifar10Trainer(BaseTrainer):
                     loss = self.train_step(x)
                 
                 if step % self.args['dataset']['batch_size'] == 0:
-                    t.set_postfix(step=step, loss=loss.numpy(), metric=self.metric.result().numpy())
+                    t.set_postfix(loss=loss.numpy(), metric=self.metric.result().numpy())
                     # train_log = "step:{},loss:{}, metric:{}".format(step, loss.numpy(), self.metric.result().numpy())
                     # write_to_file(path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
                     self.metric.reset_states()
