@@ -72,7 +72,7 @@ class Cifar10Trainer(BaseTrainer):
         # train loop
         with tqdm.trange(self.total_train_steps) as t:
             for step in t:
-                epochs = step/self.args['dataset']['batch_size']
+                epochs = int(step/self.args['dataset']['batch_size'])
                 t.set_description(f'Epoch {epochs}')
                 
                 try:
