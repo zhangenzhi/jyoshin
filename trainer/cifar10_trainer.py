@@ -96,7 +96,7 @@ class Cifar10Trainer(BaseTrainer):
                     # write_to_file(path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
                     if 'save_trajectory' in self.args['others'].keys():
                         self.save_weights_trajectory(
-                            index=step/self.epoch_per_step, 
+                            index=int(step/self.epoch_per_step), 
                             filepath=self.args['others']['save_trajectory'])
                     self.metric.reset_states()
 
