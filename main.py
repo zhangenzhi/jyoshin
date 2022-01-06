@@ -27,8 +27,13 @@ if __name__ == '__main__':
 
     weights_trajectory = []
     for i in range(trainer_args['dataset']['epoch']):
-        weights_trajectory.append(trainer.load_weights_trajectory(index=i,
-                                                                  filepath=trainer_args['others']['save_trajectory']))
+        weights_trajectory.append(
+            trainer.load_weights_trajectory(index=i,
+                    filepath=trainer_args['others']['save_trajectory'])
+            )
+        
+    import pdb
+    pdb.set_trace()
 
     # generate_label_for_cifar10(dataset=iter(trainer.plotter_dataset),
     #                            model=trainer.model,
