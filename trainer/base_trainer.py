@@ -101,11 +101,11 @@ class BaseTrainer:
             for i, w in enumerate(self.model.weights):
                 grp.create_dataset(str(i), data=w.numpy())
     
-    def load_weights_trajectory(self, filepath, filename='trail.h5'):
+    def load_weights_trajectory(self, index, filepath, filename='trail.h5'):
         load_from_hdf5 = os.path.join(filepath, filename)
         weights_trajectory = []
         with h5py.File(load_from_hdf5, "r") as f:
-            d = f["weights"]
+            d = f["weights_{}".format(str(index))]
             for key in d.keys():
                 weights_trajectory.append(tf.convert_to_tensor(d[key][:]))
         return weights_trajectory
