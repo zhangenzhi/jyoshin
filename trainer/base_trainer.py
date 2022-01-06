@@ -1,4 +1,5 @@
 import os
+import h5py
 from typing import KeysView
 import tensorflow as tf
 import sys
@@ -91,6 +92,22 @@ class BaseTrainer:
         else:
             print_error("file doesn't exits in {}.".format(filepath))
             exit()
+    
+    def save_weights_trajectory(self, filepath, filename='trail.h5'):
+        save_to_hdf5 = os.path.join(filepath, filename)
+        with h5py.File(save_to_hdf5, "w") as f:
+            grp = f.create_group("weights")
+            for i, w in enumerate(self.model.weights):
+                grp.create_dataset(str(i), data=w.numpy())
+    
+    def load_weights_trajectory(self, filepath, filename='trail.h5'):
+        load_from_hdf5 = os.path.join(filepath, filename)
+        weights_trajectory = []
+        with h5py.File(load_from_hdf5, "r") as f:
+            d = f["weights"]
+            for key in d.keys():
+                weights_trajectory.append(tf.convert_to_tensor(d[key][:]))
+        return weights_trajectory
 
     def _build_dataset(self, dataset_args):
         raise NotImplementedError

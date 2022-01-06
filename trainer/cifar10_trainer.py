@@ -74,6 +74,7 @@ class Cifar10Trainer(BaseTrainer):
         with tqdm.trange(self.total_train_steps) as t:
             for step in t:
                 t.set_description(f'Epoch {int(step/self.epoch_per_step)+1}')
+                
                 # pop data
                 try:
                     x = iter_ds.get_next()
@@ -90,6 +91,8 @@ class Cifar10Trainer(BaseTrainer):
                     t.set_postfix(loss=loss.numpy(), metric=self.metric.result().numpy())
                     # train_log = "step:{},loss:{}, metric:{}".format(step, loss.numpy(), self.metric.result().numpy())
                     # write_to_file(path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
+                    if 'save_trajectory' in self.args['others'].keys():
+                        self.save_weights_trajectory(filepath=self.args['others']['save_trajectory'])
                     self.metric.reset_states()
 
         # check if save trained model.

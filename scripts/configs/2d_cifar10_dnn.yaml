@@ -17,7 +17,7 @@ Trainer:
   dataset:
     name: 'cifar10'
     batch_size: 256
-    epoch: 100
+    epoch: 10
     path_to_data: './dataset/image/cifar10_dnn_trail/'
   model:
     name: 'DNN'
@@ -27,6 +27,7 @@ Trainer:
   others:
     # distribute: True
     # restore_from_weight: True
+    save_trajectory: './dataset/image/cifar10_dnn_trail/'
     path_to_log: './dataset/logs/cifar10_dnn_trail/'
 
 Plotter:
