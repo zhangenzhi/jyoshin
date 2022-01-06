@@ -12,10 +12,10 @@ sys.path.append('..')
 
 class Cifar10Trainer(BaseTrainer):
     def __init__(self, args):
-        
+
         self.train_dataset_size = 50000
         self.validation_dataset_size = 10000
-        
+
         super(Cifar10Trainer, self).__init__(args=args)
 
     def _build_dataset(self, dataset_args):
@@ -25,8 +25,10 @@ class Cifar10Trainer(BaseTrainer):
                                          num_epochs=dataset_args['epoch'])
         self.plotter_dataset = read_data_from_cifar10(
             batch_size=dataset_args['batch_size'], num_epochs=1)
-        self.epoch_per_step = int(self.train_dataset_size / dataset_args['batch_size'])
-        self.total_train_steps = int(self.epoch_per_step * dataset_args['epoch'])
+        self.epoch_per_step = int(
+            self.train_dataset_size / dataset_args['batch_size'])
+        self.total_train_steps = int(
+            self.epoch_per_step * dataset_args['epoch'])
         return dataset
 
     def _just_build(self):
@@ -65,16 +67,16 @@ class Cifar10Trainer(BaseTrainer):
     def run(self):
 
         iter_ds = iter(self.dataset)
-        
+
         if 'restore_from_weight' in self.args['others'].keys():
             path = self.args['model']['save_path_to_model']
             self.load_model_weights(filepath=path)
-        
+
         # train loop
         with tqdm.trange(self.total_train_steps) as t:
             for step in t:
                 t.set_description(f'Epoch {int(step/self.epoch_per_step)+1}')
-                
+
                 # pop data
                 try:
                     x = iter_ds.get_next()
@@ -84,15 +86,18 @@ class Cifar10Trainer(BaseTrainer):
                 # train step
                 if 'distribute' in self.args['others'].keys():
                     loss = self.distribute_train_step(x)
-                else: 
+                else:
                     loss = self.train_step(x)
                 # logging
                 if step % self.epoch_per_step == 0:
-                    t.set_postfix(loss=loss.numpy(), metric=self.metric.result().numpy())
+                    t.set_postfix(loss=loss.numpy(),
+                                  metric=self.metric.result().numpy())
                     # train_log = "step:{},loss:{}, metric:{}".format(step, loss.numpy(), self.metric.result().numpy())
                     # write_to_file(path=self.args['others']['path_to_log'], filename="train.log", s=train_log)
                     if 'save_trajectory' in self.args['others'].keys():
-                        self.save_weights_trajectory(filepath=self.args['others']['save_trajectory'])
+                        self.save_weights_trajectory(
+                            index=step/self.epoch_per_step, 
+                            filepath=self.args['others']['save_trajectory'])
                     self.metric.reset_states()
 
         # check if save trained model.

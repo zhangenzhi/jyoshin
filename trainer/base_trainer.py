@@ -93,11 +93,11 @@ class BaseTrainer:
             print_error("file doesn't exits in {}.".format(filepath))
             exit()
     
-    def save_weights_trajectory(self, filepath, filename='trail.h5'):
+    def save_weights_trajectory(self, index, filepath, filename='trail.h5'):
         check_mkdir(filepath)
         save_to_hdf5 = os.path.join(filepath, filename)
         with h5py.File(save_to_hdf5, "w") as f:
-            grp = f.create_group("weights")
+            grp = f.create_group("weights_{}".format(str(index)))
             for i, w in enumerate(self.model.weights):
                 grp.create_dataset(str(i), data=w.numpy())
     
